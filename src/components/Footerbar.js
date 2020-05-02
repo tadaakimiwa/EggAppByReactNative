@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     height: 78,
     paddingTop: 30,
     backgroundColor: '#eee',
+    zIndex: 10,
   },
   footerList: {
     width: '100%',
