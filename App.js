@@ -2,19 +2,15 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Appbar from './src/components/Appbar';
-import AthList from './src/components/AthList';
+import AthListScreen from './src/screens/AthListScreen';
 import Footerbar from './src/components/Footerbar';
 
 export default function App() {
   return (
     <View style={styles.container}>
-
       <Appbar />
-
-      <AthList />
-
+      <AthListScreen />
       <Footerbar />
-
     </View>
   );
 }
