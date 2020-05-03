@@ -1,25 +1,63 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import * as Font from 'expo-font';
+import { createIconSet } from '@expo/vector-icons';
+import fontAwesome from '../../assets/fonts/fa-solid-900.ttf';
+
+const CustomIcon = createIconSet({
+  Home: '\uf015',
+  Search: '\uf002',
+  Alert: '\uf0f3',
+  User: '\uf007',
+}, 'FontAwesome');
 
 class Footerbar extends React.Component {
+  state  = {
+    fontLoaded: false,
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      FontAwesome: fontAwesome,
+    });
+
+    this.setState({ fontLoaded: true });
+  }
+
   render() {
     return (
       <View style={styles.footerbar}>
         <View style={styles.footerList}>
           <View style={styles.footerListItem}>
-            <Text style={styles.footerListItemTitle}>Home</Text>
+            {
+              this.state.fontLoaded ? (
+                <CustomIcon name="Home" style={styles.footerListItemTitle} />
+              ) : null
+            }
           </View>
 
           <View style={styles.footerListItem}>
-            <Text style={styles.footerListItemTitle}>Search</Text>
+            {
+              this.state.fontLoaded ? (
+                <CustomIcon name="Search" style={styles.footerListItemTitle} />
+              ) : null
+            }
           </View>
 
           <View style={styles.footerListItem}>
-            <Text style={styles.footerListItemTitle}>Alert</Text>
+            {
+              this.state.fontLoaded ? (
+                <CustomIcon name="Alert" style={styles.footerListItemTitle} />
+              ) : null
+            }
           </View>
 
           <View style={styles.footerListItem}>
-            <Text style={styles.footerListItemTitle}>My Page</Text>
+            {
+              this.state.fontLoaded ? (
+                <CustomIcon name="User" style={styles.footerListItemTitle} />
+              ) : null
+            }
           </View>
 
         </View>
@@ -36,7 +74,7 @@ const styles = StyleSheet.create({
     right: 0,
     height: 78,
     paddingTop: 30,
-    backgroundColor: '#eee',
+    backgroundColor: '#141414',
     zIndex: 10,
   },
   footerList: {
@@ -48,6 +86,11 @@ const styles = StyleSheet.create({
   footerListItem: {
     width: '25%',
     alignItems: 'center',
+    fontFamily: 'FontAwesome',
+  },
+  footerListItemTitle: {
+    fontSize: 24,
+    color: '#eee',
   },
 });
 

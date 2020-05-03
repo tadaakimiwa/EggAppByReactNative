@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Appbar from './src/components/Appbar';
-import AthDetailScreen from './src/screens/AthDetailScreen';
+import UserPageScreen from './src/screens/UserPageScreen';
 import Footerbar from './src/components/Footerbar';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Appbar />
-      <AthDetailScreen />
+      <UserPageScreen />
       <Footerbar />
     </View>
   );
