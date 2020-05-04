@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Appbar from './src/components/Appbar';
-import SearchScreen from './src/screens/SearchScreen';
+import SignupScreen from './src/screens/SignupScreen';
 import Footerbar from './src/components/Footerbar';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Appbar />
-      <SearchScreen />
+      <SignupScreen />
       <Footerbar />
     </View>
   );
