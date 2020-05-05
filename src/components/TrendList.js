@@ -1,47 +1,51 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
 class TrendList extends React.Component {
   render() {
     return (
       <View style={styles.trendList}>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.trendItem}>
+            <View style={styles.trendItemIcon}>
+              <Text style={styles.trendItemIconTitle}>I</Text>
+            </View>
+            <View style={styles.trendItemBody}>
+              <Text style={styles.trendItemBodyTitle}>
+                TestTestTestTestTestTestTestTestTest
+              </Text>
+              <Text style={styles.trendItemDate}>2020/5/02</Text>
+            </View>
+          </View>
+        </TouchableHighlight>
 
-        <View style={styles.trendItem}>
-          <View style={styles.trendItemIcon}>
-            <Text style={styles.trendItemIconTitle}>I</Text>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.trendItem}>
+            <View style={styles.trendItemIcon}>
+              <Text style={styles.trendItemIconTitle}>I</Text>
+            </View>
+            <View style={styles.trendItemBody}>
+              <Text style={styles.trendItemBodyTitle}>
+                TestTestTestTestTestTestTestTestTest
+              </Text>
+              <Text style={styles.trendItemDate}>2020/5/02</Text>
+            </View>
           </View>
-          <View style={styles.trendItemBody}>
-            <Text style={styles.trendItemBodyTitle}>
-              TestTestTestTestTestTestTestTestTest
-            </Text>
-            <Text style={styles.trendItemDate}>2020/5/02</Text>
-          </View>
-        </View>
+        </TouchableHighlight>
 
-        <View style={styles.trendItem}>
-          <View style={styles.trendItemIcon}>
-            <Text style={styles.trendItemIconTitle}>I</Text>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.trendItem}>
+            <View style={styles.trendItemIcon}>
+              <Text style={styles.trendItemIconTitle}>I</Text>
+            </View>
+            <View style={styles.trendItemBody}>
+              <Text style={styles.trendItemBodyTitle}>
+                TestTestTestTestTestTestTestTestTest
+              </Text>
+              <Text style={styles.trendItemDate}>2020/5/02</Text>
+            </View>
           </View>
-          <View style={styles.trendItemBody}>
-            <Text style={styles.trendItemBodyTitle}>
-              TestTestTestTestTestTestTestTestTest
-            </Text>
-            <Text style={styles.trendItemDate}>2020/5/02</Text>
-          </View>
-        </View>
-
-        <View style={styles.trendItem}>
-          <View style={styles.trendItemIcon}>
-            <Text style={styles.trendItemIconTitle}>I</Text>
-          </View>
-          <View style={styles.trendItemBody}>
-            <Text style={styles.trendItemBodyTitle}>
-              TestTestTestTestTestTestTestTestTest
-            </Text>
-            <Text style={styles.trendItemDate}>2020/5/02</Text>
-          </View>
-        </View>
-
+        </TouchableHighlight>
       </View>
     );
   }

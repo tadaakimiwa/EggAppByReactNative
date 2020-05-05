@@ -7,7 +7,7 @@ class TrendListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TrendList style={styles.trendList} />
+        <TrendList style={styles.trendList} navigation={this.props.navigation} />
       </View>
     );
   }

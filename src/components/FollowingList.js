@@ -1,46 +1,51 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
 class FollowingList extends React.Component {
   render() {
     return (
       <View style={styles.followingList}>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.followingItem}>
+            <View style={styles.followingItemIcon}>
+              <Text style={styles.followingItemIconTitle}>I</Text>
+            </View>
+            <View style={styles.followingItemBody}>
+              <Text style={styles.followingItemBodyTitle}>
+                TestTestTestTestTestTestTestTestTest
+              </Text>
+              <Text style={styles.followingItemDate}>2020/5/02</Text>
+            </View>
+          </View>
+        </TouchableHighlight>
 
-        <View style={styles.followingItem}>
-          <View style={styles.followingItemIcon}>
-            <Text style={styles.followingItemIconTitle}>I</Text>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.followingItem}>
+            <View style={styles.followingItemIcon}>
+              <Text style={styles.followingItemIconTitle}>I</Text>
+            </View>
+            <View style={styles.followingItemBody}>
+              <Text style={styles.followingItemBodyTitle}>
+                TestTestTestTestTestTestTestTestTest
+              </Text>
+              <Text style={styles.followingItemDate}>2020/5/02</Text>
+            </View>
           </View>
-          <View style={styles.followingItemBody}>
-            <Text style={styles.followingItemBodyTitle}>
-              TestTestTestTestTestTestTestTestTest
-            </Text>
-            <Text style={styles.followingItemDate}>2020/5/02</Text>
-          </View>
-        </View>
+        </TouchableHighlight>
 
-        <View style={styles.followingItem}>
-          <View style={styles.followingItemIcon}>
-            <Text style={styles.followingItemIconTitle}>I</Text>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.followingItem}>
+            <View style={styles.followingItemIcon}>
+              <Text style={styles.followingItemIconTitle}>I</Text>
+            </View>
+            <View style={styles.followingItemBody}>
+              <Text style={styles.followingItemBodyTitle}>
+                TestTestTestTestTestTestTestTestTest
+              </Text>
+              <Text style={styles.followingItemDate}>2020/5/02</Text>
+            </View>
           </View>
-          <View style={styles.followingItemBody}>
-            <Text style={styles.followingItemBodyTitle}>
-              TestTestTestTestTestTestTestTestTest
-            </Text>
-            <Text style={styles.followingItemDate}>2020/5/02</Text>
-          </View>
-        </View>
-
-        <View style={styles.followingItem}>
-          <View style={styles.followingItemIcon}>
-            <Text style={styles.followingItemIconTitle}>I</Text>
-          </View>
-          <View style={styles.followingItemBody}>
-            <Text style={styles.followingItemBodyTitle}>
-              TestTestTestTestTestTestTestTestTest
-            </Text>
-            <Text style={styles.followingItemDate}>2020/5/02</Text>
-          </View>
-        </View>
+        </TouchableHighlight>
 
       </View>
     );

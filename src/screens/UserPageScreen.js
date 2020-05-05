@@ -11,7 +11,7 @@ class UserPageScreen extends React.Component {
 
         <UserInfo style={styles.userInfo} />
 
-        <AthList style={styles.athList} />
+        <AthList style={styles.athList} navigation={this.props.navigation} />
       </View>
     );
   }

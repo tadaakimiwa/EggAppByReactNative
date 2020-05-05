@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import AthListScreen from './src/screens/AthListScreen';
+import AthDetailScreen from './src/screens/AthDetailScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import TrendListScreen from './src/screens/TrendListScreen';
 import FollowingListScreen from './src/screens/FollowingListScreen';
@@ -18,6 +19,8 @@ import FreeStyleScreen from './src/screens/AthLists/FreeStyleScreen';
 import NordicCombinedScreen from './src/screens/AthLists/NordicCombinedScreen';
 import SkiJumpingScreen from './src/screens/AthLists/SkiJumpingScreen';
 import SnowBoardingScreen from './src/screens/AthLists/SnowBoardingScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import SignupScreen from './src/screens/SignupScreen';
 
 
 const Stack = createStackNavigator();
@@ -65,7 +68,7 @@ const MaterialTabNavi = () => {
       />
       <MaterialTab.Screen
         name="UserPage"
-        component={UserPageScreen}
+        component={UserPageScreenNavi}
         options={{
           tabBarColor: '#524365',
           tabBarLabel: 'My Page',
@@ -117,25 +120,32 @@ const AthListScreenNavi = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerLeft: () => (
-          <Button
-            icon={(
-              <MaterialCommunityIcons
-                name="menu"
-                size={15}
-                color="white"
-              />
-            )}
-            color="black"
-            headerBackTitleStyle="ddd"
-          />
-        ),
         headerBackTitleStyle: {
-          backgroundColorcolor: "#ddd",
+          backgroundColorcolor: '#ddd',
         },
+        headerTintColor: '#000',
+        headerBackTitle: null,
       }}
     >
-      <Stack.Screen name="EggApp" component={AthListNavi} />
+      <Stack.Screen
+        name="EggApp"
+        component={AthListNavi}
+        options={{
+          headerLeft: () => (
+            <Button
+              icon={(
+                <MaterialCommunityIcons
+                  name="menu"
+                  size={15}
+                  color="white"
+                />
+              )}
+              color="black"
+            />
+          ),
+        }}
+      />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );
@@ -148,9 +158,12 @@ const SearchScreenNavi = () => {
         headerBackTitleStyle: {
           backgroundColorcolor: '#ddd',
         },
+        headerTintColor: '#000',
+        headerBackTitle: null,
       }}
     >
       <Stack.Screen name="EggApp" component={SearchScreen} />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );
@@ -178,9 +191,30 @@ const AlertScreenNavi = () => {
         headerBackTitleStyle: {
           backgroundColorcolor: '#ddd',
         },
+        headerTintColor: '#000',
+        headerBackTitle: null,
       }}
     >
       <Stack.Screen name="EggApp" component={AlertNavi} />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
+      <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
+    </Stack.Navigator>
+  );
+};
+
+const UserPageScreenNavi = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerBackTitleStyle: {
+          backgroundColorcolor: '#ddd',
+        },
+        headerTintColor: '#000',
+        headerBackTitle: null,
+      }}
+    >
+      <Stack.Screen name="User1" component={UserPageScreen} />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );
@@ -188,8 +222,25 @@ const AlertScreenNavi = () => {
 
 export default function App() {
   return (
-    <NavigationContainer style={styles.container}>
-      <MaterialTabNavi />
+    <NavigationContainer
+      style={styles.container}
+      headerMode="none"
+    >
+      <Stack.Navigator
+        options={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="Home"
+          component={MaterialTabNavi}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

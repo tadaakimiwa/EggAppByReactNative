@@ -7,7 +7,7 @@ class FollowingListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <FollowingList style={styles.followingList} />
+        <FollowingList style={styles.followingList} navigation={this.props.navigation} />
       </View>
     );
   }

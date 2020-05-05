@@ -1,16 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
 class SearchList extends React.Component {
   render() {
     return (
       <View style={styles.searchList}>
         <View style={styles.searchListItem}>
-          <View style={styles.itemImage}>
-            <Text style={styles.itemImageTitle}>
-              Image
-            </Text>
-          </View>
+          <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+            <View style={styles.itemImage}>
+              <Text style={styles.itemImageTitle}>
+                Image
+              </Text>
+            </View>
+          </TouchableHighlight>
           <View style={styles.itemComment}>
             <View style={styles.itemUser}>
               <Text style={styles.itemUserImage}>
@@ -29,11 +31,13 @@ class SearchList extends React.Component {
         </View>
 
         <View style={styles.searchListItem}>
-          <View style={styles.itemImage}>
-            <Text style={styles.itemImageTitle}>
-              Image
-            </Text>
-          </View>
+          <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+            <View style={styles.itemImage}>
+              <Text style={styles.itemImageTitle}>
+                Image
+              </Text>
+            </View>
+          </TouchableHighlight>
           <View style={styles.itemComment}>
             <View style={styles.itemUser}>
               <Text style={styles.itemUserImage}>
@@ -52,11 +56,13 @@ class SearchList extends React.Component {
         </View>
 
         <View style={styles.searchListItem}>
-          <View style={styles.itemImage}>
-            <Text style={styles.itemImageTitle}>
-              Image
-            </Text>
-          </View>
+          <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+            <View style={styles.itemImage}>
+              <Text style={styles.itemImageTitle}>
+                Image
+              </Text>
+            </View>
+          </TouchableHighlight>
           <View style={styles.itemComment}>
             <View style={styles.itemUser}>
               <Text style={styles.itemUserImage}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
 class AthList extends React.Component {
   render() {
@@ -7,9 +7,11 @@ class AthList extends React.Component {
       <View style={styles.athList}>
         <View style={styles.athListItem}>
           <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
+            <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+              <View style={styles.athImage}>
+                <Text style={styles.athImageTitle}>Image</Text>
+              </View>
+            </TouchableHighlight>
             <View style={styles.athName}>
               <Text style={styles.athNameTitle}>Name</Text>
             </View>
@@ -18,9 +20,11 @@ class AthList extends React.Component {
 
         <View style={styles.athListItem}>
           <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
+            <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+              <View style={styles.athImage}>
+                <Text style={styles.athImageTitle}>Image</Text>
+              </View>
+            </TouchableHighlight>
             <View style={styles.athName}>
               <Text style={styles.athNameTitle}>Name</Text>
             </View>

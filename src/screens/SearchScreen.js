@@ -7,7 +7,7 @@ class SearchScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SearchList />
+        <SearchList navigation={this.props.navigation} />
       </View>
     );
   }
