@@ -247,6 +247,7 @@ export default function App() {
         }}
       >
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen
           name="Home"
           component={MaterialTabNavi}
@@ -254,7 +255,6 @@ export default function App() {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Signup" component={SignupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
