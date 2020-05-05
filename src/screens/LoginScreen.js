@@ -7,7 +7,6 @@ import {
   Text,
 } from 'react-native';
 
-
 class LoginScreen extends React.Component {
   state = {
     email: '',
@@ -15,7 +14,6 @@ class LoginScreen extends React.Component {
   }
 
   handleSubmit() {
-    console.log('Submited')
     //  this.props.navigation.navigate('Home');
   }
 

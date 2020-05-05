@@ -6,6 +6,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import firebase from 'firebase';
 
 import AthListScreen from './src/screens/AthListScreen';
 import AthDetailScreen from './src/screens/AthDetailScreen';
@@ -22,10 +23,24 @@ import SnowBoardingScreen from './src/screens/AthLists/SnowBoardingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 
+import ENV from './env.json';
+
 
 const Stack = createStackNavigator();
 const MaterialTab = createMaterialBottomTabNavigator();
 const MaterialTopTab = createMaterialTopTabNavigator();
+
+const firebaseConfig = {
+  apiKey: ENV.FIREBASE_API_KEY,
+  authDomain: ENV.FIREBASE_AUTH_DOMAIN,
+  databaseURL: ENV.FIREBASE_DB_URL,
+  projectId: ENV.FIREBASE_PROJECT_ID,
+  storageBucket: ENV.FIREBASE_STORAGE,
+  messagingSenderId: ENV.FIREBASE_MEASUREMENT_ID,
+  appId: ENV.FIREBASE_APP_ID,
+  measurementId: ENV.FIREBASE_MEASUREMENT_ID,
+};
+firebase.initializeApp(firebaseConfig);
 
 const MaterialTabNavi = () => {
   return (
