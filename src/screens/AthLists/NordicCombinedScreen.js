@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import SearchList from '../components/SearchList';
+import SearchList from '../../components/SearchList';
 
-class AthListScreen extends React.Component {
+class NordicCombinedScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AthListScreen;
+export default NordicCombinedScreen;
