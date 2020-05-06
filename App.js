@@ -239,14 +239,25 @@ export default function App() {
   return (
     <NavigationContainer
       style={styles.container}
-      headerMode="none"
     >
-      <Stack.Navigator
-        options={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerTitleAlign: 'left',
+            headerTitle: () => (
+              <MaterialCommunityIcons
+                name="egg-easter"
+                size={25}
+                color="yellow"
+              />
+            ),
+            headerStyle: {
+              backgroundColor: '#eee',
+            },
+          }}
+        />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen
           name="Home"
