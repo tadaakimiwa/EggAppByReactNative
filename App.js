@@ -22,6 +22,7 @@ import SkiJumpingScreen from './src/screens/AthLists/SkiJumpingScreen';
 import SnowBoardingScreen from './src/screens/AthLists/SnowBoardingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import UserEditScreen from './src/screens/UserEditScreen';
 
 import ENV from './env.json';
 
@@ -229,6 +230,7 @@ const UserPageScreenNavi = () => {
       }}
     >
       <Stack.Screen name="User1" component={UserPageScreen} />
+      <Stack.Screen name="UserEdit" component={UserEditScreen} />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>

@@ -9,7 +9,7 @@ class UserPageScreen extends React.Component {
     return (
       <View style={styles.container}>
 
-        <UserInfo style={styles.userInfo} />
+        <UserInfo style={styles.userInfo} navigation={this.props.navigation}/>
 
         <AthList style={styles.athList} navigation={this.props.navigation} />
       </View>

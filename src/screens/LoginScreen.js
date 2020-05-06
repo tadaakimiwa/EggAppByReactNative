@@ -2,12 +2,11 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  TextInput,
   TouchableHighlight,
   Text,
 } from 'react-native';
 import firebase from 'firebase';
-import { Hoshi } from 'react-native-textinput-effects' ;
+import { Hoshi } from 'react-native-textinput-effects';
 
 class LoginScreen extends React.Component {
   state = {
