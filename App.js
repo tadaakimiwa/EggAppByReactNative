@@ -23,9 +23,11 @@ import SnowBoardingScreen from './src/screens/AthLists/SnowBoardingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import UserEditScreen from './src/screens/UserEditScreen';
+import UserCreateScreen from './src/screens/UserCreateScreen';
 
 import ENV from './env.json';
 
+require('firebase/firestore');
 
 const Stack = createStackNavigator();
 const MaterialTab = createMaterialBottomTabNavigator();
@@ -189,12 +191,12 @@ const AlertNavi = () => {
   return (
     <MaterialTopTab.Navigator>
       <MaterialTopTab.Screen
-        name="Trends"
-        component={TrendListScreen}
-      />
-      <MaterialTopTab.Screen
         name="Following"
         component={FollowingListScreen}
+      />
+      <MaterialTopTab.Screen
+        name="Trends"
+        component={TrendListScreen}
       />
     </MaterialTopTab.Navigator>
   );
@@ -252,7 +254,7 @@ export default function App() {
               <MaterialCommunityIcons
                 name="egg-easter"
                 size={25}
-                color="yellow"
+                color="#2DCCD3"
               />
             ),
             headerStyle: {
@@ -261,6 +263,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="UserCreate" component={UserCreateScreen} />
         <Stack.Screen
           name="Home"
           component={MaterialTabNavi}

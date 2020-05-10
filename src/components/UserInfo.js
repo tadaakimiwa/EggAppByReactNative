@@ -1,8 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import firebase from 'firebase';
 
 class UserInfo extends React.Component {
   render() {
+    const info = this.props.info;
+    console.log(info);
     return (
       <View style={styles.userInfo}>
         <View style={styles.userFlex}>
@@ -10,7 +13,7 @@ class UserInfo extends React.Component {
             <View style={styles.userNamePic}>
               <Text style={styles.userNamePicTitle}>Pic</Text>
             </View>
-            <Text style={styles.userNameTitle}>User1</Text>
+            <Text style={styles.userNameTitle}>{info.username}</Text>
           </View>
 
           <View style={styles.userInfoBar}>
@@ -37,12 +40,12 @@ class UserInfo extends React.Component {
           </View>
         </View>
         <View style={styles.userProfile}>
-          <Text style={styles.userProfileTitle}>TestTestTestTestTest</Text>
+          <Text style={styles.userProfileTitle}>{info.profile}</Text>
         </View>
         <View style={styles.userEdit}>
           <TouchableHighlight
             style={styles.userEditButton}
-            onPress={() => {this.props.navigation.navigate('UserEdit'); }}
+            onPress={() => { this.props.navigation.navigate('UserEdit'); }}
           >
             <Text style={styles.userEditTitle}>
               Edit your account Infomation
@@ -72,17 +75,18 @@ const styles = StyleSheet.create({
   },
   userProfileTitle: {
     fontSize: 16,
+    color: '#000',
   },
   userEdit: {
     alignItems: 'center',
   },
   userEditButton: {
-    borderWidth: 1,
-    borderColor: 'blue',
+    borderWidth: 0.5,
+    borderColor: '#2DCCD3',
     padding: 3,
   },
   userEditTitle: {
-    color: 'blue',
+    color: '#2DCCD3',
   },
   userName: {
     height: '100%',

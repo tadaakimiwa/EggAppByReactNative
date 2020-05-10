@@ -10,14 +10,15 @@ import { Hoshi } from 'react-native-textinput-effects';
 
 class LoginScreen extends React.Component {
   state = {
-    email: 'user1@example.com',
+    email: 'user6@example.com',
     password: 'password',
   }
 
   handleSubmit() {
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
+      .then((user) => {
         this.props.navigation.navigate('Home');
+        console.log(user)
       })
       .catch((error) => {
         console.log('error!!!!!', error);
@@ -40,7 +41,6 @@ class LoginScreen extends React.Component {
           inputPadding={12}
           autoCapitalize="none"
           autoCorrect={false}
-          value="user1@example.com"
         />
         <Hoshi
           style={styles.input}
@@ -53,7 +53,6 @@ class LoginScreen extends React.Component {
           autoCapitalize="none"
           autoCorrect={false}
           secureTextEntry
-          value="password"
         />
         <TouchableHighlight
           style={styles.button}
