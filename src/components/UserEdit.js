@@ -6,8 +6,47 @@ import {
   TouchableHighlight
 } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
+import firebase from 'firebase';
 
 class UserEdit extends React.Component {
+  state = {
+    username: '',
+    profile: '',
+  }
+
+  UNSAFE_componentWillMount() {
+    const { params } = this.props.navigation.state;
+    this.setState({
+      username: params.info.body,
+      profile: params.info.key,
+    });
+  }
+
+  handlePress() {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    const docRef = db.collection(`users/${user.uid}/User`).doc('info');
+
+    docRef.set({
+      username: this.state.username,
+      profile: this.state.profile,
+      createdOn: new Date(),
+    })
+      .then(() => {
+        this.setState({ username: this.state.username, profile: this.state.profile });
+        const { navigation } = this.props;
+        navigation.state.params.returnInfo({
+          username: this.state.username,
+          profile: this.state.profile,
+          createdOn: new Date(),
+        });
+        navigation.goBack();
+      })
+      .catch((error) => {
+        console.log('Failed!!', error);
+      });
+  }
+
   render() {
     return (
       <View style={styles.userEdit}>

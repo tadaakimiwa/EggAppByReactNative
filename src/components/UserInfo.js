@@ -3,9 +3,14 @@ import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import firebase from 'firebase';
 
 class UserInfo extends React.Component {
+  returnInfo(info) {
+    this.setState({ info });
+  }
+
   render() {
     const info = this.props.info;
     console.log(info);
+
     return (
       <View style={styles.userInfo}>
         <View style={styles.userFlex}>
@@ -45,7 +50,7 @@ class UserInfo extends React.Component {
         <View style={styles.userEdit}>
           <TouchableHighlight
             style={styles.userEditButton}
-            onPress={() => { this.props.navigation.navigate('UserEdit'); }}
+            onPress={() => { this.props.navigation.navigate('UserEdit', { info, returnInfo: this.returnInfo.bind(this) }); }}
           >
             <Text style={styles.userEditTitle}>
               Edit your account Infomation
