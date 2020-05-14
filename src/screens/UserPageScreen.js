@@ -94,6 +94,16 @@ class UserPageScreen extends React.Component {
               </Text>
             </TouchableHighlight>
           </View>
+          <View style={styles.userEdit}>
+            <TouchableHighlight
+              style={styles.userEditButton}
+              onPress={() => { this.props.navigation.navigate('AthPage'); }}
+            >
+              <Text style={styles.userEditTitle}>
+                Go to Athlete Page
+              </Text>
+            </TouchableHighlight>
+          </View>
         </View>
         <AthList style={styles.athList} navigation={this.props.navigation} />
       </View>
@@ -107,13 +117,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   userInfo: {
-    height: '30%',
+    height: '33%',
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   userFlex: {
-    height: '73%',
+    height: '67%',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -127,6 +137,7 @@ const styles = StyleSheet.create({
   },
   userEdit: {
     alignItems: 'center',
+    marginBottom: 5,
   },
   userEditButton: {
     borderWidth: 0.5,

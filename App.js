@@ -6,10 +6,22 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+  DrawerContentComponentProps,
+  DrawerContentOptions,
+  DrawerNavigationProp,
+} from '@react-navigation/drawer';
 import firebase from 'firebase';
 
 import AthListScreen from './src/screens/AthListScreen';
+import AthPageScreen from './src/screens/AthPageScreen';
+import AthEditScreen from './src/screens/AthEditScreen';
 import AthDetailScreen from './src/screens/AthDetailScreen';
+import AthCreateScreen from './src/screens/drawers/AthCreateScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import TrendListScreen from './src/screens/TrendListScreen';
 import FollowingListScreen from './src/screens/FollowingListScreen';
@@ -32,6 +44,7 @@ require('firebase/firestore');
 const Stack = createStackNavigator();
 const MaterialTab = createMaterialBottomTabNavigator();
 const MaterialTopTab = createMaterialTopTabNavigator();
+const Drawer = createDrawerNavigator();
 
 const firebaseConfig = {
   apiKey: ENV.FIREBASE_API_KEY,
@@ -134,7 +147,7 @@ const AthListNavi = () => {
   );
 };
 
-const AthListScreenNavi = () => {
+const AthListScreenNavi = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -159,6 +172,7 @@ const AthListScreenNavi = () => {
                 />
               )}
               color="black"
+              onPress={() => navigation.toggleDrawer()}
             />
           ),
         }}
@@ -233,9 +247,77 @@ const UserPageScreenNavi = () => {
     >
       <Stack.Screen name="User1" component={UserPageScreen} />
       <Stack.Screen name="UserEdit" component={UserEditScreen} />
-      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
+      <Stack.Screen name="AthPage" component={AthPageScreen} />
+      <Stack.Screen name="AthEdit" component={AthEditScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
+  );
+};
+
+const MainNavi = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          headerTitleAlign: 'left',
+          headerTitle: () => (
+            <MaterialCommunityIcons
+              name="egg-easter"
+              size={25}
+              color="#2DCCD3"
+            />
+          ),
+          headerStyle: {
+            backgroundColor: '#eee',
+          },
+        }}
+      />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen name="UserCreate" component={UserCreateScreen} />
+      <Stack.Screen
+        name="Home"
+        component={MaterialTabNavi}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DrawNavi"
+        component={DrawNavi}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItem
+        label="For Athletes"
+        onPress={() => props.navigation.navigate('AthCreate')}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
+const DrawNavi = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
+      <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
+      <Drawer.Screen
+        name="Home"
+        component={AthListNavi}
+      />
+      <Drawer.Screen name="main" component={MainNavi} />
+    </Drawer.Navigator>
   );
 };
 
@@ -244,34 +326,17 @@ export default function App() {
     <NavigationContainer
       style={styles.container}
     >
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerTitleAlign: 'left',
-            headerTitle: () => (
-              <MaterialCommunityIcons
-                name="egg-easter"
-                size={25}
-                color="#2DCCD3"
-              />
-            ),
-            headerStyle: {
-              backgroundColor: '#eee',
-            },
-          }}
-        />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="UserCreate" component={UserCreateScreen} />
-        <Stack.Screen
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen name="main" component={MainNavi} />
+        <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
+        <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
+        <Drawer.Screen
           name="Home"
-          component={MaterialTabNavi}
-          options={{
-            headerShown: false,
-          }}
+          component={AthListNavi}
         />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

@@ -8,7 +8,6 @@ import {
 import { Hoshi } from 'react-native-textinput-effects';
 import firebase from 'firebase';
 
-import UserEdit from '../components/UserEdit';
 import CircleButton from '../elements/CircleButton';
 
 class UserCreateScreen extends React.Component {
