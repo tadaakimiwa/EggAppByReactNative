@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native';
 import firebase from 'firebase';
 
 import UserInfo from '../components/UserInfo';
@@ -11,6 +11,7 @@ class UserPageScreen extends React.Component {
     this.state = {
       username: '',
       profile: '',
+      url: '',
     };
   }
 
@@ -30,7 +31,8 @@ class UserPageScreen extends React.Component {
         if (doc.exists) {
           const username = doc.data().username;
           const profile = doc.data().profile;
-          this.setState({ username, profile });
+          const url = doc.data().profileImageURL;
+          this.setState({ username, profile, url });
         } else {
           console.log('No such document!', user.uid);
         }
@@ -45,7 +47,11 @@ class UserPageScreen extends React.Component {
   }
 
   render() {
-    const info = { username: this.state.username, profile: this.state.profile };
+    const info = {
+      username: this.state.username,
+      profile: this.state.profile,
+      url: this.state.url
+    };
     return (
       <View style={styles.container}>
 
@@ -53,7 +59,10 @@ class UserPageScreen extends React.Component {
           <View style={styles.userFlex}>
             <View style={styles.userName}>
               <View style={styles.userNamePic}>
-                <Text style={styles.userNamePicTitle}>Pic</Text>
+                <Image
+                  style={styles.userNamePicTitle}
+                  source={{ uri: info.url }}
+                />
               </View>
               <Text style={styles.userNameTitle}>{info.username}</Text>
             </View>
@@ -159,11 +168,11 @@ const styles = StyleSheet.create({
     borderRadius: 42,
     height: 84,
     width: 84,
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: 'hidden',
   },
   userNamePicTitle: {
-    fontSize: 24,
+    height: 84,
+    width: 84,
   },
   userNameTitle: {
     paddingTop: 12,

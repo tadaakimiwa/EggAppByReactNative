@@ -3,9 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
+import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import firebase from 'firebase';
 
 import CircleButton from '../elements/CircleButton';
@@ -16,15 +20,79 @@ class UserCreateScreen extends React.Component {
     username: '',
     createdOn: '',
     profile: '',
+    url: '',
+    progress: '',
   }
+
+  ImageChoiceAndUpload = async () => {
+    try {
+      //まず、CAMERA_ROLLのパーミッション確認
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('利用には許可が必要です。');
+          return;
+        }
+      }
+
+      //次に、画像を選ぶ
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1
+      });
+      if (!result.cancelled) {
+        // 撮影された（ローカルの）写真を取得
+        const localUri = await fetch(result.uri);
+        // blobを取得
+        const localBlob = await localUri.blob();
+
+        // filename 実際はUIDとかユーザー固有のIDをファイル名にする感じかと
+        const user = firebase.auth().currentUser;
+        const filename = `users/${user.uid}/profileImage`;
+
+        // firebase storeのrefを取得
+        const storageRef = firebase.storage().ref().child(`images/, ${filename}`);
+
+        // upload
+        // const putTask = await storageRef.put(localBlob);
+        // 進捗を取得したいのでawaitは使わず
+        const putTask = storageRef.put(localBlob);
+        putTask.on('state_changed', (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.setState({
+            progress: parseInt(progress) + "%",
+          });
+        }, (error) => {
+          console.log(error);
+          alert('Failed to upload...');
+        }, () => {
+          putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            console.log(downloadURL);
+            this.setState({
+              progress: '',
+              url: downloadURL,
+            });
+          })
+        });
+      }
+    } catch (e) {
+      console.log(e.message);
+      alert('Too much Size');
+    }
+  }
+
 
   handlePress() {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
+    const newDate = firebase.firestore.Timestamp.now();
     db.collection(`users/${user.uid}/User`).doc('info').set({
       username: this.state.username,
       profile: this.state.profile,
-      createdOn: new Date(),
+      profileImageURL: this.state.url,
+      createdOn: newDate,
     })
       .then(() => {
         this.props.navigation.navigate('Home');
@@ -40,9 +108,22 @@ class UserCreateScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.userEdit}>
           <View style={styles.userEditImage}>
-            <TouchableHighlight style={styles.userImage}>
-              <Text style={styles.userImageTitle}>
-                Change
+            <View
+              style={styles.userImage}
+            >
+              <Image
+                style={styles.userImageTitle}
+                source={{ uri: this.state.url }}
+              />
+            </View>
+          </View>
+          <View style={styles.userIconChoose}>
+            <TouchableHighlight
+              style={styles.userIconChooseButton}
+              onPress={this.ImageChoiceAndUpload}
+            >
+              <Text style={styles.userIconChooseTitle}>
+                Choose your profile Icon
               </Text>
             </TouchableHighlight>
           </View>
@@ -99,12 +180,26 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   userImageTitle: {
-    fontSize: 16,
+    height: 120,
+    width: 120,
   },
   userEditInfo: {
     paddingBottom: 10,
+  },
+  userIconChoose: {
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  userIconChooseButton: {
+    borderWidth: 0.5,
+    borderColor: '#2DCCD3',
+    padding: 3,
+  },
+  userIconChooseTitle: {
+    color: '#2DCCD3',
   },
 });
 

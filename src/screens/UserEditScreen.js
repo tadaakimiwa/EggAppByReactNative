@@ -6,6 +6,11 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
+import { Avatar, Button } from 'react-native-elements';
+import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+
 import firebase from 'firebase';
 
 import CircleButton from '../elements/CircleButton';
@@ -17,6 +22,8 @@ class UserEditScreen extends React.Component {
       username: '',
       profile: '',
       createdOn: '',
+      url: '',
+      progress: '',
     };
   }
 
@@ -25,8 +32,69 @@ class UserEditScreen extends React.Component {
     this.setState({
       username: info.username,
       profile: info.profile,
+      url: info.url,
     });
   }
+
+  ImageChoiceAndUpload = async () => {
+    try {
+      //まず、CAMERA_ROLLのパーミッション確認
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== 'granted') {
+          alert('利用には許可が必要です。');
+          return;
+        }
+      }
+
+      //次に、画像を選ぶ
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1
+      });
+      if (!result.cancelled) {
+        // 撮影された（ローカルの）写真を取得
+        const localUri = await fetch(result.uri);
+        // blobを取得
+        const localBlob = await localUri.blob();
+
+        // filename 実際はUIDとかユーザー固有のIDをファイル名にする感じかと
+        const user = firebase.auth().currentUser;
+        const filename = `users/${user.uid}/profileImage`;
+
+        // firebase storeのrefを取得
+        const storageRef = firebase.storage().ref().child(`images/, ${filename}`);
+
+        // upload
+        // const putTask = await storageRef.put(localBlob);
+        // 進捗を取得したいのでawaitは使わず
+        const putTask = storageRef.put(localBlob);
+        putTask.on('state_changed', (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.setState({
+            progress: parseInt(progress) + "%",
+          });
+        }, (error) => {
+          console.log(error);
+          alert('Failed to upload...');
+        }, () => {
+          putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            console.log(downloadURL);
+            this.setState({
+              progress: '',
+              url: downloadURL,
+            });
+          })
+        });
+      }
+    } catch (e) {
+      console.log(e.message);
+      alert('Too much Size');
+    }
+  }
+
 
   handlePress() {
     const user = firebase.auth().currentUser;
@@ -37,17 +105,20 @@ class UserEditScreen extends React.Component {
     docRef.set({
       username: this.state.username,
       profile: this.state.profile,
+      profileImageURL: this.state.url,
       createdOn: newDate,
     })
       .then(() => {
         this.setState({
           username: this.state.username,
           profile: this.state.profile,
+          url: this.state.url,
         });
         const { navigation } = this.props;
         this.props.route.params.returnInfo({
           username: this.state.username,
           profile: this.state.profile,
+          url: this.state.url,
         });
         navigation.goBack();
       })
@@ -61,11 +132,13 @@ class UserEditScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.userEdit}>
           <View style={styles.userEditImage}>
-            <TouchableHighlight style={styles.userImage}>
-              <Text style={styles.userImageTitle}>
-                Change
-              </Text>
-            </TouchableHighlight>
+            <Avatar
+              size="large"
+              rounded
+              title="NI"
+              onPress={this.ImageChoiceAndUpload}
+              source={{ uri: this.state.url }}
+            />
           </View>
           <View style={styles.userEditInfo}>
             <Hoshi
