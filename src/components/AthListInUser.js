@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
-class AthList extends React.Component {
+class AthListInUser extends React.Component {
   render() {
     return (
       <View style={styles.athList}>
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AthList;
+export default AthListInUser;

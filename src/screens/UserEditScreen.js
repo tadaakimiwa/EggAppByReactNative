@@ -62,7 +62,7 @@ class UserEditScreen extends React.Component {
 
         // filename 実際はUIDとかユーザー固有のIDをファイル名にする感じかと
         const user = firebase.auth().currentUser;
-        const filename = `users/${user.uid}/profileImage`;
+        const filename = `users/${user.uid}/info/profileImage`;
 
         // firebase storeのrefを取得
         const storageRef = firebase.storage().ref().child(`images/, ${filename}`);
@@ -102,7 +102,7 @@ class UserEditScreen extends React.Component {
     const docRef = db.collection(`users/${user.uid}/User`).doc('info');
     const newDate = firebase.firestore.Timestamp.now();
 
-    docRef.set({
+    docRef.update({
       username: this.state.username,
       profile: this.state.profile,
       profileImageURL: this.state.url,

@@ -6,7 +6,7 @@ const dateString = (date) => {
   return str.split('T')[0];
 };
 
-class AthList extends React.Component {
+class AthListAirbnb extends React.Component {
   renderAth({ item }) {
     console.log(item);
     return (
@@ -46,8 +46,6 @@ class AthList extends React.Component {
           data={this.props.athList}
           renderItem={this.renderAth.bind(this)}
           style={styles.athListFlat}
-          numColumns={2}
-          horizontal={false}
         />
       </View>
     );
@@ -58,61 +56,65 @@ const styles = StyleSheet.create({
   athList: {
     width: '100%',
     flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   athListFlat: {
-    backgroundColor: '#fff',
     width: '100%',
   },
   athListItem: {
-    paddingTop: 12,
-    paddingLeft: 12,
-    paddingRight: 6,
-    width: '50%',
+    marginTop: 12,
+    marginBottom: 24,
+    width: 320,
+    height: 280,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 20,
+    alignSelf: 'center',
+    overflow: 'hidden',
+    backgroundColor: '#fff',
   },
   itemImage: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
-    marginRight: 12,
-    marginLeft: 12,
+    height: 180,
   },
   itemImageTitle: {
     height: '100%',
     width: '100%',
   },
   itemComment: {
-    marginLeft: 10,
-    marginBottom: 10,
+    marginTop: 12,
+    marginLeft: 12,
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingTop: 5,
+    alignItems: 'center',
+    width: 320,
+    height: 100,
   },
   userNamePic: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 15,
-    height: 30,
-    width: 30,
+    borderRadius: 32,
+    height: 64,
+    width: 64,
     overflow: 'hidden',
   },
   userNamePicTitle: {
-    height: 30,
-    width: 30,
+    height: 64,
+    width: 64,
   },
   itemCaption: {
-    justifyContent: 'center',
-    paddingLeft: 8,
+
+    paddingLeft: 18,
   },
   itemCaptionTitle: {
-    fontSize: 14,
+    fontSize: 18,
   },
   itemCaptionDate: {
-    fontSize: 8,
+    fontSize: 12,
   },
 });
 
-export default AthList;
+export default AthListAirbnb;

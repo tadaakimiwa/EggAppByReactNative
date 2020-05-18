@@ -1,5 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+} from 'react-native';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -10,15 +19,20 @@ class AthPostingScreen extends React.Component {
     super(props);
     this.state = {
       createdOn: '',
-      url: '',
+      url: this.props.route.params.url,
+      uuid: this.props.route.params.uuid,
+      uid: this.props.route.params.uid,
+      thumbnailurl: '',
+      profileurl: '',
       progress: '',
       uploader: '',
       category: '',
       contentsInfo: '',
+      contentsCaption: '',
     };
   }
 
-  VideoChoiceAndUpload = async () => {
+  thumbnailChoiceAndUpload = async () => {
     try {
       // まず、CAMERA_ROLLのパーミッション確認
       if (Constants.platform.ios) {
@@ -31,7 +45,7 @@ class AthPostingScreen extends React.Component {
 
       // 次に、画像を選ぶ
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1
@@ -43,10 +57,9 @@ class AthPostingScreen extends React.Component {
         const localBlob = await localUri.blob();
 
         // filename 実際はUIDとかユーザー固有のIDをファイル名にする感じかと
-        const user = firebase.auth().currentUser;
-        const postRef = firebase.firestore().collection(`users/${user.uid}/posts`).doc();
-        const uuid = postRef.id;
-        const filename = `users/${user.uid}/posts/${uuid}`;
+        const { uuid } = this.state;
+        const { uid } = this.state;
+        const filename = `users/${uid}/posts/${uuid}/thumbnail`;
 
         // firebase storeのrefを取得
         const storageRef = firebase.storage().ref().child(`videos/, ${filename}`);
@@ -68,8 +81,7 @@ class AthPostingScreen extends React.Component {
             console.log(downloadURL);
             this.setState({
               progress: '',
-              url: downloadURL,
-              uuid,
+              thumbnailurl: downloadURL,
             });
           });
         });
@@ -80,11 +92,13 @@ class AthPostingScreen extends React.Component {
     }
   }
 
-  getCategory = async (db, user) => {
-    await db.collection(`users/${user.uid}/User`).doc('athlete').get().then((doc) => {
+  getCategoryAndProfile = async (db, user) => {
+    await db.collection(`users/${user.uid}/User`).doc('athlete').get().then(async (doc) => {
       if (doc.exists) {
+        console.log(doc.data());
         const { category } = doc.data();
-        this.setState({ category });
+        const profileurl = doc.data().profileImageURL;
+        this.setState({ category, profileurl });
       } else {
         console.log('No such document!', user.uid);
       }
@@ -98,11 +112,15 @@ class AthPostingScreen extends React.Component {
     const docRef = db.collection(`users/${user.uid}/posts`).doc(uuid);
     const newDate = firebase.firestore.Timestamp.now();
 
-    await this.getCategory(db, user);
+    await this.getCategoryAndProfile(db, user);
     console.log(this.state.category);
-    await docRef.set({
-      PostVideoURL: this.state.url,
+    docRef.set({
+      postVideoURL: this.state.url,
+      thumbnailURL: this.state.thumbnailurl,
+      profileImageURL: this.state.profileurl,
       category: this.state.category,
+      contentsInfo: this.state.contentsInfo,
+      contentsCaption: this.state.contentsCaption,
       createdOn: newDate,
       uploader: user.uid,
       updatedOn: newDate,
@@ -116,43 +134,60 @@ class AthPostingScreen extends React.Component {
   }
 
   render() {
+    console.log(this.state.uid);
     return (
-      <View style={styles.container}>
-        <View style={styles.undefined}>
-          <Text>
-            Insert Video?
-          </Text>
-          <Text style={{ alignSelf: 'center' }}>{this.state.progress}</Text>
-        </View>
-        <View style={styles.contentsInfo}>
-          <TextInput
-            style={styles.contentsInfoTitle}
-            value={this.state.contentsInfo}
-            onChangeText={(text) => { this.setState({ contentsInfo: text }); }}
-            placeholder="Write description of your contents"
-            placeholderTextColor="#bbb"
-            multiline
-          />
-        </View>
-        <View style={styles.postButtons}>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.VideoChoiceAndUpload}
-          >
-            <Text style={styles.buttonTitle}>
-              Choose a Video
-            </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.handlePost.bind(this)}
-          >
-            <Text style={styles.buttonTitle}>
-              Post
-            </Text>
-          </TouchableHighlight>
-        </View>
-      </View>
+      <KeyboardAvoidingView style={styles.container}>
+        <TouchableWithoutFeedback
+          onPress={Keyboard.dismiss}
+        >
+          <View style={styles.inner}>
+            <View style={styles.undefined}>
+              <Text>
+                Thumbnail ?
+              </Text>
+              <Text style={{ alignSelf: 'center' }}>{this.state.progress}</Text>
+            </View>
+            <View style={styles.contentsInfo}>
+              <TextInput
+                style={styles.contentsCaption}
+                value={this.state.contentsCaption}
+                onChangeText={(text) => { this.setState({ contentsCaption: text }); }}
+                placeholder="Write caption of your contents"
+                placeholderTextColor="#bbb"
+                multiline
+              />
+            </View>
+            <View style={styles.contentsInfo}>
+              <TextInput
+                style={styles.contentsInfoTitle}
+                value={this.state.contentsInfo}
+                onChangeText={(text) => { this.setState({ contentsInfo: text }); }}
+                placeholder="Write description of your contents"
+                placeholderTextColor="#bbb"
+                multiline
+              />
+            </View>
+            <View style={styles.postButtons}>
+              <TouchableHighlight
+                style={styles.button}
+                onPress={this.thumbnailChoiceAndUpload}
+              >
+                <Text style={styles.buttonTitle}>
+                  Choose a Thumbnail
+                </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.button}
+                onPress={this.handlePost.bind(this)}
+              >
+                <Text style={styles.buttonTitle}>
+                  Post
+                </Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -176,7 +211,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     borderRadius: 4,
     height: 48,
-    width: 192,
+    width: 216,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -191,6 +226,15 @@ const styles = StyleSheet.create({
   },
   contentsInfo: {
     alignItems: 'center',
+    paddingBottom: 10,
+  },
+  contentsCaption: {
+    backgroundColor: '#eee',
+    height: 48,
+    width: 216,
+    borderWidth: 1,
+    borderColor: '#bbb',
+    padding: 8,
   },
   contentsInfoTitle: {
     backgroundColor: '#eee',

@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  Image,
+} from 'react-native';
 import firebase from 'firebase';
 
 import AthIntroCommentList from '../components/AthIntroCommentList';
@@ -9,6 +15,7 @@ class AthPageScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      url: '',
       firstname: '',
       lastname: '',
       age: '',
@@ -29,23 +36,28 @@ class AthPageScreen extends React.Component {
     const db = firebase.firestore();
     const docRef = db.collection(`users/${user.uid}/User`).doc('athlete');
 
-    docRef.get()
-      .then((doc) => {
-        if (doc.exists) {
-          const firstname = doc.data().firstname;
-          const lastname = doc.data().lastname;
-          const age = doc.data().age;
-          const intro1 = doc.data().intro1;
-          const intro2 = doc.data().intro2;
-          const intro3 = doc.data().intro3;
-          this.setState({ firstname, lastname, age, intro1, intro2, intro3 });
-        } else {
-          console.log('No such document!', user.uid);
-        }
-      })
-      .catch((error) => {
-        console.log('Error getting document:', error);
-      });
+    docRef.onSnapshot((doc) => {
+      if (doc.exists) {
+        const url = doc.data().profileImageURL;
+        const { firstname } = doc.data();
+        const { lastname } = doc.data();
+        const { age } = doc.data();
+        const { intro1 } = doc.data();
+        const { intro2 } = doc.data();
+        const { intro3 } = doc.data();
+        this.setState({
+          url,
+          firstname,
+          lastname,
+          age,
+          intro1,
+          intro2,
+          intro3,
+        });
+      } else {
+        console.log('No such document!', user.uid);
+      }
+    });
   }
 
   returnInfo(info) {
@@ -54,6 +66,7 @@ class AthPageScreen extends React.Component {
 
   render() {
     const info = {
+      url: this.state.url,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       age: this.state.age,
@@ -64,6 +77,12 @@ class AthPageScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.athInfo}>
+          <View style={styles.athProfileImage}>
+            <Image
+              style={styles.athProfileImageTitle}
+              source={{ uri: info.url }}
+            />
+          </View>
           <View style={styles.athInfoContent}>
             <Text style={styles.athInfoContentTitle}>
               {info.firstname}
@@ -160,6 +179,18 @@ const styles = StyleSheet.create({
   athInfoContentTitle: {
     fontSize: 20,
     fontWeight: '600',
+  },
+  athProfileImage: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 42,
+    height: 84,
+    width: 84,
+    overflow: 'hidden',
+  },
+  athProfileImageTitle: {
+    height: 84,
+    width: 84,
   },
   athAge: {
     marginTop: 16,

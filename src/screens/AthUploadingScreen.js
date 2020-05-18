@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+} from 'react-native';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -9,12 +14,8 @@ class AthUploadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      createdOn: '',
       url: '',
       progress: '',
-      uploader: '',
-      category: '',
-      contentsInfo: '',
     };
   }
 
@@ -46,7 +47,8 @@ class AthUploadingScreen extends React.Component {
         const user = firebase.auth().currentUser;
         const postRef = firebase.firestore().collection(`users/${user.uid}/posts`).doc();
         const uuid = postRef.id;
-        const filename = `users/${user.uid}/posts/${uuid}`;
+        const { uid } = user
+        const filename = `users/${uid}/posts/${uuid}`;
 
         // firebase storeのrefを取得
         const storageRef = firebase.storage().ref().child(`videos/, ${filename}`);
@@ -70,6 +72,7 @@ class AthUploadingScreen extends React.Component {
               progress: '',
               url: downloadURL,
               uuid,
+              uid,
             });
           });
         });
@@ -80,42 +83,17 @@ class AthUploadingScreen extends React.Component {
     }
   }
 
-  getCategory = async (db, user) => {
-    await db.collection(`users/${user.uid}/User`).doc('athlete').get().then((doc) => {
-      if (doc.exists) {
-        const { category } = doc.data();
-        this.setState({ category });
-      } else {
-        console.log('No such document!', user.uid);
-      }
-    });
-  }
-
-  handlePost = async () => {
-    const user = await firebase.auth().currentUser;
-    const { uuid } = this.state;
-    const db = await firebase.firestore();
-    const docRef = db.collection(`users/${user.uid}/posts`).doc(uuid);
-    const newDate = firebase.firestore.Timestamp.now();
-
-    await this.getCategory(db, user);
-    console.log(this.state.category);
-    await docRef.set({
-      PostVideoURL: this.state.url,
-      category: this.state.category,
-      createdOn: newDate,
-      uploader: user.uid,
-      updatedOn: newDate,
-    })
-      .then(() => {
-        this.props.navigation.goBack();
-      })
-      .catch((error) => {
-        console.log('Failed!!', error);
-      });
-  }
-
   render() {
+    console.log(this.state.uuid);
+    const { url } = this.state;
+    const { uuid } = this.state;
+    const { uid } = this.state;
+    const posts = {
+      url,
+      uuid,
+      uid,
+    };
+    console.log(posts);
     return (
       <View style={styles.container}>
         <View style={styles.undefined}>
@@ -123,16 +101,6 @@ class AthUploadingScreen extends React.Component {
             Insert Video?
           </Text>
           <Text style={{ alignSelf: 'center' }}>{this.state.progress}</Text>
-        </View>
-        <View style={styles.contentsInfo}>
-          <TextInput
-            style={styles.contentsInfoTitle}
-            value={this.state.contentsInfo}
-            onChangeText={(text) => { this.setState({ contentsInfo: text }); }}
-            placeholder="Write description of your contents"
-            placeholderTextColor="#bbb"
-            multiline
-          />
         </View>
         <View style={styles.postButtons}>
           <TouchableHighlight
@@ -145,7 +113,7 @@ class AthUploadingScreen extends React.Component {
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.button}
-            onPress={this.props.navigation.navigate('AthPosting')}
+            onPress={() => { this.props.navigation.navigate('AthPosting', posts); }}
           >
             <Text style={styles.buttonTitle}>
               Next
@@ -188,17 +156,6 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     paddingTop: 0,
     paddingBottom: 0,
-  },
-  contentsInfo: {
-    alignItems: 'center',
-  },
-  contentsInfoTitle: {
-    backgroundColor: '#eee',
-    height: 108,
-    width: 216,
-    borderWidth: 1,
-    borderColor: '#bbb',
-    padding: 8,
   },
 });
 

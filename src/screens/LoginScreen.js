@@ -10,7 +10,7 @@ import { Hoshi } from 'react-native-textinput-effects';
 
 class LoginScreen extends React.Component {
   state = {
-    email: 'user6@example.com',
+    email: 'user10@example.com',
     password: 'password',
   }
 
