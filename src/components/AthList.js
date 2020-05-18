@@ -1,145 +1,103 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight, FlatList } from 'react-native';
+
+const dateString = (date) => {
+  const str = date.toDate().toISOString();
+  return str.split('T')[0];
+};
 
 class AthList extends React.Component {
+  renderAth({ item }) {
+    console.log(item);
+    return (
+      <View style={styles.searchListItem}>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+          <View style={styles.itemImage}>
+            <Text style={styles.itemImageTitle}>
+              Image
+            </Text>
+          </View>
+        </TouchableHighlight>
+        <View style={styles.itemComment}>
+          <View style={styles.itemUser}>
+            <Text style={styles.itemUserImage}>
+              Pic
+            </Text>
+          </View>
+          <View style={styles.itemCaption}>
+            <Text style={styles.itemCaptionTitle}>
+              Title
+            </Text>
+            <Text style={styles.itemCaptionDate}>
+              {dateString(item.createdOn)}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View style={styles.athList}>
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-              <View style={styles.athImage}>
-                <Text style={styles.athImageTitle}>Image</Text>
-              </View>
-            </TouchableHighlight>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-              <View style={styles.athImage}>
-                <Text style={styles.athImageTitle}>Image</Text>
-              </View>
-            </TouchableHighlight>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
+        <FlatList
+          data={this.props.athList}
+          renderItem={this.renderAth.bind(this)}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  athList: {
-    width: '100%',
-    flex: 1,
+  searchList: {
+    paddingTop: 25,
+    paddingLeft: 10,
+    paddingRight: 10,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: '#fff',
   },
-  athListItem: {
-    padding: 16,
-    width: '33%',
-    height: '28%',
-    alignItems: 'center',
+  searchListItem: {
+    width: '49%',
   },
-  athTab: {
-    height: '100%',
-    width: '100%',
+  itemImage: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 6,
-  },
-  athImage: {
-    height: '80%',
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    alignItems: 'center',
+    borderRadius: 2,
     justifyContent: 'center',
-  },
-  athImageTitle: {
-    fontSize: 18,
-  },
-  athName: {
-    height: '20%',
     alignItems: 'center',
-    justifyContent: 'center',
+    height: 100,
+    marginRight: 10,
+    marginLeft: 10,
   },
-  athNameTitle: {
+  itemComment: {
+    marginLeft: 10,
+    marginBottom: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 5,
+  },
+  itemUser: {
+    height: 30,
+    width: 30,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  itemUserImage: {
+    fontSize: 10,
+  },
+  itemCaption: {
+    justifyContent: 'center',
+    paddingLeft: 8,
+  },
+  itemCaptionTitle: {
     fontSize: 14,
+  },
+  itemCaptionDate: {
+    fontSize: 8,
   },
 });
 

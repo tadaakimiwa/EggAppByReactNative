@@ -91,6 +91,16 @@ class AthPageScreen extends React.Component {
             </Text>
           </TouchableHighlight>
         </View>
+        <View style={styles.userEdit}>
+          <TouchableHighlight
+            style={styles.userEditButton}
+            onPress={() => { this.props.navigation.navigate('AthUploading'); }}
+          >
+            <Text style={styles.userEditTitle}>
+              Post new Video
+            </Text>
+          </TouchableHighlight>
+        </View>
         <View style={styles.athIntroVideo}>
           <Text style={styles.athIntroVideoTitle}>
             紹介ビデオ、オンプレスで流れる

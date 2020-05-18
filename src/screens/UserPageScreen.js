@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native'
 import firebase from 'firebase';
 
 import UserInfo from '../components/UserInfo';
-import AthList from '../components/AthList';
+import AthListInUser from '../components/AthListInUser';
 
 class UserPageScreen extends React.Component {
   constructor(props) {
@@ -26,20 +26,16 @@ class UserPageScreen extends React.Component {
     const db = firebase.firestore();
     const docRef = db.collection(`users/${user.uid}/User`).doc('info');
 
-    docRef.get()
-      .then((doc) => {
-        if (doc.exists) {
-          const username = doc.data().username;
-          const profile = doc.data().profile;
-          const url = doc.data().profileImageURL;
-          this.setState({ username, profile, url });
-        } else {
-          console.log('No such document!', user.uid);
-        }
-      })
-      .catch((error) => {
-        console.log('Error getting document:', error);
-      });
+    docRef.onSnapshot((doc) => {
+      if (doc.exists) {
+        const username = doc.data().username;
+        const profile = doc.data().profile;
+        const url = doc.data().profileImageURL;
+        this.setState({ username, profile, url });
+      } else {
+        console.log('No such document!', user.uid);
+      }
+    });
   }
 
   returnInfo(info) {
@@ -114,7 +110,7 @@ class UserPageScreen extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
-        <AthList style={styles.athList} navigation={this.props.navigation} />
+        <AthListInUser style={styles.athList} navigation={this.props.navigation} />
       </View>
     );
   }

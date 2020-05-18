@@ -1,43 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import Video from 'react-native-video';
 
 class AthPostList extends React.Component {
   render() {
     return (
       <View style={styles.athPostList}>
         <View style={styles.athPostListItem}>
-          <Text style={styles.athPostListItemTitle}>
-            Posted
-          </Text>
-        </View>
-
-        <View style={styles.athPostListItem}>
-          <Text style={styles.athPostListItemTitle}>
-            Posted
-          </Text>
-        </View>
-
-        <View style={styles.athPostListItem}>
-          <Text style={styles.athPostListItemTitle}>
-            Posted
-          </Text>
-        </View>
-
-        <View style={styles.athPostListItem}>
-          <Text style={styles.athPostListItemTitle}>
-            Posted
-          </Text>
-        </View>
-
-        <View style={styles.athPostListItem}>
-          <Text style={styles.athPostListItemTitle}>
-            Posted
-          </Text>
-        </View>
-
-        <View style={styles.athPostListItem}>
-          <Text style={styles.athPostListItemTitle}>
-            Posted
+          <Text>
+            posted
           </Text>
         </View>
       </View>

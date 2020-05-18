@@ -6,7 +6,9 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
+import RNPickerSelect from 'react-native-picker-select';
 import firebase from 'firebase';
+import { Ionicons } from '@expo/vector-icons';
 
 import CircleButton from '../../elements/CircleButton';
 
@@ -20,6 +22,7 @@ class AthCreateScreen extends React.Component {
       intro1: '',
       intro2: '',
       intro3: '',
+      category: '',
     };
   }
 
@@ -33,6 +36,7 @@ class AthCreateScreen extends React.Component {
       intro1: this.state.intro1,
       intro2: this.state.intro2,
       intro3: this.state.intro3,
+      category: this.state.category,
       createdOn: new Date(),
     })
       .then(() => {
@@ -45,6 +49,11 @@ class AthCreateScreen extends React.Component {
   }
 
   render() {
+    const placeholder = {
+      label: 'Select a Category',
+      value: null,
+      color: '#9EA0A4',
+    };
     return (
       <View style={styles.container}>
         <View style={styles.userEdit}>
@@ -55,6 +64,25 @@ class AthCreateScreen extends React.Component {
               </Text>
             </TouchableHighlight>
           </View>
+          <RNPickerSelect
+            value={this.state.category}
+            items={[
+              { label: 'Alpine', value: 'Alpine' },
+              { label: 'Cross Country', value: 'Cross Country' },
+              { label: 'Free Style', value: 'Free Style' },
+              { label: 'Noridic Combined', value: 'Noridic Combined' },
+              { label: 'Ski Jumping', value: 'Ski Jumping' },
+              { label: 'Snow Boarding', value: 'Snow Boarding' },
+            ]}
+            placeholder={placeholder}
+            onValueChange={(value) => {
+              this.setState({
+                category: value,
+              });
+            }}
+            style={pickerSelectStyles}
+            useNativeAndroidPickerStyle={false}
+          />
           <View style={styles.userEditInfo}>
             <Hoshi
               style={styles.input}
@@ -163,6 +191,20 @@ const styles = StyleSheet.create({
   },
   userEditInfo: {
     paddingBottom: 10,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+    margin: 10,
   },
 });
 

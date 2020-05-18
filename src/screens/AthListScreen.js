@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import SearchList from '../components/SearchList';
+import AthList from '../components/AthList';
 
 class AthListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SearchList />
+        <AthList />
       </View>
     );
   }
