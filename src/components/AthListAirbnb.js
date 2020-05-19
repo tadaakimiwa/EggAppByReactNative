@@ -8,10 +8,11 @@ const dateString = (date) => {
 
 class AthListAirbnb extends React.Component {
   renderAth({ item }) {
+    const post = item;
     console.log(item);
     return (
       <View style={styles.athListItem}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => { this.props.navigation.navigate('PostDetail', { post }); }}>
           <View style={styles.itemImage}>
             <Image
               style={styles.itemImageTitle}

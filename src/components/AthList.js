@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  FlatList,
+  Image,
+} from 'react-native';
 
 const dateString = (date) => {
   const str = date.toDate().toISOString();
@@ -8,14 +15,17 @@ const dateString = (date) => {
 
 class AthList extends React.Component {
   renderAth({ item }) {
+    const post = item;
     console.log(item);
     return (
       <View style={styles.athListItem}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight
+          onPress={() => { this.props.navigation.navigate('PostDetail', { post }); }}
+        >
           <View style={styles.itemImage}>
             <Image
               style={styles.itemImageTitle}
-              source={{ uri: item.thumbnailURL }}
+              source={{ uri: post.thumbnailURL }}
             />
           </View>
         </TouchableHighlight>
@@ -23,15 +33,15 @@ class AthList extends React.Component {
           <View style={styles.userNamePic}>
             <Image
               style={styles.userNamePicTitle}
-              source={{ uri: item.profileImageURL }}
+              source={{ uri: post.profileImageURL }}
             />
           </View>
           <View style={styles.itemCaption}>
             <Text style={styles.itemCaptionTitle}>
-              {item.contentsCaption}
+              {post.contentsCaption}
             </Text>
             <Text style={styles.itemCaptionDate}>
-              {dateString(item.createdOn)}
+              {dateString(post.createdOn)}
             </Text>
           </View>
         </View>

@@ -15,7 +15,7 @@ class UserPageScreen extends React.Component {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     /* firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const userId = user.uid;

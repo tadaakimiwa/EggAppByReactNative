@@ -24,6 +24,7 @@ import AthDetailScreen from './src/screens/AthDetailScreen';
 import AthCreateScreen from './src/screens/drawers/AthCreateScreen';
 import AthUploadingScreen from './src/screens/AthUploadingScreen';
 import AthPostingScreen from './src/screens/AthPostingScreen';
+import PostDetailScreen from './src/screens/PostDetailScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import TrendListScreen from './src/screens/TrendListScreen';
 import FollowingListScreen from './src/screens/FollowingListScreen';
@@ -180,6 +181,7 @@ const AthListScreenNavi = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );
