@@ -28,6 +28,7 @@ class AthCreateScreen extends React.Component {
       intro2: '',
       intro3: '',
       category: '',
+      athuid: '',
     };
   }
 
@@ -91,10 +92,13 @@ class AthCreateScreen extends React.Component {
   }
 
 
-  handlePress() {
+  async handlePress() {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
-    db.collection(`users/${user.uid}/User`).doc('athlete').set({
+    const athRef = db.collection(`users/${user.uid}/User`).doc('athlete')
+    const userRef = db.collection(`users/${user.uid}/User`).doc('info')
+    const batch = db.batch();
+    batch.set(athRef, {
       profileImageURL: this.state.url,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
@@ -105,7 +109,12 @@ class AthCreateScreen extends React.Component {
       category: this.state.category,
       createdOn: new Date(),
       uid: user.uid,
-    })
+      athuid: this.state.athuid,
+    });
+    batch.add(userRef, {
+      isAthlete: true
+    });
+    batch.commit()
       .then(() => {
         this.props.navigation.navigate('MaterialTabNavi');
       })
@@ -158,6 +167,17 @@ class AthCreateScreen extends React.Component {
             style={pickerSelectStyles}
             useNativeAndroidPickerStyle={false}
           />
+          <View style={styles.userEditInfo}>
+            <Hoshi
+              style={styles.input}
+              label="Username"
+              value={this.state.athuid}
+              borderColor="#265366"
+              borderHeight={4}
+              inputPadding={12}
+              onChangeText={(text) => { this.setState({ firstname: text }); }}
+            />
+          </View>
           <View style={styles.userEditInfo}>
             <Hoshi
               style={styles.input}

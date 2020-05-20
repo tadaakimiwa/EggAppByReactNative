@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import FollowingList from '../components/FollowingList';
+import FollowingAlertList from '../components/FollowingAlertList';
 
-class FollowingListScreen extends React.Component {
+class FollowingAlertListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <FollowingList style={styles.followingList} navigation={this.props.navigation} />
+        <FollowingAlertList style={styles.followingList} navigation={this.props.navigation} />
       </View>
     );
   }
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FollowingListScreen;
+export default FollowingAlertListScreen;

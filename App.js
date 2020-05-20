@@ -27,7 +27,8 @@ import AthPostingScreen from './src/screens/AthPostingScreen';
 import PostDetailScreen from './src/screens/PostDetailScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import TrendListScreen from './src/screens/TrendListScreen';
-import FollowingListScreen from './src/screens/FollowingListScreen';
+import FollowingAlertListScreen from './src/screens/FollowingAlertListScreen';
+import FollowingListScreen from './src/screens/drawers/FollowingListScreen';
 import UserPageScreen from './src/screens/UserPageScreen';
 import AlpineScreen from './src/screens/AthLists/AlpineScreen';
 import CrossCountryScreen from './src/screens/AthLists/CrossCountryScreen';
@@ -209,8 +210,8 @@ const AlertNavi = () => {
   return (
     <MaterialTopTab.Navigator>
       <MaterialTopTab.Screen
-        name="Following"
-        component={FollowingListScreen}
+        name="FollowingAlert"
+        component={FollowingAlertListScreen}
       />
       <MaterialTopTab.Screen
         name="Trends"
@@ -256,6 +257,7 @@ const UserPageScreenNavi = () => {
       <Stack.Screen name="AthUploading" component={AthUploadingScreen} />
       <Stack.Screen name="AthPosting" component={AthPostingScreen} />
       <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen name="FollowingList" component={FollowingListScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );
@@ -308,6 +310,10 @@ function CustomDrawerContent(props) {
         label="For Athletes"
         onPress={() => props.navigation.navigate('AthCreate')}
       />
+      <DrawerItem
+        label="Following"
+        onPress={() => props.navigation.navigate('FollowingList')}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -318,6 +324,7 @@ const DrawNavi = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
+      <Drawer.Screen name="FollowingList" component={FollowingListScreen} />
       <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
       <Drawer.Screen
         name="Home"

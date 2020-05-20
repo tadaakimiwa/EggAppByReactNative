@@ -9,6 +9,7 @@ import {
 import firebase from 'firebase';
 
 import UserInfo from '../components/UserInfo';
+import GoAthletePageButton from '../components/GoAthletePageButton';
 import AthListInUser from '../components/AthListInUser';
 
 class UserPageScreen extends React.Component {
@@ -18,6 +19,7 @@ class UserPageScreen extends React.Component {
       username: '',
       profile: '',
       url: '',
+      isAthlete: false,
       athList: [],
     };
   }
@@ -59,11 +61,15 @@ class UserPageScreen extends React.Component {
     this.setState({ info });
   }
 
+  handlePressFollow() {
+    this.props.navigation.navigate('FollowingList')
+  }
+
   render() {
     const info = {
       username: this.state.username,
       profile: this.state.profile,
-      url: this.state.url
+      url: this.state.url,
     };
     return (
       <SafeAreaView style={styles.container}>
@@ -85,9 +91,14 @@ class UserPageScreen extends React.Component {
 
               <View style={styles.userInfoBar}>
                 <View style={styles.userInfoTab}>
-                  <View style={styles.userInfoTabItem}>
-                    <Text style={styles.userInfoTabNum}>8</Text>
-                  </View>
+                  <TouchableHighlight
+                    style={styles.userInfoTabItem}
+                    onPress={this.handlePressFollow.bind(this)}
+                  >
+                    <View>
+                      <Text style={styles.userInfoTabNum}>8</Text>
+                    </View>
+                  </TouchableHighlight>
                   <Text style={styles.userInfoTabTitle}>Following</Text>
                 </View>
 
@@ -119,16 +130,9 @@ class UserPageScreen extends React.Component {
                 </Text>
               </TouchableHighlight>
             </View>
-            <View style={styles.userEdit}>
-              <TouchableHighlight
-                style={styles.userEditButton}
-                onPress={() => { this.props.navigation.navigate('AthPage'); }}
-              >
-                <Text style={styles.userEditTitle}>
-                  Go to Athlete Page
-                </Text>
-              </TouchableHighlight>
-            </View>
+            <GoAthletePageButton
+              onPress={() => { this.props.navigation.navigate('AthPage'); }}
+            />
           </View>
           <AthListInUser athList={this.state.athList} navigation={this.props.navigation} />
         </ScrollView>

@@ -1,87 +1,93 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  FlatList,
+  Image,
+} from 'react-native';
 
 class FollowingList extends React.Component {
-  render() {
+  renderFollow({ item }) {
+    const athlete = item;
+    const { uid } = athlete;
+    console.log(item);
     return (
-      <View style={styles.followingList}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-          <View style={styles.followingItem}>
-            <View style={styles.followingItemIcon}>
-              <Text style={styles.followingItemIconTitle}>I</Text>
+      <View style={styles.followListItem}>
+        <TouchableHighlight
+          onPress={() => { this.props.navigation.navigate('AthDetail', { uid }); }}
+        >
+          <View style={styles.itemContents}>
+            <View style={styles.itemImage}>
+              <Image
+                style={styles.itemImageTitle}
+                source={{ uri: athlete.profileImageURL }}
+              />
             </View>
-            <View style={styles.followingItemBody}>
-              <Text style={styles.followingItemBodyTitle}>
-                TestTestTestTestTestTestTestTestTest
+            <View style={styles.itemAthuid}>
+              <Text style={styles.itemAthuidTitle}>
+                {athlete.athuid}
               </Text>
-              <Text style={styles.followingItemDate}>2020/5/02</Text>
             </View>
           </View>
         </TouchableHighlight>
-
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-          <View style={styles.followingItem}>
-            <View style={styles.followingItemIcon}>
-              <Text style={styles.followingItemIconTitle}>I</Text>
-            </View>
-            <View style={styles.followingItemBody}>
-              <Text style={styles.followingItemBodyTitle}>
-                TestTestTestTestTestTestTestTestTest
-              </Text>
-              <Text style={styles.followingItemDate}>2020/5/02</Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-          <View style={styles.followingItem}>
-            <View style={styles.followingItemIcon}>
-              <Text style={styles.followingItemIconTitle}>I</Text>
-            </View>
-            <View style={styles.followingItemBody}>
-              <Text style={styles.followingItemBodyTitle}>
-                TestTestTestTestTestTestTestTestTest
-              </Text>
-              <Text style={styles.followingItemDate}>2020/5/02</Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-
       </View>
     );
+  }
+
+  render() {
+    return(
+      <View style={styles.followList}>
+        <FlatList
+          data={this.props.followList}
+          renderItem={this.renderFollow.bind(this)}
+          style={styles.followListFlat}
+          numColumns={1}
+          horizontal={false}
+        />
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  followingList: {
+  followList: {
     width: '100%',
   },
-  followingItem: {
-    height: 60,
+  followListFlat: {
+    backgroundColor: '#fff',
+    width: '100%',
+  },
+  followListItem: {
+    paddingTop: 12,
+    paddingLeft: 12,
+    paddingRight: 6,
+  },
+  itemContents: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
-  followingItemIcon: {
-    height: 40,
-    width: 40,
+  itemImage: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 20,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
+    height: 36,
+    width: 36,
+    overflow: 'hidden',
   },
-  followingItemBody: {
-    justifyContent: 'center',
+  itemImageTitle: {
+    height: 36,
+    width: 36,
   },
-  followingItemBodyTitle: {
-    fontSize: 14,
+  itemAthuid: {
+    padding: 5,
   },
-  followingItemDate: {
-    fontSize: 8,
+  itemAthuidTitle: {
+    color: '#000',
+    fontSize: 18,
   },
 });
 

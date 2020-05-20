@@ -56,6 +56,7 @@ class PostDetailScreen extends React.Component {
           contentsCaption,
           contentsInfo,
           updatedOn: dateString(updatedOn),
+          uid,
         });
         console.log(this.state.updatedOn);
       } else {
@@ -73,6 +74,7 @@ class PostDetailScreen extends React.Component {
       contentsInfo: this.state.contentsInfo,
       updatedOn: this.state.updatedOn,
       profileImageURL: this.state.url,
+      uid: this.state.uid,
     };
     return (
       <View style={styles.container}>
@@ -104,7 +106,7 @@ class PostDetailScreen extends React.Component {
             </View>
           </View>
           <TouchableHighlight
-            onPress={() => { this.props.navigation.navigate('AthDetail'); }}
+            onPress={() => { this.props.navigation.navigate('AthDetail', { uid: post.uid }); }}
           >
             <View style={styles.videoUserBar}>
               <View style={styles.videoUploader}>

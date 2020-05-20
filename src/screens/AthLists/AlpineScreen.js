@@ -27,10 +27,6 @@ class AlpineScreen extends React.Component {
       });
   }
 
-  handlePress() {
-    this.props.navigation.navigate('MemoCreate');
-  }
-
   render() {
     return (
       <View style={styles.container}>

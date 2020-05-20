@@ -12,7 +12,7 @@ class AthPostList extends React.Component {
   renderPost({ item }) {
     const post = item;
     const postid = post.key;
-    const uid = post.uploader
+    const uid = post.uploader;
     return (
       <View style={styles.athPostListItem}>
         <TouchableHighlight
