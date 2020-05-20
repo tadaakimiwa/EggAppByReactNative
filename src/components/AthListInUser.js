@@ -1,101 +1,47 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  FlatList,
+  Image,
+} from 'react-native';
+
 
 class AthListInUser extends React.Component {
+  renderAth({ item }) {
+    const athlete = item;
+    const { uid } = athlete;
+    return (
+      <View style={styles.athListItem}>
+        <TouchableHighlight
+          onPress={() => { this.props.navigation.navigate('AthDetail', { uid }); }}
+        >
+          <View style={styles.athImage}>
+            <Image
+              style={styles.athImageTitle}
+              source={{ uri: athlete.profileImageURL }}
+            />
+          </View>
+        </TouchableHighlight>
+        <View style={styles.athName}>
+          <Text style={styles.athNameTitle}>{athlete.athuid}</Text>
+        </View>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View style={styles.athList}>
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-              <View style={styles.athImage}>
-                <Text style={styles.athImageTitle}>Image</Text>
-              </View>
-            </TouchableHighlight>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
-              <View style={styles.athImage}>
-                <Text style={styles.athImageTitle}>Image</Text>
-              </View>
-            </TouchableHighlight>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.athListItem}>
-          <View style={styles.athTab}>
-            <View style={styles.athImage}>
-              <Text style={styles.athImageTitle}>Image</Text>
-            </View>
-            <View style={styles.athName}>
-              <Text style={styles.athNameTitle}>Name</Text>
-            </View>
-          </View>
-        </View>
+        <FlatList
+          data={this.props.athList}
+          renderItem={this.renderAth.bind(this)}
+          style={styles.athListFlat}
+          numColumns={3}
+          horizontal={false}
+        />
       </View>
     );
   }
@@ -104,42 +50,45 @@ class AthListInUser extends React.Component {
 const styles = StyleSheet.create({
   athList: {
     width: '100%',
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingTop: 18,
+    paddingLeft: 18,
+    paddingRight: 18,
+  },
+  athListFlat: {
     backgroundColor: '#fff',
+    width: '100%',
   },
   athListItem: {
-    padding: 16,
     width: '33%',
-    height: '28%',
-    alignItems: 'center',
-  },
-  athTab: {
-    height: '100%',
-    width: '100%',
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 6,
+    borderRadius: 12,
+    marginTop: 12,
+    marginLeft: 12,
+    marginRight: 12,
+    overflow: 'hidden',
   },
   athImage: {
-    height: '80%',
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    height: 120,
   },
   athImageTitle: {
-    fontSize: 18,
+    width: '100%',
+    height: '100%',
   },
   athName: {
-    height: '20%',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#00aaaf',
   },
   athNameTitle: {
-    fontSize: 14,
+    fontSize: 20,
+    fontWeight: '500',
+    color: '#fff',
+    padding: 8,
   },
 });
 

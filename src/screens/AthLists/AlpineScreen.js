@@ -12,7 +12,7 @@ class AlpineScreen extends React.Component {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     const db = firebase.firestore();
     db.collectionGroup('posts')
       .where('category', '==', 'Alpine')

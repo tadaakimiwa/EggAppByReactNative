@@ -37,7 +37,7 @@ class AthDetailScreen extends React.Component {
         console.log(userId);
       }
     }); */
-    const uid = this.props.route.params.uploader
+    const { uid } = this.props.route.params
     const db = firebase.firestore();
     const docRef = db.collection(`users/${uid}/User`).doc('athlete');
 
@@ -67,6 +67,16 @@ class AthDetailScreen extends React.Component {
         console.log('No such document!', uid);
       }
     });
+
+    const user = firebase.auth().currentUser;
+    const followRef = db.collection(`users/${user.uid}/following`).doc(uid);
+    followRef.get()
+      .then((doc) => {
+        if (doc.exists) {
+          const { isFollowing } = doc.data();
+          this.setState({ isFollowing });
+        }
+      });
   }
 
   async handleFollow() {

@@ -34,7 +34,7 @@ class PostDetailScreen extends React.Component {
 
   render() {
     const { post } = this.state;
-    const { uploader } = post;
+    const { uid } = post.uploader;
     return (
       <View style={styles.container}>
         <View style={styles.video}>
@@ -65,7 +65,7 @@ class PostDetailScreen extends React.Component {
             </View>
           </View>
           <TouchableHighlight
-            onPress={() => { this.props.navigation.navigate('AthDetail', { uploader }); }}
+            onPress={() => { this.props.navigation.navigate('AthDetail', { uid }); }}
           >
             <View style={styles.videoUserBar}>
               <View style={styles.videoUploader}>

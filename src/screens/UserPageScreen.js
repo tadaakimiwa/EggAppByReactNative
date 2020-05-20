@@ -12,6 +12,7 @@ class UserPageScreen extends React.Component {
       username: '',
       profile: '',
       url: '',
+      athList: [],
     };
   }
 
@@ -35,6 +36,16 @@ class UserPageScreen extends React.Component {
       } else {
         console.log('No such document!', user.uid);
       }
+    });
+
+    const athListRef = db.collection(`users/${user.uid}/following`);
+
+    athListRef.onSnapshot((snapshot) => {
+      const athList = [];
+      snapshot.forEach((doc) => {
+        athList.push({ ...doc.data(), key: doc.id });
+      });
+      this.setState({ athList })
     });
   }
 
@@ -110,7 +121,7 @@ class UserPageScreen extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
-        <AthListInUser style={styles.athList} navigation={this.props.navigation} />
+        <AthListInUser athList={this.state.athList} navigation={this.props.navigation} />
       </View>
     );
   }
@@ -120,6 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
+    backgroundColor: '#fff',
   },
   userInfo: {
     height: '33%',
