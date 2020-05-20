@@ -255,6 +255,7 @@ const UserPageScreenNavi = () => {
       <Stack.Screen name="AthEdit" component={AthEditScreen} />
       <Stack.Screen name="AthUploading" component={AthUploadingScreen} />
       <Stack.Screen name="AthPosting" component={AthPostingScreen} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );

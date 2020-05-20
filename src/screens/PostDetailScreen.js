@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import { Video } from 'expo-av';
 
+import firebase from 'firebase';
+
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
 ]);
 
-const dateString = async (date) => {
-  const str = await date.toDate().toISOString();
+const dateString = (date) => {
+  const str = date.toDate().toISOString();
   return str.split('T')[0];
 };
 
@@ -22,19 +24,56 @@ class PostDetailScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: {},
+      postVideoURL: '',
+      thumbnailURL: '',
+      contentsCaption: '',
+      updatedOn: '',
+      uploader: '',
+      contentsInfo: '',
+      url: '',
     };
   }
 
   componentDidMount() {
-    const { post } = this.props.route.params;
-    this.setState({ post });
-    console.log(this.props.route.params.post);
+    const { postid } = this.props.route.params;
+    const { uid } = this.props.route.params;
+    console.log(this.props.route.params.postid);
+    const db = firebase.firestore();
+    const docRef = db.collection(`users/${uid}/posts`).doc(`${postid}`);
+
+    docRef.onSnapshot((doc) => {
+      if (doc.exists) {
+        const url = doc.data().profileImageURL;
+        const { postVideoURL } = doc.data();
+        const { thumbnailURL } = doc.data();
+        const { contentsCaption } = doc.data();
+        const { contentsInfo } = doc.data();
+        const { updatedOn } = doc.data();
+        this.setState({
+          url,
+          postVideoURL,
+          thumbnailURL,
+          contentsCaption,
+          contentsInfo,
+          updatedOn: dateString(updatedOn),
+        });
+        console.log(this.state.updatedOn);
+      } else {
+        console.log('No such document!');
+      }
+    });
   }
 
   render() {
-    const { post } = this.state;
-    const { uid } = post.uploader;
+    const post = {
+      url: this.state.url,
+      postVideoURL: this.state.postVideoURL,
+      thumbnailURL: this.state.thumbnailURL,
+      contentsCaption: this.state.contentsCaption,
+      contentsInfo: this.state.contentsInfo,
+      updatedOn: this.state.updatedOn,
+      profileImageURL: this.state.url,
+    };
     return (
       <View style={styles.container}>
         <View style={styles.video}>
@@ -60,12 +99,12 @@ class PostDetailScreen extends React.Component {
             </View>
             <View style={styles.videoDate}>
               <Text style={styles.videoDateTitle}>
-                Uploaded: 2012-10-9
+                {post.updatedOn}
               </Text>
             </View>
           </View>
           <TouchableHighlight
-            onPress={() => { this.props.navigation.navigate('AthDetail', { uid }); }}
+            onPress={() => { this.props.navigation.navigate('AthDetail'); }}
           >
             <View style={styles.videoUserBar}>
               <View style={styles.videoUploader}>

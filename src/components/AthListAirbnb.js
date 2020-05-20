@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  FlatList,
+  Image
+} from 'react-native';
 
 const dateString = (date) => {
   const str = date.toDate().toISOString();
@@ -9,10 +16,14 @@ const dateString = (date) => {
 class AthListAirbnb extends React.Component {
   renderAth({ item }) {
     const post = item;
-    console.log(item);
+    const postid = post.key;
+    const uid = post.uploader;
+    console.log('Hey!', postid, uid);
     return (
       <View style={styles.athListItem}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('PostDetail', { post }); }}>
+        <TouchableHighlight
+          onPress={() => { this.props.navigation.navigate('PostDetail', { postid, uid }); }}
+        >
           <View style={styles.itemImage}>
             <Image
               style={styles.itemImageTitle}

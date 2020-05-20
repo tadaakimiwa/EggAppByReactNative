@@ -1,16 +1,42 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import Video from 'react-native-video';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  FlatList,
+  Image,
+} from 'react-native';
 
 class AthPostList extends React.Component {
+  renderPost({ item }) {
+    const post = item;
+    const postid = post.key;
+    const uid = post.uploader
+    return (
+      <View style={styles.athPostListItem}>
+        <TouchableHighlight
+          onPress={() => { this.props.navigation.navigate('PostDetail', { postid, uid }); }}
+        >
+          <Image
+            style={styles.postImageTitle}
+            source={{ uri: post.thumbnailURL }}
+          />
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
   render() {
     return (
-      <View style={styles.athPostList}>
-        <View style={styles.athPostListItem}>
-          <Text>
-            posted
-          </Text>
-        </View>
+      <View style={styles.postList}>
+        <FlatList
+          data={this.props.postList}
+          renderItem={this.renderPost.bind(this)}
+          style={styles.postListFlat}
+          numColumns={2}
+          horizontal={false}
+        />
       </View>
     );
   }
@@ -31,6 +57,11 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  postImageTitle: {
+    width: 180,
+    height: 150,
   },
 });
 

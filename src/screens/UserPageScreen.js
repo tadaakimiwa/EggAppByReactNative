@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text, View,
+  TouchableHighlight,
+  Image, SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import firebase from 'firebase';
 
 import UserInfo from '../components/UserInfo';
@@ -60,87 +66,91 @@ class UserPageScreen extends React.Component {
       url: this.state.url
     };
     return (
-      <View style={styles.container}>
-
-        <View style={styles.userInfo}>
-          <View style={styles.userFlex}>
-            <View style={styles.userName}>
-              <View style={styles.userNamePic}>
-                <Image
-                  style={styles.userNamePicTitle}
-                  source={{ uri: info.url }}
-                />
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          style={styles.scrollView}
+          automaticallyAdjustContentInsets={false}
+        >
+          <View style={styles.userInfo}>
+            <View style={styles.userFlex}>
+              <View style={styles.userName}>
+                <View style={styles.userNamePic}>
+                  <Image
+                    style={styles.userNamePicTitle}
+                    source={{ uri: info.url }}
+                  />
+                </View>
+                <Text style={styles.userNameTitle}>{info.username}</Text>
               </View>
-              <Text style={styles.userNameTitle}>{info.username}</Text>
+
+              <View style={styles.userInfoBar}>
+                <View style={styles.userInfoTab}>
+                  <View style={styles.userInfoTabItem}>
+                    <Text style={styles.userInfoTabNum}>8</Text>
+                  </View>
+                  <Text style={styles.userInfoTabTitle}>Following</Text>
+                </View>
+
+                <View style={styles.userInfoTab}>
+                  <View style={styles.userInfoTabItem}>
+                    <Text style={styles.userInfoTabNum}>12</Text>
+                  </View>
+                  <Text style={styles.userInfoTabTitle}>Comments</Text>
+                </View>
+
+                <View style={styles.userInfoTab}>
+                  <View style={styles.userInfoTabItem}>
+                    <Text style={styles.userInfoTabNum}>16</Text>
+                  </View>
+                  <Text style={styles.userInfoTabTitle}>Gifts</Text>
+                </View>
+              </View>
             </View>
-
-            <View style={styles.userInfoBar}>
-              <View style={styles.userInfoTab}>
-                <View style={styles.userInfoTabItem}>
-                  <Text style={styles.userInfoTabNum}>8</Text>
-                </View>
-                <Text style={styles.userInfoTabTitle}>Following</Text>
-              </View>
-
-              <View style={styles.userInfoTab}>
-                <View style={styles.userInfoTabItem}>
-                  <Text style={styles.userInfoTabNum}>12</Text>
-                </View>
-                <Text style={styles.userInfoTabTitle}>Comments</Text>
-              </View>
-
-              <View style={styles.userInfoTab}>
-                <View style={styles.userInfoTabItem}>
-                  <Text style={styles.userInfoTabNum}>16</Text>
-                </View>
-                <Text style={styles.userInfoTabTitle}>Gifts</Text>
-              </View>
+            <View style={styles.userProfile}>
+              <Text style={styles.userProfileTitle}>{info.profile}</Text>
+            </View>
+            <View style={styles.userEdit}>
+              <TouchableHighlight
+                style={styles.userEditButton}
+                onPress={() => { this.props.navigation.navigate('UserEdit', { info, returnInfo: this.returnInfo.bind(this) }); }}
+              >
+                <Text style={styles.userEditTitle}>
+                  Edit your account Infomation
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <View style={styles.userEdit}>
+              <TouchableHighlight
+                style={styles.userEditButton}
+                onPress={() => { this.props.navigation.navigate('AthPage'); }}
+              >
+                <Text style={styles.userEditTitle}>
+                  Go to Athlete Page
+                </Text>
+              </TouchableHighlight>
             </View>
           </View>
-          <View style={styles.userProfile}>
-            <Text style={styles.userProfileTitle}>{info.profile}</Text>
-          </View>
-          <View style={styles.userEdit}>
-            <TouchableHighlight
-              style={styles.userEditButton}
-              onPress={() => { this.props.navigation.navigate('UserEdit', { info, returnInfo: this.returnInfo.bind(this) }); }}
-            >
-              <Text style={styles.userEditTitle}>
-                Edit your account Infomation
-              </Text>
-            </TouchableHighlight>
-          </View>
-          <View style={styles.userEdit}>
-            <TouchableHighlight
-              style={styles.userEditButton}
-              onPress={() => { this.props.navigation.navigate('AthPage'); }}
-            >
-              <Text style={styles.userEditTitle}>
-                Go to Athlete Page
-              </Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-        <AthListInUser athList={this.state.athList} navigation={this.props.navigation} />
-      </View>
+          <AthListInUser athList={this.state.athList} navigation={this.props.navigation} />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     width: '100%',
     backgroundColor: '#fff',
   },
   userInfo: {
-    height: '33%',
+    height: 240,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   userFlex: {
-    height: '67%',
+    height: 150,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

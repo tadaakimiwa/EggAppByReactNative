@@ -5,6 +5,7 @@ import {
   Text,
   TouchableHighlight,
   Image,
+  ScrollView,
 } from 'react-native';
 import firebase from 'firebase';
 
@@ -27,6 +28,7 @@ class AthDetailScreen extends React.Component {
       athuid: '',
       followeeuid: '',
       isFollowing: false,
+      postList: [],
     };
   }
 
@@ -66,6 +68,16 @@ class AthDetailScreen extends React.Component {
       } else {
         console.log('No such document!', uid);
       }
+    });
+
+    const postListRef = db.collection(`users/${uid}/posts`);
+
+    postListRef.onSnapshot((snapshot) => {
+      const postList = [];
+      snapshot.forEach((doc) => {
+        postList.push({ ...doc.data(), key: doc.id });
+      });
+      this.setState({ postList })
     });
 
     const user = firebase.auth().currentUser;
@@ -143,54 +155,56 @@ class AthDetailScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.athInfo}>
-          <View style={styles.athProfileImage}>
-            <Image
-              style={styles.athProfileImageTitle}
-              source={{ uri: info.url }}
-            />
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.athInfo}>
+            <View style={styles.athProfileImage}>
+              <Image
+                style={styles.athProfileImageTitle}
+                source={{ uri: info.url }}
+              />
+            </View>
+            <View style={styles.athInfoContent}>
+              <Text style={styles.athInfoContentTitle}>
+                {info.athuid}
+              </Text>
+            </View>
+            <View style={styles.athInfoContent}>
+              <Text style={styles.athInfoContentTitle}>
+                {info.lastname}
+              </Text>
+            </View>
+            <View style={styles.athAge}>
+              <Text style={styles.athAgeTitle}>
+                age:
+                {info.age}
+              </Text>
+            </View>
           </View>
-          <View style={styles.athInfoContent}>
-            <Text style={styles.athInfoContentTitle}>
-              {info.athuid}
+          {button}
+          <View style={styles.athIntroVideo}>
+            <Text style={styles.athIntroVideoTitle}>
+              紹介ビデオ、オンプレスで流れる
             </Text>
           </View>
-          <View style={styles.athInfoContent}>
-            <Text style={styles.athInfoContentTitle}>
-              {info.lastname}
-            </Text>
+          <View style={styles.athIntroCommentList}>
+            <View style={styles.athIntroComment}>
+              <Text style={styles.athIntroCommentTitle}>
+                {info.intro1}
+              </Text>
+            </View>
+            <View style={styles.athIntroComment}>
+              <Text style={styles.athIntroCommentTitle}>
+                {info.intro2}
+              </Text>
+            </View>
+            <View style={styles.athIntroComment}>
+              <Text style={styles.athIntroCommentTitle}>
+                {info.intro3}
+              </Text>
+            </View>
           </View>
-          <View style={styles.athAge}>
-            <Text style={styles.athAgeTitle}>
-              age:
-              {info.age}
-            </Text>
-          </View>
-        </View>
-        {button}
-        <View style={styles.athIntroVideo}>
-          <Text style={styles.athIntroVideoTitle}>
-            紹介ビデオ、オンプレスで流れる
-          </Text>
-        </View>
-        <View style={styles.athIntroCommentList}>
-          <View style={styles.athIntroComment}>
-            <Text style={styles.athIntroCommentTitle}>
-              {info.intro1}
-            </Text>
-          </View>
-          <View style={styles.athIntroComment}>
-            <Text style={styles.athIntroCommentTitle}>
-              {info.intro2}
-            </Text>
-          </View>
-          <View style={styles.athIntroComment}>
-            <Text style={styles.athIntroCommentTitle}>
-              {info.intro3}
-            </Text>
-          </View>
-        </View>
-        <AthPostList />
+          <AthPostList postList={this.state.postList} navigation={this.props.navigation} />
+        </ScrollView>
       </View>
     );
   }

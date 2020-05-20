@@ -22,10 +22,11 @@ class AthPageScreen extends React.Component {
       intro1: '',
       intro2: '',
       intro3: '',
+      postList: [],
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     /* firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const userId = user.uid;
@@ -57,6 +58,16 @@ class AthPageScreen extends React.Component {
       } else {
         console.log('No such document!', user.uid);
       }
+    });
+
+    const postListRef = db.collection(`users/${user.uid}/posts`);
+
+    postListRef.onSnapshot((snapshot) => {
+      const postList = [];
+      snapshot.forEach((doc) => {
+        postList.push({ ...doc.data(), key: doc.id });
+      });
+      this.setState({ postList })
     });
   }
 
@@ -142,7 +153,7 @@ class AthPageScreen extends React.Component {
             </Text>
           </View>
         </View>
-        <AthPostList />
+        <AthPostList postList={this.state.postList} navigation={this.props.navigation} />
       </View>
     );
   }

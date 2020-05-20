@@ -16,11 +16,13 @@ const dateString = (date) => {
 class AthList extends React.Component {
   renderAth({ item }) {
     const post = item;
+    const postid = post.key;
+    const uid = post.uploader;
     console.log(item);
     return (
       <View style={styles.athListItem}>
         <TouchableHighlight
-          onPress={() => { this.props.navigation.navigate('PostDetail', { post }); }}
+          onPress={() => { this.props.navigation.navigate('PostDetail', { postid, uid }); }}
         >
           <View style={styles.itemImage}>
             <Image
