@@ -12,7 +12,7 @@ class CrossCountryScreen extends React.Component {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     const db = firebase.firestore();
     db.collectionGroup('posts')
       .where('category', '==', 'Cross Country')
@@ -25,10 +25,6 @@ class CrossCountryScreen extends React.Component {
         });
         this.setState({ athList });
       });
-  }
-
-  handlePress() {
-    this.props.navigation.navigate('MemoCreate');
   }
 
   render() {

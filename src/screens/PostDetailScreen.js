@@ -34,7 +34,7 @@ class PostDetailScreen extends React.Component {
 
   render() {
     const { post } = this.state;
-    const { uploader } = post
+    const { uploader } = post;
     return (
       <View style={styles.container}>
         <View style={styles.video}>

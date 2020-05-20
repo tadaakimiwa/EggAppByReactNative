@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import firebase from 'firebase';
 
-import ShopItemList from '../../components/ShopItemList';
+import UserItemList from '../../components/UserItemList';
 
-class ShopScreen extends React.Component {
+class UserItemScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +31,7 @@ class ShopScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ShopItemList itemList={this.state.itemList} navigation={this.props.navigation}/>
+        <UserItemList itemList={this.state.itemList} navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShopScreen;
+export default UserItemScreen;
