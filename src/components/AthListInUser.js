@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 
+import UserInfo from './UserInfo.js';
 
 class AthListInUser extends React.Component {
   renderAth({ item }) {
@@ -41,6 +42,15 @@ class AthListInUser extends React.Component {
           style={styles.athListFlat}
           numColumns={3}
           horizontal={false}
+          ListHeaderComponent={(
+            <UserInfo
+              info={this.props.info}
+              button={this.props.button}
+              followingNum={this.props.followingNum}
+              onPressFollowing={this.props.onPressFollowing}
+              onPressEdit={this.props.onPressEdit}
+            />
+          )}
         />
       </View>
     );

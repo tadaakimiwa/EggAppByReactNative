@@ -112,7 +112,7 @@ class AthCreateScreen extends React.Component {
       athuid: this.state.athuid,
     });
     batch.add(userRef, {
-      isAthlete: true
+      isAthlete: true,
     });
     batch.commit()
       .then(() => {

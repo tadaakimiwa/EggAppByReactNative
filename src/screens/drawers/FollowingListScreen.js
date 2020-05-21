@@ -1,9 +1,7 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text, View,
-  TouchableHighlight,
-  Image,
+  View,
   SafeAreaView,
   ScrollView,
 } from 'react-native';
@@ -34,22 +32,17 @@ class FollowingListScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          automaticallyAdjustContentInsets={false}
-        >
-          <FollowingList followList={this.state.followList} navigation={this.props.navigation} />
-        </ScrollView>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <FollowingList followList={this.state.followList} navigation={this.props.navigation} />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  text: {
-    color: '#DDD',
-    backgroundColor: '#eee',
+  container: {
+    width: '100%',
+    backgroundColor: '#fff',
   },
 });
 

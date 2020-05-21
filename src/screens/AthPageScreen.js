@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
 import AthIntroCommentList from '../components/AthIntroCommentList';
@@ -89,8 +90,10 @@ class AthPageScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.athInfo}>
           <View style={styles.athProfileImage}>
-            <Image
-              style={styles.athProfileImageTitle}
+            <Avatar
+              size={84}
+              rounded
+              title="U"
               source={{ uri: info.url }}
             />
           </View>

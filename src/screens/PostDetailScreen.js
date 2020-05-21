@@ -8,6 +8,7 @@ import {
   YellowBox,
 } from 'react-native';
 import { Video } from 'expo-av';
+import VideoPlayer from 'expo-video-player';
 
 import firebase from 'firebase';
 
@@ -79,17 +80,26 @@ class PostDetailScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.video}>
-          <Video
-            source={{ uri: post.postVideoURL }}
-            rate={1.0}
-            volume={1.0}
-            isMuted={false}
-            resizeMode={Video.RESIZE_MODE_CONTAIN}
-            shouldPlay
-            isLooping
-            style={{ width: 300, height: 300 }}
-            posterSource={{ uri: post.thumbnailURL }}
-            usePoster="true"
+          <VideoPlayer
+            videoProps={{
+              shouldPlay: true,
+              source: {
+                uri: post.postVideoURL,
+              },
+              rate: 1.0,
+              volume: 1.0,
+              isMuted: false,
+              resizeMode: Video.RESIZE_MODE_CONTAIN,
+              isLooping: true,
+              posterSource: {
+                uri: post.thumbnailURL,
+              },
+              usePoster: true,
+            }}
+            videoBackground="transparent"
+            inFullscreen={false}
+            width={300}
+            height={300}
           />
         </View>
         <View style={styles.videoInfo}>
@@ -141,6 +151,7 @@ const styles = StyleSheet.create({
     right: 0,
     height: 300,
     zIndex: 5,
+    alignItems: 'center',
   },
   videoUploader: {
     borderWidth: 1,

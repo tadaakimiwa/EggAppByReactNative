@@ -4,11 +4,9 @@ import {
   Text, View,
   TouchableHighlight,
   Image, SafeAreaView,
-  ScrollView,
 } from 'react-native';
 import firebase from 'firebase';
 
-import UserInfo from '../components/UserInfo';
 import GoAthletePageButton from '../components/GoAthletePageButton';
 import AthListInUser from '../components/AthListInUser';
 
@@ -18,9 +16,10 @@ class UserPageScreen extends React.Component {
     this.state = {
       username: '',
       profile: '',
-      url: '',
+      url: '../../assets/placeHolderUser',
       isAthlete: false,
       athList: [],
+      followingNum: 0,
     };
   }
 
@@ -37,10 +36,18 @@ class UserPageScreen extends React.Component {
 
     docRef.onSnapshot((doc) => {
       if (doc.exists) {
-        const username = doc.data().username;
-        const profile = doc.data().profile;
+        const { username } = doc.data();
+        const { profile } = doc.data();
         const url = doc.data().profileImageURL;
-        this.setState({ username, profile, url });
+        const { isAthlete } = doc.data();
+        const { followingNum } = doc.data();
+        this.setState({
+          username,
+          profile,
+          url,
+          isAthlete,
+          followingNum,
+        });
       } else {
         console.log('No such document!', user.uid);
       }
@@ -62,7 +69,20 @@ class UserPageScreen extends React.Component {
   }
 
   handlePressFollow() {
-    this.props.navigation.navigate('FollowingList')
+    this.props.navigation.navigate('FollowingList');
+  }
+
+  handlePressAthlete() {
+    this.props.navigation.navigate('AthPage');
+  }
+
+  handlePressEdit() {
+    const info = {
+      username: this.state.username,
+      profile: this.state.profile,
+      url: this.state.url,
+    };
+    this.props.navigation.navigate('UserEdit', { info, returnInfo: this.returnInfo.bind(this) });
   }
 
   render() {
@@ -71,71 +91,23 @@ class UserPageScreen extends React.Component {
       profile: this.state.profile,
       url: this.state.url,
     };
+    const { followingNum } = this.state;
+    const { isAthlete } = this.state;
+    let button;
+    if (isAthlete) {
+      button = <GoAthletePageButton onPress={this.handlePressAthlete.bind(this)} />;
+    }
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          automaticallyAdjustContentInsets={false}
-        >
-          <View style={styles.userInfo}>
-            <View style={styles.userFlex}>
-              <View style={styles.userName}>
-                <View style={styles.userNamePic}>
-                  <Image
-                    style={styles.userNamePicTitle}
-                    source={{ uri: info.url }}
-                  />
-                </View>
-                <Text style={styles.userNameTitle}>{info.username}</Text>
-              </View>
-
-              <View style={styles.userInfoBar}>
-                <View style={styles.userInfoTab}>
-                  <TouchableHighlight
-                    style={styles.userInfoTabItem}
-                    onPress={this.handlePressFollow.bind(this)}
-                  >
-                    <View>
-                      <Text style={styles.userInfoTabNum}>8</Text>
-                    </View>
-                  </TouchableHighlight>
-                  <Text style={styles.userInfoTabTitle}>Following</Text>
-                </View>
-
-                <View style={styles.userInfoTab}>
-                  <View style={styles.userInfoTabItem}>
-                    <Text style={styles.userInfoTabNum}>12</Text>
-                  </View>
-                  <Text style={styles.userInfoTabTitle}>Comments</Text>
-                </View>
-
-                <View style={styles.userInfoTab}>
-                  <View style={styles.userInfoTabItem}>
-                    <Text style={styles.userInfoTabNum}>16</Text>
-                  </View>
-                  <Text style={styles.userInfoTabTitle}>Gifts</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.userProfile}>
-              <Text style={styles.userProfileTitle}>{info.profile}</Text>
-            </View>
-            <View style={styles.userEdit}>
-              <TouchableHighlight
-                style={styles.userEditButton}
-                onPress={() => { this.props.navigation.navigate('UserEdit', { info, returnInfo: this.returnInfo.bind(this) }); }}
-              >
-                <Text style={styles.userEditTitle}>
-                  Edit your account Infomation
-                </Text>
-              </TouchableHighlight>
-            </View>
-            <GoAthletePageButton
-              onPress={() => { this.props.navigation.navigate('AthPage'); }}
-            />
-          </View>
-          <AthListInUser athList={this.state.athList} navigation={this.props.navigation} />
-        </ScrollView>
+        <AthListInUser
+          athList={this.state.athList}
+          navigation={this.props.navigation}
+          info={info}
+          followingNum={followingNum}
+          button={button}
+          onPressFollowing={this.handlePressFollow.bind(this)}
+          onPressEdit={this.handlePressEdit.bind(this)}
+        />
       </SafeAreaView>
     );
   }

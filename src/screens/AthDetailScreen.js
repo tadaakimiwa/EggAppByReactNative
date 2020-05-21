@@ -96,6 +96,7 @@ class AthDetailScreen extends React.Component {
     const { followeeuid } = await this.state;
     const { uid } = await firebase.auth().currentUser;
     const db = firebase.firestore();
+    const userRef = db.collection(`users/${uid}/User`).doc('info');
     const followerRef = db.collection(`users/${uid}/following`).doc(followeeuid);
     const followeeRef = db.collection(`users/${followeeuid}/follower`).doc(uid);
     const newDate = firebase.firestore.Timestamp.now();
@@ -113,6 +114,9 @@ class AthDetailScreen extends React.Component {
       createdOn: newDate,
       updatedAt: newDate,
     });
+    await batch.update(userRef, {
+      followingNum: firebase.firestore.FieldValue.increment(1),
+    });
     batch.commit()
       .then(() => {
         this.setState({ isFollowing: true });
@@ -123,11 +127,15 @@ class AthDetailScreen extends React.Component {
     const { followeeuid } = await this.state;
     const { uid } = await firebase.auth().currentUser;
     const db = firebase.firestore();
+    const userRef = db.collection(`users/${uid}/User`).doc('info');
     const followerRef = db.collection(`users/${uid}/following`).doc(followeeuid);
     const followeeRef = db.collection(`users/${followeeuid}/follower`).doc(uid);
     const batch = db.batch();
     await batch.delete(followerRef);
     await batch.delete(followeeRef);
+    await batch.update(userRef, {
+      followingNum: firebase.firestore.FieldValue.increment(-1),
+    })
     batch.commit()
       .then(() => {
         this.setState({ isFollowing: false });
