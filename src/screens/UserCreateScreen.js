@@ -26,7 +26,7 @@ class UserCreateScreen extends React.Component {
 
   ImageChoiceAndUpload = async () => {
     try {
-      //まず、CAMERA_ROLLのパーミッション確認
+      // まず、CAMERA_ROLLのパーミッション確認
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status !== 'granted') {
@@ -35,7 +35,7 @@ class UserCreateScreen extends React.Component {
         }
       }
 
-      //次に、画像を選ぶ
+      // 次に、画像を選ぶ
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,

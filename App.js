@@ -25,6 +25,8 @@ import AthCreateScreen from './src/screens/drawers/AthCreateScreen';
 import AthUploadingScreen from './src/screens/AthUploadingScreen';
 import AthPostingScreen from './src/screens/AthPostingScreen';
 import PostDetailScreen from './src/screens/PostDetailScreen';
+import PostEditScreen from './src/screens/PostEditScreen';
+import PostVideoModal from './src/screens/PostVideoModal';
 import SearchScreen from './src/screens/SearchScreen';
 import TrendListScreen from './src/screens/TrendListScreen';
 import FollowingAlertListScreen from './src/screens/FollowingAlertListScreen';
@@ -182,7 +184,12 @@ const AthListScreenNavi = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
-      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetailScreen}
+        options={PostDetailScreen.navigationOptions}
+      />
+      <Stack.Screen name="PostEdit" component={PostEditScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
   );
@@ -239,7 +246,7 @@ const AlertScreenNavi = () => {
   );
 };
 
-const UserPageScreenNavi = () => {
+const UserPageScreenNavi = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -256,7 +263,12 @@ const UserPageScreenNavi = () => {
       <Stack.Screen name="AthEdit" component={AthEditScreen} />
       <Stack.Screen name="AthUploading" component={AthUploadingScreen} />
       <Stack.Screen name="AthPosting" component={AthPostingScreen} />
-      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetailScreen}
+        options={PostDetailScreen.navigationOptions}
+      />
+      <Stack.Screen name="PostEdit" component={PostEditScreen} />
       <Stack.Screen name="FollowingList" component={FollowingListScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>

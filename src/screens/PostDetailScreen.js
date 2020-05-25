@@ -7,10 +7,15 @@ import {
   TouchableHighlight,
   YellowBox,
 } from 'react-native';
+import { Button } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import firebase from 'firebase';
+
+import PostVideoModal from './PostVideoModal';
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
@@ -22,6 +27,22 @@ const dateString = (date) => {
 };
 
 class PostDetailScreen extends React.Component {
+  static navigationOptions = {
+    headerRight: () => (
+      <Button
+        icon={(
+          <MaterialCommunityIcons
+            name="menu"
+            size={15}
+            color="black"
+          />
+        )}
+        color="black"
+        onPress={() => {}}
+      />
+    ),
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -32,6 +53,9 @@ class PostDetailScreen extends React.Component {
       uploader: '',
       contentsInfo: '',
       url: '',
+      isModalVisible: false,
+      postid: '',
+      uid: '',
     };
   }
 
@@ -58,6 +82,7 @@ class PostDetailScreen extends React.Component {
           contentsInfo,
           updatedOn: dateString(updatedOn),
           uid,
+          postid
         });
         console.log(this.state.updatedOn);
       } else {
@@ -66,9 +91,14 @@ class PostDetailScreen extends React.Component {
     });
   }
 
+  toggleModal() {
+    this.setState((prevState) => ({
+      isModalVisible: !prevState.isModalVisible,
+    }));
+  }
+
   render() {
     const post = {
-      url: this.state.url,
       postVideoURL: this.state.postVideoURL,
       thumbnailURL: this.state.thumbnailURL,
       contentsCaption: this.state.contentsCaption,
@@ -76,7 +106,14 @@ class PostDetailScreen extends React.Component {
       updatedOn: this.state.updatedOn,
       profileImageURL: this.state.url,
       uid: this.state.uid,
+      postid: this.state.postid,
     };
+    const info = {
+      constentsCaption: post.constentsCaption,
+      contentsInfo: post.constentsInfo,
+      thumbnailURL: post.thumbnailURL,
+    };
+
     return (
       <View style={styles.container}>
         <View style={styles.video}>
@@ -133,6 +170,11 @@ class PostDetailScreen extends React.Component {
             </View>
           </TouchableHighlight>
         </View>
+        <PostVideoModal
+          post={post}
+          navigation={this.props.navigation}
+          onPress={() => this.props.navigation.navigate('PostEdit', { info })}
+        />
       </View>
     );
   }
@@ -141,6 +183,7 @@ class PostDetailScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
   },
   video: {

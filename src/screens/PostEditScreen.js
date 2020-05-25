@@ -4,36 +4,41 @@ import {
   View,
   Text,
   TouchableHighlight,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
+  Image,
   KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  TextInput,
 } from 'react-native';
+import { Hoshi } from 'react-native-textinput-effects';
+import firebase from 'firebase';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import firebase from 'firebase';
 
-class AthPostingScreen extends React.Component {
+import CircleButton from '../elements/CircleButton';
+
+class PostEditScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      createdOn: '',
-      url: this.props.route.params.url,
-      uuid: this.props.route.params.uuid,
-      uid: this.props.route.params.uid,
-      thumbnailurl: '',
-      profileurl: '',
-      progress: '',
-      uploader: '',
-      category: '',
-      contentsInfo: '',
       contentsCaption: '',
-      athuid: '',
+      contentsInfo: '',
+      thumbnailURL: '',
+      updatedOn: '',
     };
   }
 
-  thumbnailChoiceAndUpload = async () => {
+  componentDidMount() {
+    const { info } = this.props.route.params;
+    this.setState({
+      contentsCaption: info.contentsCaption,
+      contentsInfo: info.contentsInfo,
+      thumbnailURL: info.thumbnailURL,
+    });
+  }
+
+  ImageChoiceAndUpload = async () => {
     try {
       // まず、CAMERA_ROLLのパーミッション確認
       if (Constants.platform.ios) {
@@ -58,8 +63,7 @@ class AthPostingScreen extends React.Component {
         const localBlob = await localUri.blob();
 
         // filename 実際はUIDとかユーザー固有のIDをファイル名にする感じかと
-        const { uuid } = this.state;
-        const { uid } = this.state;
+        const user = firebase.auth().currentUser;
         const filename = `users/${uid}/posts/${uuid}/thumbnail`;
 
         // firebase storeのrefを取得
@@ -72,7 +76,7 @@ class AthPostingScreen extends React.Component {
         putTask.on('state_changed', (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           this.setState({
-            progress: parseInt(progress) + '%',
+            progress: parseInt(progress) + "%",
           });
         }, (error) => {
           console.log(error);
@@ -82,9 +86,9 @@ class AthPostingScreen extends React.Component {
             console.log(downloadURL);
             this.setState({
               progress: '',
-              thumbnailurl: downloadURL,
+              url: downloadURL,
             });
-          });
+          })
         });
       }
     } catch (e) {
@@ -93,40 +97,15 @@ class AthPostingScreen extends React.Component {
     }
   }
 
-  getCategoryAndProfile = async (db, user) => {
-    await db.collection(`users/${user.uid}/User`).doc('athlete').get().then(async (doc) => {
-      if (doc.exists) {
-        console.log(doc.data());
-        const { category } = doc.data();
-        const profileurl = doc.data().profileImageURL;
-        const { athuid } = doc.data();
-        this.setState({ category, profileurl, athuid });
-      } else {
-        console.log('No such document!', user.uid);
-      }
-    });
-  }
-
-  handlePost = async () => {
-    const user = await firebase.auth().currentUser;
-    const { uuid } = this.state;
-    const db = await firebase.firestore();
-    const docRef = db.collection(`users/${user.uid}/posts`).doc(uuid);
+  handleEdit() {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
     const newDate = firebase.firestore.Timestamp.now();
-
-    await this.getCategoryAndProfile(db, user);
-    console.log(this.state.category);
-    docRef.set({
-      postVideoURL: this.state.url,
-      thumbnailURL: this.state.thumbnailurl,
-      profileImageURL: this.state.profileurl,
-      category: this.state.category,
-      contentsInfo: this.state.contentsInfo,
+    db.collection(`users/${user.uid}/posts`).doc(uuid).update({
       contentsCaption: this.state.contentsCaption,
-      createdOn: newDate,
-      uploader: user.uid,
+      contentsInfo: this.state.contentsInfo,
+      thumbnailURL: this.state.thumbnailURL,
       updatedOn: newDate,
-      athuid: this.state.athuid,
     })
       .then(() => {
         this.props.navigation.goBack();
@@ -134,10 +113,10 @@ class AthPostingScreen extends React.Component {
       .catch((error) => {
         console.log('Failed!!', error);
       });
+
   }
 
   render() {
-    console.log(this.state.uid);
     return (
       <KeyboardAvoidingView style={styles.container}>
         <TouchableWithoutFeedback
@@ -181,7 +160,7 @@ class AthPostingScreen extends React.Component {
               </TouchableHighlight>
               <TouchableHighlight
                 style={styles.button}
-                onPress={this.handlePost.bind(this)}
+                onPress={this.handleEdit.bind(this)}
               >
                 <Text style={styles.buttonTitle}>
                   Post
@@ -249,4 +228,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AthPostingScreen;
+
+export default PostEditScreen;

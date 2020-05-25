@@ -32,9 +32,23 @@ class AthCreateScreen extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    const docRef = db.collection(`users/${user.uid}/User`).doc('info');
+    docRef.onSnapshot((doc) => {
+      if (doc.exists) {
+        const url = doc.data().profileImageURL;
+        this.setState({
+          url,
+        });
+      }
+    });
+  }
+
   ImageChoiceAndUpload = async () => {
     try {
-      //まず、CAMERA_ROLLのパーミッション確認
+      // まず、CAMERA_ROLLのパーミッション確認
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status !== 'granted') {
