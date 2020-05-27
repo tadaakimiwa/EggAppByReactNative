@@ -16,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import firebase from 'firebase';
 
 import PostVideoModal from './PostVideoModal';
+import PostCommentList from '../components/PostCommentList';
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
@@ -56,6 +57,7 @@ class PostDetailScreen extends React.Component {
       isModalVisible: false,
       postid: '',
       uid: '',
+      commentList: [],
     };
   }
 
@@ -65,6 +67,7 @@ class PostDetailScreen extends React.Component {
     console.log(this.props.route.params.postid);
     const db = firebase.firestore();
     const docRef = db.collection(`users/${uid}/posts`).doc(`${postid}`);
+    const commentRef = db.collection(`users/${uid}/posts/${postid}/comments`);
 
     docRef.onSnapshot((doc) => {
       if (doc.exists) {
@@ -74,6 +77,7 @@ class PostDetailScreen extends React.Component {
         const { contentsCaption } = doc.data();
         const { contentsInfo } = doc.data();
         const { updatedOn } = doc.data();
+        const { uploader } = doc.data();
         this.setState({
           url,
           postVideoURL,
@@ -82,12 +86,21 @@ class PostDetailScreen extends React.Component {
           contentsInfo,
           updatedOn: dateString(updatedOn),
           uid,
-          postid
+          postid,
+          uploader,
         });
         console.log(this.state.updatedOn);
       } else {
         console.log('No such document!');
       }
+    });
+
+    commentRef.onSnapshot((snapshot) => {
+      const commentList = [];
+      snapshot.forEach((doc) => {
+        commentList.push({ ...doc.data(), key: doc.id });
+      });
+      this.setState({ commentList });
     });
   }
 
@@ -107,6 +120,7 @@ class PostDetailScreen extends React.Component {
       profileImageURL: this.state.url,
       uid: this.state.uid,
       postid: this.state.postid,
+      uploader: this.state.uploader,
     };
     const info = {
       constentsCaption: post.constentsCaption,
@@ -170,6 +184,10 @@ class PostDetailScreen extends React.Component {
             </View>
           </TouchableHighlight>
         </View>
+        <PostCommentList
+          post={post}
+          commentList={this.state.commentList}
+        />
         <PostVideoModal
           post={post}
           navigation={this.props.navigation}

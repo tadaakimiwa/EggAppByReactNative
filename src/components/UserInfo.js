@@ -43,7 +43,9 @@ function UserInfo(props) {
 
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
-              <Text style={styles.userInfoTabNum}>12</Text>
+              <Text style={styles.userInfoTabNum}>
+                {String(props.commentsNum)}
+              </Text>
             </View>
             <Text style={styles.userInfoTabTitle}>Comments</Text>
           </View>

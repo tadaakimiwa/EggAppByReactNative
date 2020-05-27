@@ -125,7 +125,7 @@ class AthCreateScreen extends React.Component {
       uid: user.uid,
       athuid: this.state.athuid,
     });
-    batch.add(userRef, {
+    batch.update(userRef, {
       isAthlete: true,
     });
     batch.commit()
@@ -135,7 +135,6 @@ class AthCreateScreen extends React.Component {
       .catch((error) => {
         console.log('Failed!!', error);
       });
-
   }
 
   render() {
@@ -189,7 +188,7 @@ class AthCreateScreen extends React.Component {
               borderColor="#265366"
               borderHeight={4}
               inputPadding={12}
-              onChangeText={(text) => { this.setState({ firstname: text }); }}
+              onChangeText={(text) => { this.setState({ athuid: text }); }}
             />
           </View>
           <View style={styles.userEditInfo}>

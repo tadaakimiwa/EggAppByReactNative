@@ -20,6 +20,7 @@ class UserPageScreen extends React.Component {
       isAthlete: false,
       athList: [],
       followingNum: 0,
+      commentsNum: 0,
     };
   }
 
@@ -41,12 +42,14 @@ class UserPageScreen extends React.Component {
         const url = doc.data().profileImageURL;
         const { isAthlete } = doc.data();
         const { followingNum } = doc.data();
+        const { commentsNum } = doc.data();
         this.setState({
           username,
           profile,
           url,
           isAthlete,
           followingNum,
+          commentsNum
         });
       } else {
         console.log('No such document!', user.uid);
@@ -92,6 +95,7 @@ class UserPageScreen extends React.Component {
       url: this.state.url,
     };
     const { followingNum } = this.state;
+    const { commentsNum } = this.state;
     const { isAthlete } = this.state;
     let button;
     if (isAthlete) {
@@ -104,6 +108,7 @@ class UserPageScreen extends React.Component {
           navigation={this.props.navigation}
           info={info}
           followingNum={followingNum}
+          commentsNum={commentsNum}
           button={button}
           onPressFollowing={this.handlePressFollow.bind(this)}
           onPressEdit={this.handlePressEdit.bind(this)}

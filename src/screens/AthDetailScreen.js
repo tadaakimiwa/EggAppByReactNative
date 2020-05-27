@@ -13,6 +13,7 @@ import AthIntroCommentList from '../components/AthIntroCommentList';
 import FollowingButton from '../components/FollowingButton';
 import UnFollowingButton from '../components/UnFollowingButton';
 import AthPostList from '../components/AthPostList';
+import PostListInAthDetail from '../components/PostListInAthDetail';
 
 class AthDetailScreen extends React.Component {
   constructor(props) {
@@ -163,56 +164,12 @@ class AthDetailScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.athInfo}>
-            <View style={styles.athProfileImage}>
-              <Image
-                style={styles.athProfileImageTitle}
-                source={{ uri: info.url }}
-              />
-            </View>
-            <View style={styles.athInfoContent}>
-              <Text style={styles.athInfoContentTitle}>
-                {info.athuid}
-              </Text>
-            </View>
-            <View style={styles.athInfoContent}>
-              <Text style={styles.athInfoContentTitle}>
-                {info.lastname}
-              </Text>
-            </View>
-            <View style={styles.athAge}>
-              <Text style={styles.athAgeTitle}>
-                age:
-                {info.age}
-              </Text>
-            </View>
-          </View>
-          {button}
-          <View style={styles.athIntroVideo}>
-            <Text style={styles.athIntroVideoTitle}>
-              紹介ビデオ、オンプレスで流れる
-            </Text>
-          </View>
-          <View style={styles.athIntroCommentList}>
-            <View style={styles.athIntroComment}>
-              <Text style={styles.athIntroCommentTitle}>
-                {info.intro1}
-              </Text>
-            </View>
-            <View style={styles.athIntroComment}>
-              <Text style={styles.athIntroCommentTitle}>
-                {info.intro2}
-              </Text>
-            </View>
-            <View style={styles.athIntroComment}>
-              <Text style={styles.athIntroCommentTitle}>
-                {info.intro3}
-              </Text>
-            </View>
-          </View>
-          <AthPostList postList={this.state.postList} navigation={this.props.navigation} />
-        </ScrollView>
+        <PostListInAthDetail
+          info={info}
+          button={button}
+          postList={this.state.postList}
+          navigation={this.props.navigation}
+        />
       </View>
     );
   }
@@ -222,78 +179,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    alignItems: 'center',
-    paddingLeft: 24,
-    paddingRight: 24,
     backgroundColor: '#88a5b7',
-    paddingTop: 24,
-  },
-  userEdit: {
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  userEditButton: {
-    borderWidth: 0.5,
-    borderColor: '#fff',
-    backgroundColor: '#fff',
-    padding: 3,
-  },
-  userEditTitle: {
-    color: '#88a5b7',
-  },
-  athInfo: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  athInfoContent: {
-    marginTop: 32,
-    paddingLeft: 12,
-  },
-  athInfoContentTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  athProfileImage: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 42,
-    height: 84,
-    width: 84,
-    overflow: 'hidden',
-  },
-  athProfileImageTitle: {
-    height: 84,
-    width: 84,
-  },
-  athAge: {
-    marginTop: 38,
-    paddingLeft: 12,
-  },
-  athAgeTitle: {
-    fontSize: 14,
-    color: '#fff',
-  },
-  athIntroVideo: {
-    width: '100%',
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    marginTop: 12,
-  },
-  athIntroCommentList: {
-    marginBottom: 24,
-  },
-  athIntroComment: {
-    marginTop: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  athIntroCommentTitle: {
-    fontSize: 14,
-    color: '#fff',
   },
 });
 export default AthDetailScreen;

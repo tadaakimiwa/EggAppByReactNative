@@ -93,6 +93,10 @@ class UserCreateScreen extends React.Component {
       profile: this.state.profile,
       profileImageURL: this.state.url,
       createdOn: newDate,
+      isAthlete: false,
+      followingNum: 0,
+      commentsNum: 0,
+      giftsNum: 0,
     })
       .then(() => {
         this.props.navigation.navigate('Home');

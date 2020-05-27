@@ -47,6 +47,7 @@ class AthListInUser extends React.Component {
               info={this.props.info}
               button={this.props.button}
               followingNum={this.props.followingNum}
+              commentsNum={this.props.commentsNum}
               onPressFollowing={this.props.onPressFollowing}
               onPressEdit={this.props.onPressEdit}
             />
