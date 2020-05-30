@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,15 +6,17 @@ import {
   Image,
   TouchableHighlight,
   YellowBox,
+  Dimensions,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { Video } from 'expo-av';
-import VideoPlayer from 'expo-video-player';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import PropTypes from 'prop-types';
 
 import firebase from 'firebase';
 
+import VideoContents from '../elements/VideoContents';
+import ExpoVideoContents from '../elements/ExpoVideoContents';
 import PostVideoModal from './PostVideoModal';
 import PostCommentList from '../components/PostCommentList';
 
@@ -27,176 +29,158 @@ const dateString = (date) => {
   return str.split('T')[0];
 };
 
-class PostDetailScreen extends React.Component {
-  static navigationOptions = {
+const videoWidth = Dimensions.get('window').width;
+
+export default function PostDetailScreen(props) {
+  const { navigation } = props;
+  navigation.setOptions({
     headerRight: () => (
       <Button
         icon={(
           <MaterialCommunityIcons
             name="menu"
             size={15}
-            color="black"
+            color="#fff"
           />
         )}
-        color="black"
-        onPress={() => {}}
+        onPress={toggleModal}
       />
     ),
-  };
+  });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      postVideoURL: '',
-      thumbnailURL: '',
-      contentsCaption: '',
-      updatedOn: '',
-      uploader: '',
-      contentsInfo: '',
-      url: '',
-      isModalVisible: false,
-      postid: '',
-      uid: '',
-      commentList: [],
-    };
-  }
+  const [postVideoURL, setPostVideoURL] = useState('');
+  const [thumbnailURL, setThumbnailURL] = useState('');
+  const [contentsCaption, setContentsCaption] = useState('');
+  const [updatedOn, setUpdatedOn] = useState('');
+  const [uploader, setUploader] = useState('');
+  const [contentsInfo, setContentsInfo] = useState('');
+  const [profileImageURL, setProfileImageURL] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [commentList, setCommentList] = useState([]);
+  const { uid } = props.route.params;
+  const { postid } = props.route.params;
 
-  componentDidMount() {
-    const { postid } = this.props.route.params;
-    const { uid } = this.props.route.params;
-    console.log(this.props.route.params.postid);
+  useEffect(() => {
+    console.log(props.route.params.postid);
     const db = firebase.firestore();
     const docRef = db.collection(`users/${uid}/posts`).doc(`${postid}`);
     const commentRef = db.collection(`users/${uid}/posts/${postid}/comments`);
 
-    docRef.onSnapshot((doc) => {
-      if (doc.exists) {
-        const url = doc.data().profileImageURL;
-        const { postVideoURL } = doc.data();
-        const { thumbnailURL } = doc.data();
-        const { contentsCaption } = doc.data();
-        const { contentsInfo } = doc.data();
-        const { updatedOn } = doc.data();
-        const { uploader } = doc.data();
-        this.setState({
-          url,
-          postVideoURL,
-          thumbnailURL,
-          contentsCaption,
-          contentsInfo,
-          updatedOn: dateString(updatedOn),
-          uid,
-          postid,
-          uploader,
-        });
-        console.log(this.state.updatedOn);
-      } else {
-        console.log('No such document!');
-      }
-    });
-
-    commentRef.onSnapshot((snapshot) => {
-      const commentList = [];
-      snapshot.forEach((doc) => {
-        commentList.push({ ...doc.data(), key: doc.id });
+    function subscribeInfo() {
+      docRef.onSnapshot((doc) => {
+        if (doc.exists) {
+          setProfileImageURL(doc.data().profileImageURL);
+          setPostVideoURL(doc.data().postVideoURL);
+          setThumbnailURL(doc.data().thumbnailURL);
+          setContentsCaption(doc.data().contentsCaption);
+          setContentsInfo(doc.data().contentsInfo);
+          setUpdatedOn(dateString(doc.data().updatedOn));
+          setUploader(doc.data().uploader);
+          console.log(updatedOn);
+        } else {
+          console.log('No such document!');
+        }
       });
-      this.setState({ commentList });
-    });
-  }
+    }
 
-  toggleModal() {
-    this.setState((prevState) => ({
-      isModalVisible: !prevState.isModalVisible,
-    }));
-  }
+    function subscribeComment() {
+      commentRef.onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+          setCommentList([...commentList, { ...doc.data(), key: doc.id }]);
+        });
+      });
+    }
+    subscribeInfo();
+    subscribeComment();
+  }, []);
 
-  render() {
-    const post = {
-      postVideoURL: this.state.postVideoURL,
-      thumbnailURL: this.state.thumbnailURL,
-      contentsCaption: this.state.contentsCaption,
-      contentsInfo: this.state.contentsInfo,
-      updatedOn: this.state.updatedOn,
-      profileImageURL: this.state.url,
-      uid: this.state.uid,
-      postid: this.state.postid,
-      uploader: this.state.uploader,
-    };
-    const info = {
-      constentsCaption: post.constentsCaption,
-      contentsInfo: post.constentsInfo,
-      thumbnailURL: post.thumbnailURL,
-    };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.video}>
-          <VideoPlayer
-            videoProps={{
-              shouldPlay: true,
-              source: {
-                uri: post.postVideoURL,
-              },
-              rate: 1.0,
-              volume: 1.0,
-              isMuted: false,
-              resizeMode: Video.RESIZE_MODE_CONTAIN,
-              isLooping: true,
-              posterSource: {
-                uri: post.thumbnailURL,
-              },
-              usePoster: true,
-            }}
-            videoBackground="transparent"
-            inFullscreen={false}
-            width={300}
-            height={300}
-          />
+  const onBackdropPress = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const videoModalOnPress = () => {
+    setModalVisible(false);
+    props.navigation.navigate('PostEdit', { info });
+  };
+
+  const post = {
+    postVideoURL,
+    thumbnailURL,
+    contentsCaption,
+    contentsInfo,
+    updatedOn,
+    profileImageURL,
+    uid,
+    postid,
+    uploader,
+  };
+  const info = {
+    constentsCaption: post.constentsCaption,
+    contentsInfo: post.constentsInfo,
+    thumbnailURL: post.thumbnailURL,
+  };
+
+  return (
+    <View style={styles.container}>
+      <ExpoVideoContents
+        uri={post.postVideoURL}
+        style={styles.video}
+      />
+      <View style={styles.videoInfo}>
+        <View style={styles.videoBar}>
+          <View style={styles.videoCaption}>
+            <Text style={styles.videoCaptionTitle}>
+              {post.contentsCaption}
+            </Text>
+          </View>
+          <View style={styles.videoDate}>
+            <Text style={styles.videoDateTitle}>
+              {post.updatedOn}
+            </Text>
+          </View>
         </View>
-        <View style={styles.videoInfo}>
-          <View style={styles.videoBar}>
-            <View style={styles.videoCaption}>
-              <Text style={styles.videoCaptionTitle}>
-                {post.contentsCaption}
-              </Text>
+        <TouchableHighlight
+          onPress={() => { props.navigation.navigate('AthDetail', { uid: post.uid }); }}
+        >
+          <View style={styles.videoUserBar}>
+            <View style={styles.videoUploader}>
+              <Image
+                style={styles.videoUploaderImage}
+                source={post.profileImageURL ? { uri: post.profileImageURL } : null}
+              />
             </View>
-            <View style={styles.videoDate}>
-              <Text style={styles.videoDateTitle}>
-                {post.updatedOn}
+            <View style={styles.videoUploaderName}>
+              <Text style={styles.videoUploaderNameTitle}>
+                Name
               </Text>
             </View>
           </View>
-          <TouchableHighlight
-            onPress={() => { this.props.navigation.navigate('AthDetail', { uid: post.uid }); }}
-          >
-            <View style={styles.videoUserBar}>
-              <View style={styles.videoUploader}>
-                <Image
-                  style={styles.videoUploaderImage}
-                  source={{ uri: post.profileImageURL }}
-                />
-              </View>
-              <View style={styles.videoUploaderName}>
-                <Text style={styles.videoUploaderNameTitle}>
-                  Name
-                </Text>
-              </View>
-            </View>
-          </TouchableHighlight>
-        </View>
-        <PostCommentList
-          post={post}
-          commentList={this.state.commentList}
-        />
-        <PostVideoModal
-          post={post}
-          navigation={this.props.navigation}
-          onPress={() => this.props.navigation.navigate('PostEdit', { info })}
-        />
+        </TouchableHighlight>
       </View>
-    );
-  }
+      <PostCommentList
+        post={post}
+        commentList={commentList}
+      />
+      <PostVideoModal
+        post={post}
+        navigation={props.navigation}
+        onPress={videoModalOnPress}
+        isModalVisible={isModalVisible}
+        onBackdropPress={onBackdropPress}
+      />
+    </View>
+  );
 }
+
+PostDetailScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -205,14 +189,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   video: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    height: 300,
-    zIndex: 5,
-    alignItems: 'center',
+    flex: 1,
   },
   videoUploader: {
     borderWidth: 1,
@@ -227,8 +204,8 @@ const styles = StyleSheet.create({
     width: 72,
   },
   videoInfo: {
-    paddingTop: 300,
     backgroundColor: '#fff',
+    paddingTop: videoWidth * 0.6,
   },
   videoBar: {
     borderWidth: 1,
@@ -258,5 +235,3 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-
-export default PostDetailScreen;

@@ -63,9 +63,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingTop: 18,
-    paddingLeft: 18,
-    paddingRight: 18,
   },
   athListFlat: {
     backgroundColor: '#fff',

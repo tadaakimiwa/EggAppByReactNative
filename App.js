@@ -266,7 +266,6 @@ const UserPageScreenNavi = ({ navigation }) => {
       <Stack.Screen
         name="PostDetail"
         component={PostDetailScreen}
-        options={PostDetailScreen.navigationOptions}
       />
       <Stack.Screen name="PostEdit" component={PostEditScreen} />
       <Stack.Screen name="FollowingList" component={FollowingListScreen} />

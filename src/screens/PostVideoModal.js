@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableHighlight,
-  Button,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import firebase from 'firebase';
@@ -27,39 +26,33 @@ export default function PostVideoModal(props) {
       });
   };
 
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
   console.log(props.post);
 
-
   return (
-    <View style={styles.container}>
-      <Button title="Show modal" onPress={toggleModal} />
+    <View style={styles.postModal}>
       <Modal
-        isVisible={isModalVisible}
-        backdropColor="#fff"
-        backdropOpacity={1.0}
+        isVisible={props.isModalVisible}
+        backdropColor="#000"
+        backdropOpacity={0.5}
+        style={{ margin: 0, justifyContent: 'center', alignItems: 'center' }}
+        onBackdropPress={props.onBackdropPress}
       >
-        <TouchableHighlight
-          onPress={handleDelete}
-        >
-          <View>
-            <Text style={{ fontSize: 30 }}>Delete</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          onPress={props.onPress}
-        >
-          <View>
-            <Text style={{ fontSize: 30 }}>Edit your Post</Text>
-          </View>
-        </TouchableHighlight>
-
-        <Button title="Hide modal" onPress={toggleModal} />
+        <View style={styles.postModalContent}>
+          <TouchableHighlight
+            onPress={handleDelete}
+          >
+            <View style={styles.postItemTop}>
+              <Text style={styles.postItemTitle}>Delete</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={props.onPress}
+          >
+            <View style={styles.postItem}>
+              <Text style={styles.postItemTitle}>Edit</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
       </Modal>
     </View>
   );
@@ -67,10 +60,34 @@ export default function PostVideoModal(props) {
 
 
 const styles = StyleSheet.create({
-  container: {
+  postModal: {
     width: '100%',
     flex: 1,
     alignItems: 'center',
+  },
+  postModalContent: {
+    height: 160,
+    width: 320,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    borderRadius: 24,
+  },
+  postItemTop: {
+    height: 80,
+    width: 320,
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+    alignItems: 'center',
     justifyContent: 'center',
+  },
+  postItem: {
+    height: 80,
+    width: 320,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  postItemTitle: {
+    fontSize: 24,
+    fontWeight: '300',
   },
 });

@@ -68,6 +68,9 @@ class AthPostingScreen extends React.Component {
         // upload
         // const putTask = await storageRef.put(localBlob);
         // 進捗を取得したいのでawaitは使わず
+        const user = await firebase.auth().currentUser;
+        const db = await firebase.firestore();
+        await this.getCategoryAndProfile(db, user);
         const putTask = storageRef.put(localBlob);
         putTask.on('state_changed', (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -114,8 +117,7 @@ class AthPostingScreen extends React.Component {
     const docRef = db.collection(`users/${user.uid}/posts`).doc(uuid);
     const newDate = firebase.firestore.Timestamp.now();
 
-    await this.getCategoryAndProfile(db, user);
-    console.log(this.state.category);
+    console.log('category:', this.state.category, 'athuid', this.state.athuid);
     docRef.set({
       postVideoURL: this.state.url,
       thumbnailURL: this.state.thumbnailurl,

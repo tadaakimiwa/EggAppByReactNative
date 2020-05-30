@@ -93,7 +93,7 @@ class AthUploadingScreen extends React.Component {
       uuid,
       uid,
     };
-    console.log(posts);
+    console.log('this is posts from uploading:', posts);
     return (
       <View style={styles.container}>
         <View style={styles.undefined}>

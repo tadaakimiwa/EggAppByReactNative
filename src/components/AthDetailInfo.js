@@ -9,6 +9,8 @@ import {
 import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
+const defaultSource = require('../../assets/placeHolderUser.png');
+
 function returnInfo(info) {
   this.setState({ info });
 }
@@ -24,7 +26,7 @@ export default function AthDetailInfo(props) {
         <View style={styles.athProfileImage}>
           <Image
             style={styles.athProfileImageTitle}
-            source={{ uri: info.url }}
+            source={info.url ? { uri: info.url } : null}
           />
         </View>
         <View style={styles.athInfoContent}>

@@ -94,7 +94,7 @@ class AthPageScreen extends React.Component {
               size={84}
               rounded
               title="U"
-              source={{ uri: info.url }}
+              source={info.url ? { uri: info.url } : null}
             />
           </View>
           <View style={styles.athInfoContent}>

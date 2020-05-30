@@ -1,10 +1,9 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text, View,
-  TouchableHighlight,
-  Image, SafeAreaView,
+  SafeAreaView,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import firebase from 'firebase';
 
 import GoAthletePageButton from '../components/GoAthletePageButton';
@@ -16,7 +15,7 @@ class UserPageScreen extends React.Component {
     this.state = {
       username: '',
       profile: '',
-      url: '../../assets/placeHolderUser',
+      url: '',
       isAthlete: false,
       athList: [],
       followingNum: 0,
@@ -49,7 +48,7 @@ class UserPageScreen extends React.Component {
           url,
           isAthlete,
           followingNum,
-          commentsNum
+          commentsNum,
         });
       } else {
         console.log('No such document!', user.uid);
@@ -118,94 +117,17 @@ class UserPageScreen extends React.Component {
   }
 }
 
+UserPageScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     width: '100%',
     backgroundColor: '#fff',
-  },
-  userInfo: {
-    height: 240,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  userFlex: {
-    height: 150,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  userProfile: {
-    paddingLeft: 36,
-    paddingBottom: 6,
-  },
-  userProfileTitle: {
-    fontSize: 16,
-    color: '#000',
-  },
-  userEdit: {
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  userEditButton: {
-    borderWidth: 0.5,
-    borderColor: '#2DCCD3',
-    padding: 3,
-  },
-  userEditTitle: {
-    color: '#2DCCD3',
-  },
-  userName: {
-    height: '100%',
-    width: '33%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userNamePic: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 42,
-    height: 84,
-    width: 84,
-    overflow: 'hidden',
-  },
-  userNamePicTitle: {
-    height: 84,
-    width: 84,
-  },
-  userNameTitle: {
-    paddingTop: 12,
-    fontSize: 18,
-  },
-  userInfoBar: {
-    width: '67%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: '#fff',
-  },
-  userInfoTab: {
-    width: '33%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userInfoTabItem: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 32,
-    height: 64,
-    width: 64,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userInfoTabNum: {
-    fontSize: 20,
-  },
-  userInfoTabTitle: {
-    fontSize: 15,
-    paddingTop: 12,
-  },
-  athList: {
-    height: '100%',
   },
 });
 

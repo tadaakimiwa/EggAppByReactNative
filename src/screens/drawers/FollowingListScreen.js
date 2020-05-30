@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import firebase from 'firebase';
 
 import FollowingList from '../../components/FollowingList';
@@ -38,6 +39,13 @@ class FollowingListScreen extends React.Component {
     );
   }
 }
+
+FollowingListScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
 
 const styles = StyleSheet.create({
   container: {

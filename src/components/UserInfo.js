@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
+import NeumoCircleButton from '../elements/NeumoCircleButton';
+
 function returnInfo(info) {
   this.setState({ info });
 }
@@ -20,7 +22,7 @@ function UserInfo(props) {
               size={84}
               rounded
               title="U"
-              source={{ uri: info.url }}
+              source={info.url ? { uri: info.url } : null}
             />
           </View>
           <Text style={styles.userNameTitle}>{info.username}</Text>
@@ -28,31 +30,26 @@ function UserInfo(props) {
 
         <View style={styles.userInfoBar}>
           <View style={styles.userInfoTab}>
-            <TouchableHighlight
-              style={styles.userInfoTabItem}
+            <NeumoCircleButton
+              text={String(props.followingNum)}
               onPress={props.onPressFollowing}
-            >
-              <View>
-                <Text style={styles.userInfoTabNum}>
-                  {String(props.followingNum)}
-                </Text>
-              </View>
-            </TouchableHighlight>
+            />
             <Text style={styles.userInfoTabTitle}>Following</Text>
           </View>
-
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
-              <Text style={styles.userInfoTabNum}>
-                {String(props.commentsNum)}
-              </Text>
+              <NeumoCircleButton
+                text={String(props.commentsNum)}
+              />
             </View>
             <Text style={styles.userInfoTabTitle}>Comments</Text>
           </View>
 
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
-              <Text style={styles.userInfoTabNum}>16</Text>
+              <NeumoCircleButton
+                text='1'
+              />
             </View>
             <Text style={styles.userInfoTabTitle}>Gifts</Text>
           </View>
@@ -76,10 +73,11 @@ function UserInfo(props) {
   );
 }
 
+
 const styles = StyleSheet.create({
   userInfo: {
     height: 240,
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
     width: '67%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
   },
   userInfoTab: {
     width: '33%',

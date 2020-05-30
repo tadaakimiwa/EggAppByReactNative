@@ -13,6 +13,7 @@ class AlpineScreen extends React.Component {
   }
 
   componentDidMount() {
+    const user = firebase.auth().currentUser;
     const db = firebase.firestore();
     db.collectionGroup('posts')
       .where('category', '==', 'Alpine')

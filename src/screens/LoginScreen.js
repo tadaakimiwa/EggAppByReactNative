@@ -8,6 +8,10 @@ import {
 import firebase from 'firebase';
 import { Hoshi } from 'react-native-textinput-effects';
 
+import NeumophismButton from '../components/NeumophismButton';
+import NeumoSquareButton from '../elements/NeumoSquareButton';
+import NeumoCircleButton from '../elements/NeumoCircleButton';
+
 class LoginScreen extends React.Component {
   state = {
     email: 'user10@example.com',
@@ -67,6 +71,8 @@ class LoginScreen extends React.Component {
         >
           <Text style={styles.signupTitle}>Create a new Account for EggApp</Text>
         </TouchableHighlight>
+        <NeumoSquareButton />
+        <NeumoCircleButton />
       </View>
     );
   }
@@ -83,7 +89,7 @@ const styles = StyleSheet.create({
   input: {
     fontWeight: '100',
     fontSize: 8,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 28,
@@ -107,6 +113,7 @@ const styles = StyleSheet.create({
   signup: {
     alignItems: 'center',
     marginTop: 30,
+    marginBottom: 40,
   },
   signupTitle: {
     fontSize: 14,

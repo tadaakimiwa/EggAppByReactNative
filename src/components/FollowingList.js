@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 class FollowingList extends React.Component {
   renderFollow({ item }) {
@@ -37,7 +38,7 @@ class FollowingList extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <View style={styles.followList}>
         <FlatList
           data={this.props.followList}
@@ -50,6 +51,12 @@ class FollowingList extends React.Component {
     )
   }
 }
+
+FollowingList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   followList: {
