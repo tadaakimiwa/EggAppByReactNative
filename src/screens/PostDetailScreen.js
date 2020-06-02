@@ -57,12 +57,27 @@ export default function PostDetailScreen(props) {
   const [profileImageURL, setProfileImageURL] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [commentList, setCommentList] = useState([]);
+  const [username, setUsername] = useState('');
+  const [userProfileURL, setUserProfileURL] = useState('');
   const { uid } = props.route.params;
   const { postid } = props.route.params;
+
+  const getUsernameAndProfile = async (db, user) => {
+    await db.collection(`users/${user.uid}/User`).doc('info').get().then(async (doc) => {
+      if (doc.exists) {
+        console.log(doc.data());
+        setUsername(doc.data().username);
+        setUserProfileURL(doc.data().profileImageURL);
+      } else {
+        console.log('No such document!', user.uid);
+      }
+    });
+  };
 
   useEffect(() => {
     console.log(props.route.params.postid);
     const db = firebase.firestore();
+    const user = firebase.auth().currentUser;
     const docRef = db.collection(`users/${uid}/posts`).doc(`${postid}`);
     const commentRef = db.collection(`users/${uid}/posts/${postid}/comments`);
 
@@ -92,6 +107,7 @@ export default function PostDetailScreen(props) {
     }
     subscribeInfo();
     subscribeComment();
+    getUsernameAndProfile(db, user)
   }, []);
 
   const toggleModal = () => {
@@ -164,6 +180,8 @@ export default function PostDetailScreen(props) {
       <PostCommentList
         post={post}
         commentList={commentList}
+        username={username}
+        userProfileURL={userProfileURL}
       />
       <PostVideoModal
         post={post}

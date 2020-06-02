@@ -8,32 +8,21 @@ import {
   Button,
 } from 'react-native';
 import Modal from 'react-native-modal';
+import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
 export default function PostCommentInput(props) {
   const [comment, setComment] = useState('');
+  const { username } = props;
+  const { userProfileURL } = props;
   const { uploader } = props;
   const { postid } = props;
   console.log('uploader:', uploader, 'postid:', postid);
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const [username, setUsername] = useState('');
-  const [profileurl, setProfileurl] = useState('');
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-  };
-
-  const getUsernameAndProfile = async (db, user) => {
-    await db.collection(`users/${user.uid}/User`).doc('info').get().then(async (doc) => {
-      if (doc.exists) {
-        console.log(doc.data());
-        setUsername(doc.data().username);
-        setProfileurl(doc.data().profileImageURL);
-      } else {
-        console.log('No such document!', user.uid);
-      }
-    });
   };
 
   const handleComment = async () => {
@@ -42,8 +31,7 @@ export default function PostCommentInput(props) {
     const newDate = firebase.firestore.Timestamp.now();
     const userRef = db.collection(`users/${user.uid}/User`).doc('info');
     const commentRef = db.collection(`users/${uploader}/posts/${postid}/comments`).doc(`${user.uid}`);
-    const userCommentRef = db.collection(`users/${user.uid}/comments/`).doc(`${postid}`);
-    await getUsernameAndProfile(db, user);
+    const userCommentRef = db.collection(`users/${user.uid}/comments`).doc(`${postid}`);
     const batch = db.batch();
     batch.set(commentRef, {
       commenter: user.uid,
@@ -53,7 +41,7 @@ export default function PostCommentInput(props) {
       postid,
       uploader,
       username,
-      profileImageURL: profileurl,
+      profileImageURL: userProfileURL,
     });
     batch.set(userCommentRef, {
       commenter: user.uid,
@@ -84,6 +72,14 @@ export default function PostCommentInput(props) {
         avoidKeyboard
       >
         <View style={styles.onKeyboard}>
+          <View>
+            <Avatar
+              size={48}
+              rounded
+              title="U"
+              source={userProfileURL ? { uri: userProfileURL } : null}
+            />
+          </View>
           <View style={styles.inBorder}>
             <TextInput
               style={styles.input}
@@ -95,6 +91,7 @@ export default function PostCommentInput(props) {
             <View style={styles.submitButton}>
               <TouchableHighlight
                 onPress={handleComment}
+                underlayColor="transparent"
               >
                 <Text style={styles.submitButtonTitle}>
                   Post
@@ -124,6 +121,8 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 24,
     paddingBottom: 12,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   inBorder: {
     flexDirection: 'row',
@@ -131,6 +130,9 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 32,
+    marginTop: 4,
+    marginLeft: 12,
+    width: '80%',
   },
   input: {
     paddingTop: 12,
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
     paddingRight: 18,
     paddingBottom: 12,
     fontSize: 16,
+    width: '80%',
   },
   submitButton: {
     position: 'absolute',

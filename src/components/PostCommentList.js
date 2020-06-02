@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   FlatList
 } from 'react-native';
+import { Avatar } from 'react-native-elements';
 
 import PostCommentInput from './PostCommentInput';
 
@@ -23,25 +24,30 @@ export default function PostCommentList(props) {
     return (
       <View style={styles.commentListItem}>
         <View style={styles.userPic}>
-          <Text>need url</Text>
+          <Avatar
+            size={36}
+            rounded
+            title="U"
+            source={comment.profileImageURL ? { uri: comment.profileImageURL } : null}
+          />
         </View>
         <View style={styles.commentInfo}>
           <View style={styles.commentInfoUpper}>
             <View style={styles.commenter}>
               <Text style={styles.commenterTitle}>
-                userName
+                {comment.username}
               </Text>
             </View>
-            <View style={styles.commentContents}>
-              <Text style={styles.commentContentsTitle}>
-                {comment.commentContents}
+            <View style={styles.commentDate}>
+              <Text style={styles.commentDateTitle}>
+                {dateString(comment.updatedOn)}
               </Text>
             </View>
           </View>
           <View style={styles.commentInfoLower}>
-            <View style={styles.commentDate}>
-              <Text style={styles.commentDateTitle}>
-                {dateString(comment.updatedOn)}
+            <View style={styles.commentContents}>
+              <Text style={styles.commentContentsTitle}>
+                {comment.commentContents}
               </Text>
             </View>
           </View>
@@ -64,6 +70,8 @@ export default function PostCommentList(props) {
           <PostCommentInput
             uploader={post.uploader}
             postid={post.postid}
+            username={props.username}
+            userProfileURL={props.userProfileURL}
           />
         )}
       />
@@ -75,9 +83,28 @@ const styles = StyleSheet.create({
   commentListItem: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    padding: 12,
+  },
+  commentInfo: {
+    paddingLeft: 12,
   },
   commentInfoUpper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+  commenterTitle: {
+    fontSize: 14,
+    fontWeight: '300',
+  },
+  commentDate: {
+    paddingLeft: 12,
+  },
+  commentDateTitle: {
+    fontSize: 14,
+    fontWeight: '300',
+  },
+  commentContentsTitle: {
+    fontSize: 16,
+    fontWeight: '500',
   },
 });

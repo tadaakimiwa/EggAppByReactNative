@@ -14,7 +14,7 @@ import NeumoCircleButton from '../elements/NeumoCircleButton';
 
 class LoginScreen extends React.Component {
   state = {
-    email: 'user10@example.com',
+    email: 'user14@example.com',
     password: 'password',
   }
 
