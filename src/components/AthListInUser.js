@@ -8,7 +8,8 @@ import {
   Image,
 } from 'react-native';
 
-import UserInfo from './UserInfo.js';
+import UserInfo from './UserInfo';
+import NeumoAthListInUser from '../elements/NeumoAthListInUser';
 
 class AthListInUser extends React.Component {
   renderAth({ item }) {
@@ -16,18 +17,12 @@ class AthListInUser extends React.Component {
     const { uid } = athlete;
     return (
       <View style={styles.athListItem}>
-        <TouchableHighlight
-          onPress={() => { this.props.navigation.navigate('AthDetail', { uid }); }}
-        >
-          <View style={styles.athImage}>
-            <Image
-              style={styles.athImageTitle}
-              source={{ uri: athlete.profileImageURL }}
-            />
-          </View>
-        </TouchableHighlight>
-        <View style={styles.athName}>
-          <Text style={styles.athNameTitle}>{athlete.athuid}</Text>
+        <View style={styles.athListItemTab}>
+          <NeumoAthListInUser
+            athlete={athlete}
+            uid={uid}
+            navigation={this.props.navigation}
+          />
         </View>
       </View>
     );
@@ -52,6 +47,9 @@ class AthListInUser extends React.Component {
               onPressEdit={this.props.onPressEdit}
             />
           )}
+          ListHeaderComponentStyle={{
+            width: '100%',
+          }}
         />
       </View>
     );
@@ -64,24 +62,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  userInfo: {
+    width: '100%',
+  },
   athListFlat: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
     width: '100%',
   },
   athListItem: {
     width: '33%',
+  },
+  athListItemTab: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 12,
+    borderRadius: 4,
     marginTop: 12,
     marginLeft: 12,
     marginRight: 12,
-    overflow: 'hidden',
+    marginBottom: 36,
   },
   athImage: {
     justifyContent: 'center',
     alignItems: 'center',
     height: 120,
+    width: 120,
   },
   athImageTitle: {
     width: '100%',
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
   },
   athNameTitle: {
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: '300',
     color: '#fff',
     padding: 8,
   },

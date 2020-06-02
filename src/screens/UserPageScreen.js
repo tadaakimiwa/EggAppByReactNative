@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
   },
 });
 

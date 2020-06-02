@@ -104,7 +104,7 @@ class AthDetailScreen extends React.Component {
     const batch = db.batch();
     await batch.set(followerRef, {
       createdOn: newDate,
-      updatedAt: newDate,
+      updatedOn: newDate,
       uid: followeeuid,
       athuid,
       profileImageURL: this.state.url,
@@ -113,7 +113,7 @@ class AthDetailScreen extends React.Component {
     await batch.set(followeeRef, {
       uid,
       createdOn: newDate,
-      updatedAt: newDate,
+      updatedOn: newDate,
     });
     await batch.update(userRef, {
       followingNum: firebase.firestore.FieldValue.increment(1),

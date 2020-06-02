@@ -5,6 +5,8 @@ import {
   Text,
   StyleSheet,
   TouchableWithoutFeedback,
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -21,6 +23,9 @@ export default function NeumoCircleButton(props) {
   const gradColor = isDown ? ['#e6e6e6', '#ffffff'] : ['#ffffff', '#e6e6e6'];
   const shadowOuterColor = isDown ? '#e4e4e4' : '#b3b3b3';
 
+  const { athlete } = props;
+  const { uid } = props;
+
   return (
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
@@ -35,9 +40,21 @@ export default function NeumoCircleButton(props) {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Text style={styles.buttonTitle}>
-              {props.text}
-            </Text>
+            <View style={styles.athListItemTab}>
+              <TouchableHighlight
+                onPress={() => { props.navigation.navigate('AthDetail', { uid }); }}
+              >
+                <View style={styles.athImage}>
+                  <Image
+                    style={styles.athImageTitle}
+                    source={{ uri: athlete.profileImageURL }}
+                  />
+                </View>
+              </TouchableHighlight>
+              <View style={styles.athName}>
+                <Text style={styles.athNameTitle}>{athlete.athuid}</Text>
+              </View>
+            </View>
           </LinearGradient>
         </View>
       </View>
@@ -63,15 +80,32 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   buttonFace: {
-    padding: 12,
-    borderRadius: 32,
-    height: 64,
-    width: 64,
+    borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonTitle: {
-    fontWeight: '600',
-    fontSize: 12,
+  athListItemTab: {
+
+  },
+  athImage: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 120,
+    width: 120,
+  },
+  athImageTitle: {
+    width: '100%',
+    height: '100%',
+  },
+  athName: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00aaaf',
+  },
+  athNameTitle: {
+    fontSize: 20,
+    fontWeight: '300',
+    color: '#fff',
+    padding: 8,
   },
 });

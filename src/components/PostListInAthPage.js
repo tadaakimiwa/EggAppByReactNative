@@ -41,7 +41,7 @@ export default function AthPostList(props) {
         style={styles.postListFlat}
         numColumns={2}
         horizontal={false}
-        scrollEnabled={false}
+        scrollEnabled
         ListHeaderComponent={(
           <AthPageInfo
             info={props.info}

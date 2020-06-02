@@ -4,6 +4,7 @@ import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
 import NeumoCircleButton from '../elements/NeumoCircleButton';
+import NeumoText from '../elements/NeumoText';
 
 function returnInfo(info) {
   this.setState({ info });
@@ -34,7 +35,9 @@ function UserInfo(props) {
               text={String(props.followingNum)}
               onPress={props.onPressFollowing}
             />
-            <Text style={styles.userInfoTabTitle}>Following</Text>
+            <NeumoText
+              text="Following"
+            />
           </View>
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
@@ -42,16 +45,20 @@ function UserInfo(props) {
                 text={String(props.commentsNum)}
               />
             </View>
-            <Text style={styles.userInfoTabTitle}>Comments</Text>
+            <NeumoText
+              text="Comments"
+            />
           </View>
 
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
               <NeumoCircleButton
-                text='1'
+                text={1}
               />
             </View>
-            <Text style={styles.userInfoTabTitle}>Gifts</Text>
+            <NeumoText
+              text="Gifts"
+            />
           </View>
         </View>
       </View>
