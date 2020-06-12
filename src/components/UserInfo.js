@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
+import NeumoAvatar from '../elements/NeumoAvatar';
 import NeumoCircleButton from '../elements/NeumoCircleButton';
 import NeumoText from '../elements/NeumoText';
 
@@ -18,14 +19,12 @@ function UserInfo(props) {
     <View style={styles.userInfo}>
       <View style={styles.userFlex}>
         <View style={styles.userName}>
-          <View style={styles.userNamePic}>
-            <Avatar
-              size={84}
-              rounded
-              title="U"
-              source={info.url ? { uri: info.url } : null}
-            />
-          </View>
+          <Avatar
+            size={84}
+            rounded
+            title="U"
+            source={info.url ? { uri: info.url } : null}
+          />
           <Text style={styles.userNameTitle}>{info.username}</Text>
         </View>
 
@@ -111,9 +110,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 42,
-    height: 84,
-    width: 84,
+    height: 104,
+    width: 104,
     overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   userNamePicTitle: {
     height: 84,

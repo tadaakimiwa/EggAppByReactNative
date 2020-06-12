@@ -131,7 +131,7 @@ class AthPostingScreen extends React.Component {
       athuid: this.state.athuid,
     })
       .then(() => {
-        this.props.navigation.goBack();
+        this.props.navigation.navigate('AthPage');
       })
       .catch((error) => {
         console.log('Failed!!', error);

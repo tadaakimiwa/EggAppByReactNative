@@ -28,6 +28,7 @@ import PostDetailScreen from './src/screens/PostDetailScreen';
 import PostEditScreen from './src/screens/PostEditScreen';
 import PostVideoModal from './src/screens/PostVideoModal';
 import SearchScreen from './src/screens/SearchScreen';
+import SearchStack from './src/screens/SearchStack';
 import TrendListScreen from './src/screens/TrendListScreen';
 import FollowingAlertListScreen from './src/screens/FollowingAlertListScreen';
 import FollowingListScreen from './src/screens/drawers/FollowingListScreen';
@@ -67,14 +68,14 @@ firebase.initializeApp(firebaseConfig);
 const MaterialTabNavi = () => {
   return (
     <MaterialTab.Navigator
-      activeColor="#e91e63"
+      activeColor="#fff"
       style={{ backgroundColor: 'tomato' }}
     >
       <MaterialTab.Screen
         name="Home"
         component={AthListScreenNavi}
         options={{
-          tabBarColor: '#0e141d',
+          tabBarColor: '#FF4500',
           tabBarLabel: 'Athletes',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="run" color={color} size={26} />
@@ -85,7 +86,7 @@ const MaterialTabNavi = () => {
         name="Search"
         component={SearchScreenNavi}
         options={{
-          tabBarColor: '#281b39',
+          tabBarColor: '#FF8300',
           tabBarLabel: 'Search',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="magnify" color={color} size={26} />
@@ -96,7 +97,7 @@ const MaterialTabNavi = () => {
         name="Alert"
         component={AlertScreenNavi}
         options={{
-          tabBarColor: '#E64A19',
+          tabBarColor: '#DF362D',
           tabBarLabel: 'Alert',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="bell" color={color} size={26} />
@@ -107,7 +108,7 @@ const MaterialTabNavi = () => {
         name="UserPage"
         component={UserPageScreenNavi}
         options={{
-          tabBarColor: '#524365',
+          tabBarColor: '#B7AC44',
           tabBarLabel: 'My Page',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
@@ -157,8 +158,8 @@ const AthListScreenNavi = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackTitleStyle: {
-          backgroundColorcolor: '#ddd',
+        headerStyle: {
+          backgroundColor: '#FF8300',
         },
         headerTintColor: '#000',
         headerBackTitle: null,
@@ -199,14 +200,22 @@ const SearchScreenNavi = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackTitleStyle: {
-          backgroundColorcolor: '#ddd',
+        headerStyle: {
+          backgroundColor: '#fff',
         },
-        headerTintColor: '#000',
+        headerTintColor: '#FF8300',
         headerBackTitle: null,
       }}
     >
-      <Stack.Screen name="EggApp" component={SearchScreen} />
+      <Stack.Screen
+        name="EggApp"
+        component={SearchScreen}
+        options={SearchScreen.navigationOptions}
+      />
+      <Stack.Screen
+        name="SearchStack"
+        component={SearchStack}
+      />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
@@ -232,10 +241,10 @@ const AlertScreenNavi = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackTitleStyle: {
-          backgroundColorcolor: '#ddd',
+        headerStyle: {
+          backgroundColor: '#fff',
         },
-        headerTintColor: '#000',
+        headerTintColor: '#FF8300',
         headerBackTitle: null,
       }}
     >
@@ -250,10 +259,10 @@ const UserPageScreenNavi = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackTitleStyle: {
-          backgroundColorcolor: '#ddd',
+        headerStyle: {
+          backgroundColor: '#fff',
         },
-        headerTintColor: '#000',
+        headerTintColor: '#FF8300',
         headerBackTitle: null,
       }}
     >
@@ -286,11 +295,11 @@ const MainNavi = () => {
             <MaterialCommunityIcons
               name="egg-easter"
               size={25}
-              color="#2DCCD3"
+              color="#fff"
             />
           ),
           headerStyle: {
-            backgroundColor: '#eee',
+            backgroundColor: '#FF8300',
           },
         }}
       />

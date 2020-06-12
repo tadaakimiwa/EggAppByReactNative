@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -7,8 +6,9 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Avatar } from 'react-native-elements';
 
-export default function NeumoCircleButton(props) {
+export default function NeumoAvatar(props) {
   const [isDown, setDown] = useState(false);
   const handlePressIn = useCallback(() => {
     setDown(true);
@@ -25,7 +25,6 @@ export default function NeumoCircleButton(props) {
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={props.onPress}
     >
       <View style={[styles.buttonOuter, { shadowColor: shadowOuterColor }]}>
         <View style={styles.buttonInner}>
@@ -35,9 +34,12 @@ export default function NeumoCircleButton(props) {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Text style={styles.buttonTitle}>
-              {props.text}
-            </Text>
+            <Avatar
+              size={84}
+              rounded
+              title="U"
+              source={props.info.url ? { uri: props.info.url } : null}
+            />
           </LinearGradient>
         </View>
       </View>
@@ -49,25 +51,26 @@ const styles = StyleSheet.create({
   buttonOuter: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    borderRadius: 32,
-    shadowOffset: { width: 8, height: 8 },
+    borderRadius: 42,
+    shadowOffset: { width: 10, height: 10 },
     shadowOpacity: 1,
-    shadowRadius: 10,
+    shadowRadius: 12,
   },
   buttonInner: {
     backgroundColor: '#ffffff',
-    borderRadius: 32,
+    borderRadius: 42,
     shadowOffset: { width: -1, height: -1 },
     shadowOpacity: 1,
     shadowColor: '#ffffff',
     shadowRadius: 2,
   },
   buttonFace: {
-    borderRadius: 32,
-    height: 64,
-    width: 64,
+    borderRadius: 42,
+    height: 84,
+    width: 84,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   buttonTitle: {
     fontWeight: '600',

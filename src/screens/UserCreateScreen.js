@@ -92,6 +92,7 @@ class UserCreateScreen extends React.Component {
     const db = firebase.firestore();
     const newDate = firebase.firestore.Timestamp.now();
     db.collection(`users/${user.uid}/User`).doc('info').set({
+      uid: user.uid,
       username: this.state.username,
       profile: this.state.profile,
       profileImageURL: this.state.url,
@@ -115,52 +116,54 @@ class UserCreateScreen extends React.Component {
         style={styles.container}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.userEdit}>
-            <View style={styles.userEditImage}>
-              <View
-                style={styles.userImage}
-              >
-                <Image
-                  style={styles.userImageTitle}
-                  source={{ uri: this.state.url }}
+          <View>
+            <View style={styles.userEdit}>
+              <View style={styles.userEditImage}>
+                <View
+                  style={styles.userImage}
+                >
+                  <Image
+                    style={styles.userImageTitle}
+                    source={{ uri: this.state.url }}
+                  />
+                </View>
+              </View>
+              <View style={styles.userIconChoose}>
+                <TouchableHighlight
+                  style={styles.userIconChooseButton}
+                  onPress={this.ImageChoiceAndUpload}
+                >
+                  <Text style={styles.userIconChooseTitle}>
+                    Choose your profile Icon
+                  </Text>
+                </TouchableHighlight>
+              </View>
+              <View style={styles.userEditInfo}>
+                <Hoshi
+                  style={styles.input}
+                  label="Name"
+                  value={this.state.username}
+                  borderColor="#265366"
+                  borderHeight={4}
+                  inputPadding={12}
+                  onChangeText={(text) => { this.setState({ username: text }); }}
+                />
+              </View>
+
+              <View style={styles.userEditInfo}>
+                <Hoshi
+                  style={styles.input}
+                  label="Profile"
+                  value={this.state.profile}
+                  borderColor="#265366"
+                  borderHeight={4}
+                  inputPadding={12}
+                  onChangeText={(text) => { this.setState({ profile: text }); }}
                 />
               </View>
             </View>
-            <View style={styles.userIconChoose}>
-              <TouchableHighlight
-                style={styles.userIconChooseButton}
-                onPress={this.ImageChoiceAndUpload}
-              >
-                <Text style={styles.userIconChooseTitle}>
-                  Choose your profile Icon
-                </Text>
-              </TouchableHighlight>
-            </View>
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Name"
-                value={this.state.username}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ username: text }); }}
-              />
-            </View>
-
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Profile"
-                value={this.state.profile}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ profile: text }); }}
-              />
-            </View>
+            <CircleButton name="check" onPress={this.handlePress.bind(this)}/>
           </View>
-          <CircleButton name="check" onPress={this.handlePress.bind(this)}/>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     );
