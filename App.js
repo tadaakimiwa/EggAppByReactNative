@@ -175,10 +175,12 @@ const AthListScreenNavi = ({ navigation }) => {
                 <MaterialCommunityIcons
                   name="menu"
                   size={15}
-                  color="white"
+                  color="#000"
                 />
               )}
-              color="black"
+              buttonStyle={{
+                backgroundColor: '#fff'
+              }}
               onPress={() => navigation.toggleDrawer()}
             />
           ),

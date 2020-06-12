@@ -9,15 +9,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import { Hoshi } from 'react-native-textinput-effects';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import RNPickerSelect from 'react-native-picker-select';
 import firebase from 'firebase';
-import { Ionicons } from '@expo/vector-icons';
 
 import CircleButton from '../../elements/CircleButton';
+import InputWithHoshi from '../../elements/InputWithHoshi';
 
 class AthCreateScreen extends React.Component {
   constructor(props) {
@@ -162,7 +161,7 @@ class AthCreateScreen extends React.Component {
                 >
                   <Image
                     style={styles.userImageTitle}
-                    source={{ uri: this.state.url }}
+                    source={this.state.url ? { uri: this.state.url } : null}
                   />
                 </View>
               </TouchableHighlight>
@@ -186,91 +185,43 @@ class AthCreateScreen extends React.Component {
               style={pickerSelectStyles}
               useNativeAndroidPickerStyle={false}
             />
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Username"
-                value={this.state.athuid}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ athuid: text }); }}
-              />
-            </View>
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="First Name"
-                value={this.state.firstname}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ firstname: text }); }}
-              />
-            </View>
-
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Last Name"
-                value={this.state.lastname}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ lastname: text }); }}
-              />
-            </View>
-
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Age"
-                value={this.state.age}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ age: text }); }}
-              />
-            </View>
-
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Introduction"
-                value={this.state.intro1}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ intro1: text }); }}
-              />
-            </View>
-
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Introduction"
-                value={this.state.intro2}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ intro2: text }); }}
-              />
-            </View>
-
-            <View style={styles.userEditInfo}>
-              <Hoshi
-                style={styles.input}
-                label="Introduction"
-                value={this.state.intro3}
-                borderColor="#265366"
-                borderHeight={4}
-                inputPadding={12}
-                onChangeText={(text) => { this.setState({ intro3: text }); }}
-              />
-            </View>
-
+            <InputWithHoshi
+              label="Username"
+              value={this.state.athuid}
+              onChangeText={(text) => { this.setState({ athuid: text }); }}
+            />
+            <InputWithHoshi
+              label="First Name"
+              value={this.state.firstname}
+              onChangeText={(text) => { this.setState({ firstname: text }); }}
+            />
+            <InputWithHoshi
+              label="Last Name"
+              value={this.state.lastname}
+              onChangeText={(text) => { this.setState({ lastname: text }); }}
+            />
+            <InputWithHoshi
+              label="Age"
+              value={this.state.age}
+              onChangeText={(text) => { this.setState({ age: text }); }}
+            />
+            <InputWithHoshi
+              label="Introduction"
+              value={this.state.intro1}
+              onChangeText={(text) => { this.setState({ intro1: text }); }}
+            />
+            <InputWithHoshi
+              label="Introduction"
+              value={this.state.intro2}
+              onChangeText={(text) => { this.setState({ intro2: text }); }}
+            />
+            <InputWithHoshi
+              label="Introduction"
+              value={this.state.intro3}
+              onChangeText={(text) => { this.setState({ intro3: text }); }}
+            />
+            <CircleButton name="check" onPress={this.handlePress.bind(this)}/>
           </View>
-          <CircleButton name="check" onPress={this.handlePress.bind(this)}/>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     );

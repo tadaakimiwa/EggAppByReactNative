@@ -20,6 +20,8 @@ export default function NeumoSquareButton(props) {
   const gradColor = ['#ffffff', '#e6e6e6'];
   const shadowOuterColor = isDown ? '#3c82aa' : '#e0e0e0';
 
+  const { fontSize } = props;
+
   return (
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
@@ -33,7 +35,7 @@ export default function NeumoSquareButton(props) {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Text style={styles.buttonTitle}>
+            <Text style={[styles.buttonTitle, { fontSize }]}>
               {props.text}
             </Text>
           </LinearGradient>
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderRadius: 2,
-    shadowColor: '#a3a3a3',
+    shadowColor: '#a1a1a1',
     shadowOffset: { width: -1.5, height: -1.5 },
     shadowOpacity: 1,
     shadowRadius: 1,
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     fontWeight: '400',
-    fontSize: 12,
     color: '#000',
   },
 });

@@ -5,11 +5,15 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
+import { Button } from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import GoAthletePageButton from '../components/GoAthletePageButton';
+import UserPageModal from '../components/UserPageModal';
 import AthListInUser from '../components/AthListInUser';
 
 class UserPageScreen extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,6 +24,7 @@ class UserPageScreen extends React.Component {
       athList: [],
       followingNum: 0,
       commentsNum: 0,
+      isModalVisible: false,
     };
   }
 
@@ -30,6 +35,25 @@ class UserPageScreen extends React.Component {
         console.log(userId);
       }
     }); */
+    const { navigation } = this.props;
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          icon={(
+            <MaterialCommunityIcons
+              name="menu"
+              size={24}
+              color="#000"
+            />
+          )}
+          onPress={this.toggleModal.bind(this)}
+          buttonStyle={{
+            backgroundColor: '#fff',
+          }}
+        />
+      ),
+    });
+
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
     const docRef = db.collection(`users/${user.uid}/User`).doc('info');
@@ -66,8 +90,12 @@ class UserPageScreen extends React.Component {
     });
   }
 
-  returnInfo(info) {
-    this.setState({ info });
+  onBackdropPress() {
+    this.setState((prevState) => ({ isModalVisible: !prevState.isModalVisible }));
+  }
+
+  toggleModal() {
+    this.setState((prevState) => ({ isModalVisible: !prevState.isModalVisible }));
   }
 
   handlePressFollow() {
@@ -78,7 +106,12 @@ class UserPageScreen extends React.Component {
     this.props.navigation.navigate('AthPage');
   }
 
-  handlePressEdit() {
+  returnInfo(info) {
+    this.setState({ info });
+  }
+
+  videoModalOnPress() {
+    this.setState({ isModalVisible: false });
     const info = {
       username: this.state.username,
       profile: this.state.profile,
@@ -110,7 +143,11 @@ class UserPageScreen extends React.Component {
           commentsNum={commentsNum}
           button={button}
           onPressFollowing={this.handlePressFollow.bind(this)}
-          onPressEdit={this.handlePressEdit.bind(this)}
+        />
+        <UserPageModal
+          onPress={this.videoModalOnPress.bind(this)}
+          onBackdropPress={this.onBackdropPress.bind(this)}
+          isModalVisible={this.state.isModalVisible}
         />
       </SafeAreaView>
     );
