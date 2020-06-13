@@ -27,7 +27,10 @@ export default function ShopScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ShopItemList itemList={itemList} navigation={navigation} />
+      <ShopItemList
+        itemList={itemList}
+        navigation={navigation}
+      />
     </View>
   );
 }

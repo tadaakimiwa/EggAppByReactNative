@@ -13,52 +13,33 @@ const dateString = (date) => {
   return str.split('T')[0];
 };
 
-class UserItemList extends React.Component {
-  renderShopItem({ item }) {
+export default function UserItemList({ itemList }) {
+  const renderShopItem = ({ item }) => {
     const post = item;
     console.log(item);
     return (
-      <View style={styles.athListItem}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('PostDetail', { post }); }}>
-          <View style={styles.itemImage}>
-            <Image
-              style={styles.itemImageTitle}
-              source={{ uri: item.thumbnailURL }}
-            />
-          </View>
-        </TouchableHighlight>
-        <View style={styles.itemComment}>
-          <View style={styles.userNamePic}>
-            <Image
-              style={styles.userNamePicTitle}
-              source={{ uri: item.profileImageURL }}
-            />
-          </View>
-          <View style={styles.itemCaption}>
-            <Text style={styles.itemCaptionTitle}>
-              {item.contentsCaption}
-            </Text>
-            <Text style={styles.itemCaptionDate}>
-              {dateString(item.createdOn)}
-            </Text>
-          </View>
-        </View>
+      <View style={styles.userItem}>
+        <Text>hey</Text>
       </View>
     );
   }
 
-  render() {
-    return (
-      <View style={styles.athList}>
-        <FlatList
-          data={this.props.itemList}
-          renderItem={this.renderShopItem.bind(this)}
-          style={styles.athListFlat}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.athList}>
+      <FlatList
+        data={itemList}
+        renderItem={renderShopItem}
+        style={styles.athListFlat}
+        ListEmptyComponent={(
+          <View>
+            <Text>Go Shop to Get some Item</Text>
+          </View>
+        )}
+      />
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
   athList: {
@@ -124,5 +105,3 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-
-export default UserItemList;

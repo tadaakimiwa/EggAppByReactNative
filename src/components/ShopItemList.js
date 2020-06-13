@@ -22,25 +22,35 @@ const dateString = (date) => {
 const itemWidth = Dimensions.get('window').width * 0.49;
 const itemHeight = itemWidth;
 
-export default function ShopItemList({ itemList }) {
+export default function ShopItemList({ itemList, navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
   const onBackdropPress = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const toggleModal = () => {
+  const toggleModal = (n, p) => {
     setModalVisible(!isModalVisible);
+    setName(n);
+    setPrice(p);
   };
+
+  const goBack = (props) => {
+    navigation.navigate('main');
+  }
 
   const renderShopItem = ({ item }) => {
     console.log(item);
     return (
       <View style={[styles.shopItem, { height: itemHeight, width: itemWidth }]}>
         <NeumoShopItemContent
-          onPress={toggleModal}
+          toggleModal={() => { toggleModal(item.name, item.price); }}
           onBackdropPress={onBackdropPress}
           isModalVisible={isModalVisible}
           text={item.name}
+          modalName={name}
+          modalPrice={price}
         />
         <View style={styles.itemButton}>
           <NeumoBuyButton
@@ -65,6 +75,16 @@ export default function ShopItemList({ itemList }) {
             <Text style={styles.headerTitle}>
               Shop
             </Text>
+          </View>
+        )}
+        ListFooterComponent={(
+          <View style={styles.footer}>
+            <TouchableHighlight
+              style={styles.footerButton}
+              onPress={goBack}
+            >
+              <Text style={styles.footerButtonTitle}>Go Back</Text>
+            </TouchableHighlight>
           </View>
         )}
       />
@@ -105,5 +125,17 @@ const styles = StyleSheet.create({
   },
   itemButton: {
     paddingTop: 18,
+  },
+  footer: {
+    alignItems: 'center',
+  },
+  footerButton: {
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 8,
+  },
+  footerButtonTitle: {
+    fontSize: 12,
   },
 });

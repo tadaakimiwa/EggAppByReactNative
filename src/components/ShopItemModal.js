@@ -20,7 +20,15 @@ export default function ShopItemModal(props) {
       >
         <View style={styles.shopItemModalContent}>
           <View style={styles.itemName}>
-            <Text style={styles.itemNameTitle}>{props.itemName}</Text>
+            <Text style={styles.itemNameTitle}>
+              {props.itemName}
+            </Text>
+          </View>
+          <View style={styles.itemPrice}>
+            <Text style={styles.itemPriceTitle}>
+              {props.itemPrice}
+              円
+            </Text>
           </View>
         </View>
       </Modal>
@@ -40,20 +48,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shopItemModalContent: {
-    height: 540,
+    height: 180,
     width: 320,
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 12,
+    padding: 12,
   },
-  modalItem: {
-    height: 160,
-    width: 320,
-    alignItems: 'center',
-    justifyContent: 'center',
+  itemName: {
+    paddingTop: 12,
   },
-  modalItemTitle: {
-    fontSize: 24,
+  itemNameTitle: {
+    fontSize: 32,
+    fontWeight: '400',
+  },
+  itemPrice: {
+    paddingTop: 24,
+  },
+  itemPriceTitle: {
+    fontSize: 18,
     fontWeight: '300',
   },
 });

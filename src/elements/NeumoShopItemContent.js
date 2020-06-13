@@ -28,7 +28,7 @@ export default function NeumoShopItemContent(props) {
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={props.onPress}
+      onPress={props.toggleModal}
     >
       <View>
         <View style={[styles.buttonOuter, { shadowColor: shadowOuterColor }]}>
@@ -52,7 +52,8 @@ export default function NeumoShopItemContent(props) {
         <ShopItemModal
           isModalVisible={props.isModalVisible}
           onBackdropPress={props.onBackdropPress}
-          itemName={props.text}
+          itemName={props.modalName}
+          itemPrice={props.modalPrice}
         />
       </View>
     </TouchableWithoutFeedback>
