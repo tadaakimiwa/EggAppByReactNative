@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Text,
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
@@ -8,6 +9,7 @@ import firebase from 'firebase';
 import { Button } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import UserPageHeaderText from '../elements/UserPageHeaderText';
 import GoAthletePageButton from '../components/GoAthletePageButton';
 import UserPageModal from '../components/UserPageModal';
 import AthListInUser from '../components/AthListInUser';
@@ -36,23 +38,6 @@ class UserPageScreen extends React.Component {
       }
     }); */
     const { navigation } = this.props;
-    navigation.setOptions({
-      headerRight: () => (
-        <Button
-          icon={(
-            <MaterialCommunityIcons
-              name="menu"
-              size={24}
-              color="#000"
-            />
-          )}
-          onPress={this.toggleModal.bind(this)}
-          buttonStyle={{
-            backgroundColor: '#fff',
-          }}
-        />
-      ),
-    });
 
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
@@ -87,6 +72,32 @@ class UserPageScreen extends React.Component {
         athList.push({ ...doc.data(), key: doc.id });
       });
       this.setState({ athList })
+    });
+
+    const { username } = this.state;
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          icon={(
+            <MaterialCommunityIcons
+              name="menu"
+              size={24}
+              color="#000"
+            />
+          )}
+          onPress={this.toggleModal.bind(this)}
+          buttonStyle={{
+            backgroundColor: '#fff',
+          }}
+        />
+      ),
+      title: username,
+      headerTintColor: '#000',
+      headerTitleStyle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+      },
     });
   }
 

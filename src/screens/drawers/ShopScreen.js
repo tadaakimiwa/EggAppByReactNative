@@ -1,47 +1,47 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import PropTypes from 'prop-types';
 import firebase from 'firebase';
 
 import ShopItemList from '../../components/ShopItemList';
 
-class ShopScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ItemList: [],
-    };
-  }
+export default function ShopScreen({ navigation }) {
+  const [itemList, setItemList] = useState([]);
 
-  // itemのfirebase 未
-  componentDidMount() {
+  useEffect(() => {
     const db = firebase.firestore();
-    db.collectionGroup('posts')
-      .where('category', '==', 'Cross Country')
-      .get()
-      .then((querysnapshot) => {
-        const itemList = [];
-        querysnapshot.forEach((doc) => {
-          itemList.push({ ...doc.data(), key: doc.id });
-          console.log(itemList);
-        });
-        this.setState({ itemList });
-      });
-  }
+    const itemRef = db.collection('app/shop/items');
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ShopItemList itemList={this.state.itemList} navigation={this.props.navigation}/>
-      </View>
-    );
-  }
+    function subscribeItems() {
+      itemRef.onSnapshot((snapshot) => {
+        const list = [];
+        snapshot.forEach((doc) => {
+          list.push({ ...doc.data(), key: doc.id });
+        });
+        setItemList(list);
+      });
+    }
+    subscribeItems();
+  }, []);
+
+
+  return (
+    <View style={styles.container}>
+      <ShopItemList itemList={itemList} navigation={navigation} />
+    </View>
+  );
 }
+
+ShopScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
   },
 });
-
-export default ShopScreen;

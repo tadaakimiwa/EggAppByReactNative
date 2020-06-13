@@ -41,6 +41,7 @@ import SkiJumpingScreen from './src/screens/AthLists/SkiJumpingScreen';
 import SnowBoardingScreen from './src/screens/AthLists/SnowBoardingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import ShopScreen from './src/screens/drawers/ShopScreen';
 import UserEditScreen from './src/screens/UserEditScreen';
 import UserCreateScreen from './src/screens/UserCreateScreen';
 
@@ -268,7 +269,11 @@ const UserPageScreenNavi = ({ navigation }) => {
         headerBackTitle: null,
       }}
     >
-      <Stack.Screen name="User1" component={UserPageScreen} />
+      <Stack.Screen
+        name="UserPage"
+        component={UserPageScreen}
+        optiona={UserPageScreen.navigationOptions}
+      />
       <Stack.Screen name="UserEdit" component={UserEditScreen} />
       <Stack.Screen name="AthPage" component={AthPageScreen} />
       <Stack.Screen name="AthEdit" component={AthEditScreen} />
@@ -336,6 +341,10 @@ function CustomDrawerContent(props) {
         label="Following"
         onPress={() => props.navigation.navigate('FollowingList')}
       />
+      <DrawerItem
+        label="Shop"
+        onPress={() => props.navigation.navigate('Shop')}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -367,6 +376,7 @@ export default function App() {
       >
         <Drawer.Screen name="main" component={MainNavi} />
         <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
+        <Drawer.Screen name="Shop" component={ShopScreen} />
         <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
         <Drawer.Screen
           name="Home"
