@@ -44,6 +44,7 @@ import SignupScreen from './src/screens/SignupScreen';
 import ShopScreen from './src/screens/drawers/ShopScreen';
 import UserEditScreen from './src/screens/UserEditScreen';
 import UserCreateScreen from './src/screens/UserCreateScreen';
+import UserItemScreen from './src/screens/drawers/UserItemScreen';
 
 import ENV from './env.json';
 
@@ -345,6 +346,10 @@ function CustomDrawerContent(props) {
         label="Shop"
         onPress={() => props.navigation.navigate('Shop')}
       />
+      <DrawerItem
+        label="Items"
+        onPress={() => props.navigation.navigate('Items')}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -377,6 +382,7 @@ export default function App() {
         <Drawer.Screen name="main" component={MainNavi} />
         <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
         <Drawer.Screen name="Shop" component={ShopScreen} />
+        <Drawer.Screen name="Items" component={UserItemScreen} />
         <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
         <Drawer.Screen
           name="Home"

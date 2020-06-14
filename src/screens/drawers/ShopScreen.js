@@ -24,7 +24,6 @@ export default function ShopScreen({ navigation }) {
     subscribeItems();
   }, []);
 
-
   return (
     <View style={styles.container}>
       <ShopItemList

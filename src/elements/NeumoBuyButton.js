@@ -25,7 +25,7 @@ export default function NeumoBuyButton(props) {
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={props.onPress}
+      onPress={props.handleBuy}
     >
       <View style={[styles.buttonOuter, { shadowColor: shadowOuterColor }]}>
         <View style={styles.buttonInner}>

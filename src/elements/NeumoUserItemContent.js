@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -9,9 +8,9 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import ShopItemModal from '../components/ShopItemModal';
+import UserItemModal from '../components/UserItemModal';
 
-export default function NeumoShopItemContent(props) {
+export default function NeumoUserItemContent(props) {
   const [isDown, setDown] = useState(false);
   const handlePressIn = useCallback(() => {
     setDown(true);
@@ -49,11 +48,12 @@ export default function NeumoShopItemContent(props) {
             </LinearGradient>
           </View>
         </View>
-        <ShopItemModal
+        <UserItemModal
           isModalVisible={props.isModalVisible}
           onBackdropPress={props.onBackdropPress}
           itemName={props.modalName}
           itemPrice={props.modalPrice}
+          itemQuantity={props.modalQuantity}
         />
       </View>
     </TouchableWithoutFeedback>

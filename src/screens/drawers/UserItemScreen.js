@@ -11,7 +11,8 @@ export default function UserItemScreen(props) {
 
   useEffect(() => {
     const db = firebase.firestore();
-    const itemRef = db.collection();
+    const user = firebase.auth().currentUser;
+    const itemRef = db.collection(`users/${user.uid}/items`);
 
     function subscribeItems() {
       itemRef.onSnapshot((snapshot) => {
@@ -42,6 +43,7 @@ UserItemScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
   },
 });

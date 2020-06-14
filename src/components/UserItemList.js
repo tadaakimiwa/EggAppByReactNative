@@ -1,25 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   TouchableHighlight,
   FlatList,
-  Image,
+  Dimensions,
 } from 'react-native';
+import PropTypes from 'prop-types';
+
+import NeumoUserItemContent from '../elements/NeumoUserItemContent';
 
 const dateString = (date) => {
   const str = date.toDate().toISOString();
   return str.split('T')[0];
 };
 
-export default function UserItemList({ itemList }) {
+const itemWidth = Dimensions.get('window').width * 0.49;
+const itemHeight = itemWidth * 0.8;
+
+export default function UserItemList({ itemList, navigation }) {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState(0);
+  const onBackdropPress = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const toggleModal = (n, p, q) => {
+    setModalVisible(!isModalVisible);
+    setName(n);
+    setPrice(p);
+    setQuantity(q);
+  };
+
+  const goBack = () => {
+    navigation.navigate('main');
+  };
+
   const renderShopItem = ({ item }) => {
-    const post = item;
     console.log(item);
     return (
-      <View style={styles.userItem}>
-        <Text>hey</Text>
+      <View style={[styles.userItem, { height: itemHeight, width: itemWidth }]}>
+        <NeumoUserItemContent
+          toggleModal={() => { toggleModal(item.name, item.price, item.quantity); }}
+          onBackdropPress={onBackdropPress}
+          isModalVisible={isModalVisible}
+          iconName={item.iconName}
+          text={item.name}
+          modalName={name}
+          modalPrice={price}
+          modalQuantity={quantity}
+        />
       </View>
     );
   }
@@ -30,9 +63,29 @@ export default function UserItemList({ itemList }) {
         data={itemList}
         renderItem={renderShopItem}
         style={styles.athListFlat}
+        numColumns={2}
+        horizontal={false}
+        scrollEnabled={false}
         ListEmptyComponent={(
           <View>
-            <Text>Go Shop to Get some Item</Text>
+            <Text>Go Shop and Get some Item</Text>
+          </View>
+        )}
+        ListHeaderComponent={(
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>
+              Items
+            </Text>
+          </View>
+        )}
+        ListFooterComponent={(
+          <View style={styles.footer}>
+            <TouchableHighlight
+              style={styles.footerButton}
+              onPress={goBack}
+            >
+              <Text style={styles.footerButtonTitle}>Go Back</Text>
+            </TouchableHighlight>
           </View>
         )}
       />
@@ -40,68 +93,44 @@ export default function UserItemList({ itemList }) {
   );
 }
 
+UserItemList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
 
 const styles = StyleSheet.create({
+  header: {
+    paddingTop: 12,
+    paddingBottom: 32,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '500',
+  },
   athList: {
     width: '100%',
-    flexDirection: 'row',
   },
   athListFlat: {
     width: '100%',
+    paddingTop: 50,
   },
-  athListItem: {
-    marginTop: 12,
-    marginBottom: 24,
-    width: 320,
-    height: 280,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 20,
-    alignSelf: 'center',
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-  },
-  itemImage: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    justifyContent: 'center',
+  userItem: {
     alignItems: 'center',
-    height: 180,
+    width: '49%',
   },
-  itemImageTitle: {
-    height: '100%',
-    width: '100%',
-  },
-  itemComment: {
-    marginTop: 12,
-    marginLeft: 12,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingTop: 5,
+  footer: {
     alignItems: 'center',
-    width: 320,
-    height: 100,
   },
-  userNamePic: {
-    borderWidth: 1,
+  footerButton: {
     borderColor: '#ddd',
-    borderRadius: 32,
-    height: 64,
-    width: 64,
-    overflow: 'hidden',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 8,
   },
-  userNamePicTitle: {
-    height: 64,
-    width: 64,
-  },
-  itemCaption: {
-
-    paddingLeft: 18,
-  },
-  itemCaptionTitle: {
-    fontSize: 18,
-  },
-  itemCaptionDate: {
+  footerButtonTitle: {
     fontSize: 12,
   },
 });
