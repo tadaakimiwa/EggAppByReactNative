@@ -161,7 +161,7 @@ const AthListScreenNavi = ({ navigation }) => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#FF8300',
+          backgroundColor: '#fff',
         },
         headerTintColor: '#000',
         headerBackTitle: null,
@@ -176,7 +176,7 @@ const AthListScreenNavi = ({ navigation }) => {
               icon={(
                 <MaterialCommunityIcons
                   name="menu"
-                  size={15}
+                  size={24}
                   color="#000"
                 />
               )}
@@ -207,7 +207,7 @@ const SearchScreenNavi = () => {
         headerStyle: {
           backgroundColor: '#fff',
         },
-        headerTintColor: '#FF8300',
+        headerTintColor: '#000',
         headerBackTitle: null,
       }}
     >
@@ -248,7 +248,7 @@ const AlertScreenNavi = () => {
         headerStyle: {
           backgroundColor: '#fff',
         },
-        headerTintColor: '#FF8300',
+        headerTintColor: '#000',
         headerBackTitle: null,
       }}
     >
@@ -266,7 +266,7 @@ const UserPageScreenNavi = ({ navigation }) => {
         headerStyle: {
           backgroundColor: '#fff',
         },
-        headerTintColor: '#FF8300',
+        headerTintColor: '#000',
         headerBackTitle: null,
       }}
     >
@@ -303,11 +303,11 @@ const MainNavi = () => {
             <MaterialCommunityIcons
               name="egg-easter"
               size={25}
-              color="#fff"
+              color="#FF8300"
             />
           ),
           headerStyle: {
-            backgroundColor: '#FF8300',
+            backgroundColor: '#fff',
           },
         }}
       />

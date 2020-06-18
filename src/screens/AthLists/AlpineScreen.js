@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import firebase from 'firebase';
 
-import AthList from '../../components/AthList';
+import AthListAirbnb from '../../components/AthListAirbnb';
 
 class AlpineScreen extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class AlpineScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <AthList athList={this.state.athList} navigation={this.props.navigation} />
+        <AthListAirbnb athList={this.state.athList} navigation={this.props.navigation} />
       </View>
     );
   }
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingTop: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#f7f7f7',
   },
 });
 

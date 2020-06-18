@@ -23,6 +23,7 @@ class AthListAirbnb extends React.Component {
       <View style={styles.athListItem}>
         <TouchableHighlight
           onPress={() => { this.props.navigation.navigate('PostDetail', { postid, uid }); }}
+          underlayColor="transparent"
         >
           <View style={styles.itemImage}>
             <Image
@@ -85,8 +86,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   itemImage: {
-    borderWidth: 1,
-    borderColor: '#ddd',
     justifyContent: 'center',
     alignItems: 'center',
     height: 180,

@@ -10,6 +10,7 @@ import {
 import PropTypes from 'prop-types';
 
 import NeumoUserItemContent from '../elements/NeumoUserItemContent';
+import NeumoBuyButton from '../elements/NeumoBuyButton';
 
 const dateString = (date) => {
   const str = date.toDate().toISOString();
@@ -80,12 +81,10 @@ export default function UserItemList({ itemList, navigation }) {
         )}
         ListFooterComponent={(
           <View style={styles.footer}>
-            <TouchableHighlight
-              style={styles.footerButton}
-              onPress={goBack}
-            >
-              <Text style={styles.footerButtonTitle}>Go Back</Text>
-            </TouchableHighlight>
+            <NeumoBuyButton
+              text="Go Back"
+              onBuyButtonPress={goBack}
+            />
           </View>
         )}
       />
@@ -123,6 +122,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
+    paddingBottom: 20,
   },
   footerButton: {
     borderColor: '#ddd',

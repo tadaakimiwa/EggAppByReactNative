@@ -19,6 +19,7 @@ import VideoContents from '../elements/VideoContents';
 import ExpoVideoContents from '../elements/ExpoVideoContents';
 import PostVideoModal from './PostVideoModal';
 import PostCommentList from '../components/PostCommentList';
+import PostDetailItemList from '../components/PostDetailItemList';
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
@@ -57,6 +58,7 @@ export default function PostDetailScreen(props) {
   const [profileImageURL, setProfileImageURL] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [commentList, setCommentList] = useState([]);
+  const [itemList, setItemList] = useState([]);
   const [username, setUsername] = useState('');
   const [userProfileURL, setUserProfileURL] = useState('');
   const { uid } = props.route.params;
@@ -80,6 +82,7 @@ export default function PostDetailScreen(props) {
     const user = firebase.auth().currentUser;
     const docRef = db.collection(`users/${uid}/posts`).doc(`${postid}`);
     const commentRef = db.collection(`users/${uid}/posts/${postid}/comments`);
+    const itemRef = db.collection(`users/${user.uid}/items`);
 
     function subscribeInfo() {
       docRef.onSnapshot((doc) => {
@@ -100,14 +103,28 @@ export default function PostDetailScreen(props) {
 
     function subscribeComment() {
       commentRef.onSnapshot((snapshot) => {
+        const list = [];
         snapshot.forEach((doc) => {
-          setCommentList([...commentList, { ...doc.data(), key: doc.id }]);
+          list.push({ ...doc.data(), key: doc.id });
         });
+        setCommentList(list);
       });
     }
+
+    function subscribeItems() {
+      itemRef.onSnapshot((snapshot) => {
+        const list = [];
+        snapshot.forEach((doc) => {
+          list.push({ ...doc.data(), key: doc.id });
+        });
+        setItemList(list);
+      });
+    }
+
     subscribeInfo();
     subscribeComment();
-    getUsernameAndProfile(db, user)
+    subscribeItems();
+    getUsernameAndProfile(db, user);
   }, []);
 
   const toggleModal = () => {
@@ -142,9 +159,16 @@ export default function PostDetailScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ExpoVideoContents
-        uri={post.postVideoURL}
-        style={styles.video}
+      <View style={styles.video}>
+        <ExpoVideoContents
+          uri={post.postVideoURL}
+        />
+      </View>
+      <PostDetailItemList
+        itemList={itemList}
+        navigation={props.navigation}
+        uploader={post.uploader}
+        postid={post.postid}
       />
       <View style={styles.videoInfo}>
         <View style={styles.videoBar}>
@@ -207,7 +231,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   video: {
-    flex: 1,
+    width: videoWidth,
+    height: videoWidth * 0.6,
   },
   videoUploader: {
     borderWidth: 1,
@@ -223,7 +248,6 @@ const styles = StyleSheet.create({
   },
   videoInfo: {
     backgroundColor: '#fff',
-    paddingTop: videoWidth * 0.6,
   },
   videoBar: {
     borderWidth: 1,

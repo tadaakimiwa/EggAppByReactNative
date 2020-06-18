@@ -82,7 +82,7 @@ export default function ShopItemList({ itemList, navigation }) {
         <View style={styles.itemButton}>
           <NeumoBuyButton
             text="Buy"
-            handleBuy={handleBuy}
+            onBuyButtonPress={handleBuy}
           />
         </View>
       </View>
@@ -107,12 +107,10 @@ export default function ShopItemList({ itemList, navigation }) {
         )}
         ListFooterComponent={(
           <View style={styles.footer}>
-            <TouchableHighlight
-              style={styles.footerButton}
-              onPress={goBack}
-            >
-              <Text style={styles.footerButtonTitle}>Go Back</Text>
-            </TouchableHighlight>
+            <NeumoBuyButton
+              text="Go Back"
+              onBuyButtonPress={goBack}
+            />
           </View>
         )}
       />
@@ -147,6 +145,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
+    paddingBottom: 20,
   },
   footerButton: {
     borderColor: '#ddd',

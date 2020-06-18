@@ -114,11 +114,15 @@ class AthPostingScreen extends React.Component {
     const user = await firebase.auth().currentUser;
     const { uuid } = this.state;
     const db = await firebase.firestore();
-    const docRef = db.collection(`users/${user.uid}/posts`).doc(uuid);
+    const postRef = db.collection(`users/${user.uid}/posts`).doc(uuid);
+    const itemDiamondRef = postRef.collection('items').doc('diamond');
+    const itemDrinkRef = postRef.collection('items').doc('drink');
+    const itemTrophyRef = postRef.collection('items').doc('trophy');
+    const batch = db.batch();
     const newDate = firebase.firestore.Timestamp.now();
 
     console.log('category:', this.state.category, 'athuid', this.state.athuid);
-    docRef.set({
+    batch.set(postRef, {
       postVideoURL: this.state.url,
       thumbnailURL: this.state.thumbnailurl,
       profileImageURL: this.state.profileurl,
@@ -129,7 +133,23 @@ class AthPostingScreen extends React.Component {
       uploader: user.uid,
       updatedOn: newDate,
       athuid: this.state.athuid,
-    })
+    });
+    batch.set(itemDiamondRef, {
+      itemName: 'diamond',
+      quantity: 0,
+      price: 10000,
+    });
+    batch.set(itemDrinkRef, {
+      itemName: 'drink',
+      quantity: 0,
+      price: 500,
+    });
+    batch.set(itemTrophyRef, {
+      itemName: 'trophy',
+      quantity: 0,
+      price: 5000,
+    });
+    batch.commit()
       .then(() => {
         this.props.navigation.navigate('AthPage');
       })
