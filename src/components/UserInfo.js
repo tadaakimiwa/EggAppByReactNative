@@ -57,7 +57,7 @@ function UserInfo(props) {
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
               <NeumoCircleButton
-                text={1}
+                text={String(props.giftsNum)}
               />
             </View>
             <NeumoText

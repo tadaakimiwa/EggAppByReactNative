@@ -45,6 +45,7 @@ import ShopScreen from './src/screens/drawers/ShopScreen';
 import UserEditScreen from './src/screens/UserEditScreen';
 import UserCreateScreen from './src/screens/UserCreateScreen';
 import UserItemScreen from './src/screens/drawers/UserItemScreen';
+import PurchaseHistoryScreen from './src/screens/drawers/PurchaseHistoryScreen';
 
 import ENV from './env.json';
 
@@ -350,6 +351,10 @@ function CustomDrawerContent(props) {
         label="Items"
         onPress={() => props.navigation.navigate('Items')}
       />
+      <DrawerItem
+        label="Purchase History"
+        onPress={() => props.navigation.navigate('Purchase')}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -383,6 +388,7 @@ export default function App() {
         <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
         <Drawer.Screen name="Shop" component={ShopScreen} />
         <Drawer.Screen name="Items" component={UserItemScreen} />
+        <Drawer.Screen name="Purchase" component={PurchaseHistoryScreen} />
         <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
         <Drawer.Screen
           name="Home"

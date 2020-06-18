@@ -26,6 +26,7 @@ class UserPageScreen extends React.Component {
       athList: [],
       followingNum: 0,
       commentsNum: 0,
+      giftsNum: 0,
       isModalVisible: false,
     };
   }
@@ -51,6 +52,7 @@ class UserPageScreen extends React.Component {
         const { isAthlete } = doc.data();
         const { followingNum } = doc.data();
         const { commentsNum } = doc.data();
+        const { giftsNum } = doc.data();
         this.setState({
           username,
           profile,
@@ -58,6 +60,7 @@ class UserPageScreen extends React.Component {
           isAthlete,
           followingNum,
           commentsNum,
+          giftsNum,
         });
       } else {
         console.log('No such document!', user.uid);
@@ -139,6 +142,7 @@ class UserPageScreen extends React.Component {
     };
     const { followingNum } = this.state;
     const { commentsNum } = this.state;
+    const { giftsNum } = this.state;
     const { isAthlete } = this.state;
     let button;
     if (isAthlete) {
@@ -152,6 +156,7 @@ class UserPageScreen extends React.Component {
           info={info}
           followingNum={followingNum}
           commentsNum={commentsNum}
+          giftsNum={giftsNum}
           button={button}
           onPressFollowing={this.handlePressFollow.bind(this)}
         />
