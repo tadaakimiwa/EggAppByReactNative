@@ -16,6 +16,7 @@ import * as Permissions from 'expo-permissions';
 import firebase from 'firebase';
 
 import CircleButton from '../elements/CircleButton';
+import InputWithHoshi from '../elements/InputWithHoshi';
 
 class UserCreateScreen extends React.Component {
 
@@ -138,29 +139,16 @@ class UserCreateScreen extends React.Component {
                   </Text>
                 </TouchableHighlight>
               </View>
-              <View style={styles.userEditInfo}>
-                <Hoshi
-                  style={styles.input}
-                  label="Name"
-                  value={this.state.username}
-                  borderColor="#265366"
-                  borderHeight={4}
-                  inputPadding={12}
-                  onChangeText={(text) => { this.setState({ username: text }); }}
-                />
-              </View>
-
-              <View style={styles.userEditInfo}>
-                <Hoshi
-                  style={styles.input}
-                  label="Profile"
-                  value={this.state.profile}
-                  borderColor="#265366"
-                  borderHeight={4}
-                  inputPadding={12}
-                  onChangeText={(text) => { this.setState({ profile: text }); }}
-                />
-              </View>
+              <InputWithHoshi
+                label="Username"
+                value={this.state.username}
+                onChangeText={(text) => { this.setState({ username: text }); }}
+              />
+              <InputWithHoshi
+                label="Profile"
+                value={this.state.profile}
+                onChangeText={(text) => { this.setState({ profile: text }); }}
+              />
             </View>
             <CircleButton name="check" onPress={this.handlePress.bind(this)}/>
           </View>

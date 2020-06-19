@@ -49,7 +49,7 @@ export default function UserPurchaseList({ purchaseList, navigation }) {
         data={purchaseList}
         renderItem={renderPurchase}
         style={styles.purchaseListFlat}
-        numColumns={2}
+        numColumns={1}
         horizontal={false}
         scrollEnabled={false}
         ListHeaderComponent={(
@@ -91,11 +91,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   purchaseItem: {
-    alignItems: 'center',
-    width: '49%',
+    width: '100%',
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
   },
   footer: {
     alignItems: 'center',
+    paddingTop: 20,
     paddingBottom: 20,
   },
   footerButton: {
