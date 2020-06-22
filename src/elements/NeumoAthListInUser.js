@@ -43,17 +43,20 @@ export default function NeumoCircleButton(props) {
             <View style={styles.athListItemTab}>
               <TouchableHighlight
                 onPress={() => { props.navigation.navigate('AthDetail', { uid }); }}
+                underlayColor="transparent"
               >
-                <View style={styles.athImage}>
-                  <Image
-                    style={styles.athImageTitle}
-                    source={{ uri: athlete.profileImageURL }}
-                  />
+                <View>
+                  <View style={styles.athImage}>
+                    <Image
+                      style={styles.athImageTitle}
+                      source={{ uri: athlete.profileImageURL }}
+                    />
+                  </View>
+                  <View style={styles.athName}>
+                    <Text style={styles.athNameTitle}>{athlete.athuid}</Text>
+                  </View>
                 </View>
               </TouchableHighlight>
-              <View style={styles.athName}>
-                <Text style={styles.athNameTitle}>{athlete.athuid}</Text>
-              </View>
             </View>
           </LinearGradient>
         </View>

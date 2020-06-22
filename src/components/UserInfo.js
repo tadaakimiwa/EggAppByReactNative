@@ -25,10 +25,9 @@ function UserInfo(props) {
             title="U"
             source={info.url ? { uri: info.url } : null}
           />
-          <NeumoText
-            text={info.username}
-            fontSize={12}
-          />
+          <Text style={styles.userNameTitle}>
+            {info.username}
+          </Text>
         </View>
 
         <View style={styles.userInfoBar}>
@@ -37,10 +36,9 @@ function UserInfo(props) {
               text={String(props.followingNum)}
               onPress={props.onPressFollowing}
             />
-            <NeumoText
-              text="Following"
-              fontSize={12}
-            />
+            <Text style={styles.userInfoTabTitle}>
+              Following
+            </Text>
           </View>
           <View style={styles.userInfoTab}>
             <View style={styles.userInfoTabItem}>
@@ -48,10 +46,9 @@ function UserInfo(props) {
                 text={String(props.commentsNum)}
               />
             </View>
-            <NeumoText
-              text="Comments"
-              fontSize={12}
-            />
+            <Text style={styles.userInfoTabTitle}>
+              Comments
+            </Text>
           </View>
 
           <View style={styles.userInfoTab}>
@@ -60,10 +57,9 @@ function UserInfo(props) {
                 text={String(props.giftsNum)}
               />
             </View>
-            <NeumoText
-              text="Gifts"
-              fontSize={12}
-            />
+            <Text style={styles.userInfoTabTitle}>
+              Gifts
+            </Text>
           </View>
         </View>
       </View>
@@ -81,6 +77,7 @@ function UserInfo(props) {
 
 const styles = StyleSheet.create({
   userInfo: {
+    paddingTop: 12,
     height: 240,
     backgroundColor: '#f7f7f7',
     borderBottomWidth: 1,
@@ -92,8 +89,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   userProfile: {
-    paddingLeft: 36,
     paddingBottom: 6,
+    alignItems: 'center',
   },
   userProfileTitle: {
     fontSize: 16,
@@ -122,6 +119,7 @@ const styles = StyleSheet.create({
   userNameTitle: {
     paddingTop: 12,
     fontSize: 18,
+    fontWeight: '500',
   },
   userInfoBar: {
     width: '67%',
@@ -148,6 +146,7 @@ const styles = StyleSheet.create({
   },
   userInfoTabTitle: {
     fontSize: 15,
+    fontWeight: '500',
     paddingTop: 12,
   },
 });

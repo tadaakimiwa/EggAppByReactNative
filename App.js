@@ -278,6 +278,7 @@ const UserPageScreenNavi = ({ navigation }) => {
       />
       <Stack.Screen name="UserEdit" component={UserEditScreen} />
       <Stack.Screen name="AthPage" component={AthPageScreen} />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="AthEdit" component={AthEditScreen} />
       <Stack.Screen name="AthUploading" component={AthUploadingScreen} />
       <Stack.Screen name="AthPosting" component={AthPostingScreen} />
@@ -386,6 +387,7 @@ export default function App() {
       >
         <Drawer.Screen name="main" component={MainNavi} />
         <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
+        <Drawer.Screen name="FollowingList" component={FollowingListScreen} />
         <Drawer.Screen name="Shop" component={ShopScreen} />
         <Drawer.Screen name="Items" component={UserItemScreen} />
         <Drawer.Screen name="Purchase" component={PurchaseHistoryScreen} />

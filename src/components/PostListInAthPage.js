@@ -55,10 +55,11 @@ export default function AthPostList(props) {
 
 const styles = StyleSheet.create({
   postList: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
+    height: '100%',
+    width: '100%',
   },
   athPostListItem: {
     width: imageWidth * 0.5,

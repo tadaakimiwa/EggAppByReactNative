@@ -15,22 +15,24 @@ import DraggableItem from '../elements/DraggableItem';
 import PostDetailItemModal from './PostDetailItemModal';
 
 export default function PostDetailItemList({
-  itemList, navigation, uploader, postid,
+  itemList, navigation, uploader, postid, athuid,
 }) {
   const [isItemModalVisible, setItemModalVisible] = useState(false);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState(0);
+  const [iconName, setIconName] = useState(0);
 
   const onItemBackdropPress = () => {
     setItemModalVisible(!isItemModalVisible);
   };
 
-  const toggleItemModal = (n, p, q) => {
+  const toggleItemModal = (item) => {
     setItemModalVisible(!isItemModalVisible);
-    setName(n);
-    setPrice(p);
-    setQuantity(q);
+    setName(item.name);
+    setPrice(item.price);
+    setQuantity(item.quantity);
+    setIconName(item.iconName);
   };
 
   const closeItemModal = () => {
@@ -62,6 +64,8 @@ export default function PostDetailItemList({
       createdOn: newDate,
       price,
       uid: user.uid,
+      athuid,
+      iconName,
     });
     batch.commit()
       .then(() => {
@@ -71,29 +75,32 @@ export default function PostDetailItemList({
 
   const renderItems = ({ item }) => {
     console.log(item);
-    return (
-      <View style={styles.userItem}>
-        <TouchableHighlight
-          onPress={() => { toggleItemModal(item.name, item.price, item.quantity); }}
-          underlayColor="transparent"
-        >
-          <View style={styles.itemContents}>
-            <MaterialCommunityIcons
-              name={item.iconName}
-              size={32}
-              color="#000"
-            />
-          </View>
-        </TouchableHighlight>
-        <PostDetailItemModal
-          isItemModalVisible={isItemModalVisible}
-          onItemBackdropPress={onItemBackdropPress}
-          modalName={name}
-          modalPrice={price}
-          handleGift={handleGift}
-        />
-      </View>
-    );
+    if (item.quantity >= 1) {
+      return (
+        <View style={styles.userItem}>
+          <TouchableHighlight
+            onPress={() => { toggleItemModal(item); }}
+            underlayColor="transparent"
+          >
+            <View style={styles.itemContents}>
+              <MaterialCommunityIcons
+                name={item.iconName}
+                size={32}
+                color="#000"
+              />
+            </View>
+          </TouchableHighlight>
+          <PostDetailItemModal
+            isItemModalVisible={isItemModalVisible}
+            onItemBackdropPress={onItemBackdropPress}
+            modalName={name}
+            modalPrice={price}
+            modalIconName={iconName}
+            handleGift={handleGift}
+          />
+        </View>
+      );
+    }
   };
 
   return (

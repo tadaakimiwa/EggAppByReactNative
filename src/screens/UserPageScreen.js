@@ -124,7 +124,7 @@ class UserPageScreen extends React.Component {
     this.setState({ info });
   }
 
-  videoModalOnPress() {
+  userEditOnPress() {
     this.setState({ isModalVisible: false });
     const info = {
       username: this.state.username,
@@ -161,7 +161,7 @@ class UserPageScreen extends React.Component {
           onPressFollowing={this.handlePressFollow.bind(this)}
         />
         <UserPageModal
-          onPress={this.videoModalOnPress.bind(this)}
+          onPress={this.userEditOnPress.bind(this)}
           onBackdropPress={this.onBackdropPress.bind(this)}
           isModalVisible={this.state.isModalVisible}
         />

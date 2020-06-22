@@ -31,7 +31,13 @@ export default function NeumoSquareButton(props) {
         <View style={styles.buttonInner}>
           <LinearGradient
             colors={gradColor}
-            style={styles.buttonFace}
+            style={[
+              styles.buttonFace,
+              {
+                overflow: 'hidden',
+                borderRadius: 16,
+              },
+            ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
@@ -49,7 +55,7 @@ const styles = StyleSheet.create({
   buttonOuter: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    borderRadius: 2,
+    borderRadius: 20,
     shadowColor: '#a1a1a1',
     shadowOffset: { width: -1.5, height: -1.5 },
     shadowOpacity: 1,
@@ -58,24 +64,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   buttonInner: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
+    backgroundColor: '#fff',
+    borderRadius: 20,
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 1,
-    shadowColor: '#ffffff',
+    shadowColor: '#fff',
     shadowRadius: 1,
   },
   buttonFace: {
-    paddingTop: 1,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingBottom: 1,
-    borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonTitle: {
-    fontWeight: '400',
-    color: '#000',
+    paddingTop: 8,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingBottom: 8,
+    fontWeight: '700',
+    color: '#555',
   },
 });

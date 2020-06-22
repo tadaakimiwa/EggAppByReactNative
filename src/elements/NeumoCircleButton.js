@@ -19,7 +19,7 @@ export default function NeumoCircleButton(props) {
   });
 
   const gradColor = isDown ? ['#e6e6e6', '#ffffff'] : ['#ffffff', '#e6e6e6'];
-  const shadowOuterColor = isDown ? '#e4e4e4' : '#b3b3b3';
+  const shadowOuterColor = isDown ? '#e5e5e5' : '#b3b3b3';
 
   return (
     <TouchableWithoutFeedback
@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderRadius: 32,
-    shadowOffset: { width: 8, height: 8 },
+    shadowOffset: { width: 7, height: 7 },
     shadowOpacity: 1,
-    shadowRadius: 10,
+    shadowRadius: 7,
   },
   buttonInner: {
     backgroundColor: '#ffffff',
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonTitle: {
-    fontWeight: '600',
-    fontSize: 12,
+    fontWeight: '700',
+    fontSize: 16,
+    color: '#111',
   },
 });

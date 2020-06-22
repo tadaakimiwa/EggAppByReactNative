@@ -139,6 +139,10 @@ class AthCreateScreen extends React.Component {
       });
   }
 
+  handleCancel() {
+    this.props.navigation.navigate('MaterialTabNavi');
+  }
+
   render() {
     const placeholder = {
       label: 'Select a Category',
@@ -151,6 +155,16 @@ class AthCreateScreen extends React.Component {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.userEdit}>
+            <View style={styles.cancelButton}>
+              <TouchableHighlight
+                onPress={this.handleCancel.bind(this)}
+                underlayColor="transparent"
+              >
+                <Text style={styles.cancelButtonTitle}>
+                  Cancel
+                </Text>
+              </TouchableHighlight>
+            </View>
             <View style={styles.userEditImage}>
               <TouchableHighlight
                 style={styles.userImage}

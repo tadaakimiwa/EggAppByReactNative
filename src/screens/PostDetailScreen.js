@@ -54,6 +54,7 @@ export default function PostDetailScreen(props) {
   const [contentsCaption, setContentsCaption] = useState('');
   const [updatedOn, setUpdatedOn] = useState('');
   const [uploader, setUploader] = useState('');
+  const [athuid, setAthuid] = useState('');
   const [contentsInfo, setContentsInfo] = useState('');
   const [profileImageURL, setProfileImageURL] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
@@ -87,6 +88,7 @@ export default function PostDetailScreen(props) {
     function subscribeInfo() {
       docRef.onSnapshot((doc) => {
         if (doc.exists) {
+          setAthuid(doc.data().athuid);
           setProfileImageURL(doc.data().profileImageURL);
           setPostVideoURL(doc.data().postVideoURL);
           setThumbnailURL(doc.data().thumbnailURL);
@@ -141,6 +143,7 @@ export default function PostDetailScreen(props) {
   };
 
   const post = {
+    athuid,
     postVideoURL,
     thumbnailURL,
     contentsCaption,
@@ -169,6 +172,7 @@ export default function PostDetailScreen(props) {
         navigation={props.navigation}
         uploader={post.uploader}
         postid={post.postid}
+        athuid={post.athuid}
       />
       <View style={styles.videoInfo}>
         <View style={styles.videoBar}>
@@ -195,7 +199,7 @@ export default function PostDetailScreen(props) {
             </View>
             <View style={styles.videoUploaderName}>
               <Text style={styles.videoUploaderNameTitle}>
-                Name
+                {post.athuid}
               </Text>
             </View>
           </View>

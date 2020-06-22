@@ -5,7 +5,7 @@ import {
   Text,
   TouchableHighlight,
   FlatList,
-  Image
+  Image,
 } from 'react-native';
 
 const dateString = (date) => {
@@ -25,29 +25,31 @@ class AthListAirbnb extends React.Component {
           onPress={() => { this.props.navigation.navigate('PostDetail', { postid, uid }); }}
           underlayColor="transparent"
         >
-          <View style={styles.itemImage}>
-            <Image
-              style={styles.itemImageTitle}
-              source={{ uri: item.thumbnailURL }}
-            />
+          <View>
+            <View style={styles.itemImage}>
+              <Image
+                style={styles.itemImageTitle}
+                source={{ uri: item.thumbnailURL }}
+              />
+            </View>
+            <View style={styles.itemComment}>
+              <View style={styles.userNamePic}>
+                <Image
+                  style={styles.userNamePicTitle}
+                  source={{ uri: item.profileImageURL }}
+                />
+              </View>
+              <View style={styles.itemCaption}>
+                <Text style={styles.itemCaptionTitle}>
+                  {item.contentsCaption}
+                </Text>
+                <Text style={styles.itemCaptionDate}>
+                  {dateString(item.createdOn)}
+                </Text>
+              </View>
+            </View>
           </View>
         </TouchableHighlight>
-        <View style={styles.itemComment}>
-          <View style={styles.userNamePic}>
-            <Image
-              style={styles.userNamePicTitle}
-              source={{ uri: item.profileImageURL }}
-            />
-          </View>
-          <View style={styles.itemCaption}>
-            <Text style={styles.itemCaptionTitle}>
-              {item.contentsCaption}
-            </Text>
-            <Text style={styles.itemCaptionDate}>
-              {dateString(item.createdOn)}
-            </Text>
-          </View>
-        </View>
       </View>
     );
   }
@@ -69,6 +71,10 @@ const styles = StyleSheet.create({
   athList: {
     width: '100%',
     flexDirection: 'row',
+    shadowColor: '#a1a1a1',
+    shadowOffset: { width: 1, height: 7 },
+    shadowOpacity: 1,
+    shadowRadius: 7,
   },
   athListFlat: {
     width: '100%',
