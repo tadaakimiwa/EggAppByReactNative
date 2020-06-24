@@ -9,7 +9,6 @@ import firebase from 'firebase';
 import { Hoshi } from 'react-native-textinput-effects';
 
 import NeumophismButton from '../components/NeumophismButton';
-import NeumoSquareButton from '../elements/NeumoSquareButton';
 import NeumoCircleButton from '../elements/NeumoCircleButton';
 
 class LoginScreen extends React.Component {
@@ -71,7 +70,6 @@ class LoginScreen extends React.Component {
         >
           <Text style={styles.signupTitle}>Create a new Account for EggApp</Text>
         </TouchableHighlight>
-        <NeumoSquareButton />
         <NeumoCircleButton />
       </View>
     );

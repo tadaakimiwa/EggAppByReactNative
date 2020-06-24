@@ -14,6 +14,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import firebase from 'firebase';
 
+import NeumoNextButton from '../elements/NeumoNextButton';
+import ProgressBar from '../elements/ProgressBar';
+
 class AthPostingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +27,7 @@ class AthPostingScreen extends React.Component {
       uid: this.props.route.params.uid,
       thumbnailurl: '',
       profileurl: '',
-      progress: '',
+      progress: 0,
       uploader: '',
       category: '',
       contentsInfo: '',
@@ -73,9 +76,9 @@ class AthPostingScreen extends React.Component {
         await this.getCategoryAndProfile(db, user);
         const putTask = storageRef.put(localBlob);
         putTask.on('state_changed', (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes);
           this.setState({
-            progress: parseInt(progress) + '%',
+            progress: parseInt(progress, 10),
           });
         }, (error) => {
           console.log(error);
@@ -84,7 +87,6 @@ class AthPostingScreen extends React.Component {
           putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log(downloadURL);
             this.setState({
-              progress: '',
               thumbnailurl: downloadURL,
             });
           });
@@ -159,6 +161,15 @@ class AthPostingScreen extends React.Component {
   }
 
   render() {
+    let button;
+    if (this.state.progress === 1) {
+      button = (
+        <NeumoNextButton
+          text="Post"
+          onPress={this.handlePost.bind(this)}
+        />
+      );
+    }
     console.log(this.state.uid);
     return (
       <KeyboardAvoidingView style={styles.container}>
@@ -166,11 +177,22 @@ class AthPostingScreen extends React.Component {
           onPress={Keyboard.dismiss}
         >
           <View style={styles.inner}>
-            <View style={styles.undefined}>
-              <Text>
-                Thumbnail ?
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>
+                Create Your Post
               </Text>
-              <Text style={{ alignSelf: 'center' }}>{this.state.progress}</Text>
+            </View>
+            <View style={styles.progressBar}>
+              <ProgressBar
+                progress={this.state.progress}
+                style={{ alignSelf: 'center' }}
+              />
+            </View>
+            <View style={styles.thumbnailButton}>
+              <NeumoNextButton
+                text="Choose a Thubmnail"
+                onPress={this.thumbnailChoiceAndUpload}
+              />
             </View>
             <View style={styles.contentsInfo}>
               <TextInput
@@ -193,22 +215,7 @@ class AthPostingScreen extends React.Component {
               />
             </View>
             <View style={styles.postButtons}>
-              <TouchableHighlight
-                style={styles.button}
-                onPress={this.thumbnailChoiceAndUpload}
-              >
-                <Text style={styles.buttonTitle}>
-                  Choose a Thumbnail
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.button}
-                onPress={this.handlePost.bind(this)}
-              >
-                <Text style={styles.buttonTitle}>
-                  Post
-                </Text>
-              </TouchableHighlight>
+              {button}
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -220,53 +227,49 @@ class AthPostingScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
   },
-  undefined: {
-    height: '30%',
+  header: {
+    paddingTop: 96,
+    paddingBottom: 64,
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '300',
+  },
+  progressBar: {
+    alignItems: 'center',
+  },
+  thumbnailButton: {
+    alignItems: 'center',
+    paddingTop: 24,
+    paddingBottom: 24,
   },
   postButtons: {
     alignItems: 'center',
-    height: '70%',
-  },
-  button: {
-    backgroundColor: '#265366',
-    marginTop: 24,
-    borderRadius: 4,
-    height: 48,
-    width: 216,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonTitle: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: '300',
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
   },
   contentsInfo: {
     alignItems: 'center',
     paddingBottom: 10,
   },
   contentsCaption: {
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     height: 48,
-    width: 216,
+    width: 240,
     borderWidth: 1,
-    borderColor: '#bbb',
+    borderColor: '#007AFF',
+    borderRadius: 3,
     padding: 8,
   },
   contentsInfoTitle: {
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     height: 108,
-    width: 216,
+    width: 240,
     borderWidth: 1,
-    borderColor: '#bbb',
+    borderColor: '#007AFF',
+    borderRadius: 3,
     padding: 8,
   },
 });

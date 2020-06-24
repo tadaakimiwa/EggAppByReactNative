@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function NeumoSquareButton(props) {
+export default function NeumoNextButton(props) {
   const [isDown, setDown] = useState(false);
   const handlePressIn = useCallback(() => {
     setDown(true);
@@ -19,7 +19,7 @@ export default function NeumoSquareButton(props) {
   });
 
   const gradColor = isDown ? ['#e6e6e6', '#ffffff'] : ['#ffffff', '#e6e6e6'];
-  const shadowOuterColor = isDown ? '#3c82aa' : '#e0e0e0';
+  const shadowOuterColor = isDown ? '#ddd' : '#878787';
 
   return (
     <TouchableWithoutFeedback
@@ -27,7 +27,7 @@ export default function NeumoSquareButton(props) {
       onPressOut={handlePressOut}
       onPress={props.onPress}
     >
-      <View style={[styles.buttonOuter, { shadowOuterColor }]}>
+      <View style={[styles.buttonOuter, { shadowColor: shadowOuterColor }]}>
         <View style={styles.buttonInner}>
           <LinearGradient
             colors={gradColor}
@@ -36,7 +36,7 @@ export default function NeumoSquareButton(props) {
             end={{ x: 1, y: 1 }}
           >
             <Text style={styles.buttonTitle}>
-              a
+              {props.text}
             </Text>
           </LinearGradient>
         </View>
@@ -50,31 +50,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderRadius: 24,
-    shadowColor: '#e0e0e0',
-    shadowOffset: { width: 24, height: 24 },
+    shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 1,
-    shadowRadius: 18,
+    shadowRadius: 3,
     marginTop: 12,
     marginBottom: 12,
   },
   buttonInner: {
     backgroundColor: '#ffffff',
     borderRadius: 24,
-    shadowOffset: { width: -24, height: -24 },
+    shadowOffset: { width: -0.5, height: -0.5 },
     shadowOpacity: 1,
     shadowColor: '#ffffff',
-    shadowRadius: 18,
+    shadowRadius: 1,
   },
   buttonFace: {
     padding: 12,
     borderRadius: 24,
-    height: 96,
+    height: 48,
     width: 216,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonTitle: {
-    fontWeight: '600',
-    fontSize: 12,
+    fontWeight: '500',
+    fontSize: 16,
+    color: '#555',
   },
 });

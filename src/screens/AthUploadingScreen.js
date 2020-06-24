@@ -10,12 +10,15 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import firebase from 'firebase';
 
+import ProgressBar from '../elements/ProgressBar';
+import NeumoNextButton from '../elements/NeumoNextButton';
+
 class AthUploadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       url: '',
-      progress: '',
+      progress: 0,
     };
   }
 
@@ -58,9 +61,9 @@ class AthUploadingScreen extends React.Component {
         // 進捗を取得したいのでawaitは使わず
         const putTask = storageRef.put(localBlob);
         putTask.on('state_changed', (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes);
           this.setState({
-            progress: parseInt(progress) + '%',
+            progress: parseInt(progress, 10),
           });
         }, (error) => {
           console.log(error);
@@ -69,7 +72,6 @@ class AthUploadingScreen extends React.Component {
           putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log(downloadURL);
             this.setState({
-              progress: '',
               url: downloadURL,
               uuid,
               uid,
@@ -93,32 +95,35 @@ class AthUploadingScreen extends React.Component {
       uuid,
       uid,
     };
+    let button;
+    if (this.state.progress === 1) {
+      button = (
+        <NeumoNextButton
+          text="Next"
+          onPress={() => { this.props.navigation.navigate('AthPosting', posts); }}
+        />
+      );
+    }
     console.log('this is posts from uploading:', posts);
     return (
       <View style={styles.container}>
-        <View style={styles.undefined}>
-          <Text>
-            Insert Video?
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>
+            Upload Your Video
           </Text>
-          <Text style={{ alignSelf: 'center' }}>{this.state.progress}</Text>
+        </View>
+        <View style={styles.progressBar}>
+          <ProgressBar
+            progress={this.state.progress}
+            style={{ alignSelf: 'center' }}
+          />
         </View>
         <View style={styles.postButtons}>
-          <TouchableHighlight
-            style={styles.button}
+          <NeumoNextButton
+            text="Choose a Video"
             onPress={this.VideoChoiceAndUpload}
-          >
-            <Text style={styles.buttonTitle}>
-              Choose a Video
-            </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={() => { this.props.navigation.navigate('AthPosting', posts); }}
-          >
-            <Text style={styles.buttonTitle}>
-              Next
-            </Text>
-          </TouchableHighlight>
+          />
+          {button}
         </View>
       </View>
     );
@@ -128,16 +133,24 @@ class AthUploadingScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
   },
-  undefined: {
-    height: '30%',
+  header: {
+    paddingTop: 96,
+    paddingBottom: 96,
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '300',
+  },
+  progressBar: {
+    alignItems: 'center',
   },
   postButtons: {
     alignItems: 'center',
-    height: '70%',
+    paddingTop: 64,
   },
   button: {
     backgroundColor: '#265366',
