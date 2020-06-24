@@ -22,6 +22,7 @@ class AthPageScreen extends React.Component {
     super(props);
     this.state = {
       url: '',
+      introVideoURL: '',
       firstname: '',
       lastname: '',
       age: '',
@@ -48,6 +49,7 @@ class AthPageScreen extends React.Component {
     docRef.onSnapshot((doc) => {
       if (doc.exists) {
         const url = doc.data().profileImageURL;
+        const { introVideoURL } = doc.data();
         const { firstname } = doc.data();
         const { lastname } = doc.data();
         const { age } = doc.data();
@@ -56,6 +58,7 @@ class AthPageScreen extends React.Component {
         const { intro3 } = doc.data();
         this.setState({
           url,
+          introVideoURL,
           firstname,
           lastname,
           age,
@@ -121,6 +124,7 @@ class AthPageScreen extends React.Component {
     this.setState({ isModalVisible: false });
     const info = {
       url: this.state.url,
+      introVideoURL: this.state.introVideoURL,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       age: this.state.age,
@@ -131,9 +135,15 @@ class AthPageScreen extends React.Component {
     this.props.navigation.navigate('AthEdit', { info, returnInfo: this.returnInfo.bind(this) });
   }
 
+  athPostOnPress() {
+    this.setState({ isModalVisible: false });
+    this.props.navigation.navigate('AthUploading');
+  }
+
   render() {
     const info = {
       url: this.state.url,
+      introVideoURL: this.state.introVideoURL,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       age: this.state.age,
@@ -149,7 +159,8 @@ class AthPageScreen extends React.Component {
           navigation={this.props.navigation}
         />
         <AthPageModal
-          onPress={this.athEditOnPress.bind(this)}
+          athEditOnPress={this.athEditOnPress.bind(this)}
+          athPostOnPress={this.athPostOnPress.bind(this)}
           onBackdropPress={this.onBackdropPress.bind(this)}
           isModalVisible={this.state.isModalVisible}
         />

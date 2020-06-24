@@ -17,15 +17,27 @@ export default function AthPageModal(props) {
         style={{ margin: 0, justifyContent: 'center', alignItems: 'center' }}
         onBackdropPress={props.onBackdropPress}
       >
-        <View style={styles.athModalContent}>
-          <TouchableHighlight
-            onPress={props.onPress}
-            underlayColor="transparent"
-          >
-            <View style={styles.modalItem}>
-              <Text style={styles.modalItemTitle}>Edit</Text>
-            </View>
-          </TouchableHighlight>
+        <View style={styles.modalContainer}>
+          <View style={styles.athModalContent}>
+            <TouchableHighlight
+              onPress={props.athEditOnPress}
+              underlayColor="transparent"
+            >
+              <View style={styles.modalItem}>
+                <Text style={styles.modalItemTitle}>Edit</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.athModalContent_last}>
+            <TouchableHighlight
+              onPress={props.athPostOnPress}
+              underlayColor="transparent"
+            >
+              <View style={styles.modalItem}>
+                <Text style={styles.modalItemTitle}>Post</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
         </View>
       </Modal>
     </View>
@@ -39,12 +51,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  athModalContent: {
-    height: 160,
+  modalContainer: {
+    height: 320,
     width: 320,
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 24,
+  },
+  athModalContent: {
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+  },
+  athModalContent_last: {
+
   },
   modalItem: {
     height: 160,

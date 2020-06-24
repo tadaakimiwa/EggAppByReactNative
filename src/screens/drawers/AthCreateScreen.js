@@ -254,7 +254,10 @@ class AthCreateScreen extends React.Component {
                   </TouchableHighlight>
                 </View>
                 <View style={styles.progressBar}>
-                  <ProgressBar />
+                  <ProgressBar
+                    progress={this.state.videoProgress}
+                    style={{ alignSelf: 'center' }}
+                  />
                 </View>
                 <View style={styles.introVideoButton}>
                   <NeumoNextButton

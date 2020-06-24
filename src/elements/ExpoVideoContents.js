@@ -7,10 +7,9 @@ import {
 } from 'react-native';
 import { Video } from 'expo-av';
 
-const { width } = Dimensions.get('window');
-
 export default function ExpoVideoContents(props) {
   const [shouldPlay, setShouldPlay] = useState(true);
+  const { width } = props;
 
   useFocusEffect(
     React.useCallback(() => {

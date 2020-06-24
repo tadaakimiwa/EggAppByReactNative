@@ -165,6 +165,7 @@ export default function PostDetailScreen(props) {
       <View style={styles.video}>
         <ExpoVideoContents
           uri={post.postVideoURL}
+          width={videoWidth}
         />
       </View>
       <PostDetailItemList

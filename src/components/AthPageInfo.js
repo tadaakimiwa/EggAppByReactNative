@@ -4,18 +4,38 @@ import {
   Text,
   View,
   TouchableHighlight,
-  Image
+  Image,
+  Dimensions,
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import firebase from 'firebase';
 
-function returnInfo(info) {
-  this.setState({ info });
-}
+import ExpoVideoContents from '../elements/ExpoVideoContents';
+
+const videoWidth = Dimensions.get('window').width - 48;
 
 export default function AthPageInfo(props) {
   const { info } = props;
   console.log(info);
+  let video;
+  if (info.introVideoURL === undefined) {
+    video = (
+      <View style={styles.athIntroVideo}>
+        <Text style={styles.athIntroVideoTitle}>
+          No Video Yet
+        </Text>
+      </View>
+    );
+  } else {
+    video = (
+      <View style={styles.athIntroVideo}>
+        <ExpoVideoContents
+          uri={info.introVideoURL}
+          width={videoWidth}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.athPageInfo}>
@@ -45,31 +65,7 @@ export default function AthPageInfo(props) {
           </Text>
         </View>
       </View>
-      <View style={styles.userEdit}>
-        <TouchableHighlight
-          style={styles.userEditButton}
-          onPress={() => { props.navigation.navigate('AthEdit', { info, returnInfo: returnInfo.bind(this) }); }}
-        >
-          <Text style={styles.userEditTitle}>
-            Edit your athlete Infomation
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={styles.userEdit}>
-        <TouchableHighlight
-          style={styles.userEditButton}
-          onPress={() => { props.navigation.navigate('AthUploading'); }}
-        >
-          <Text style={styles.userEditTitle}>
-            Post new Video
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={styles.athIntroVideo}>
-        <Text style={styles.athIntroVideoTitle}>
-          紹介ビデオ、オンプレスで流れる
-        </Text>
-      </View>
+      {video}
       <View style={styles.athIntroCommentList}>
         <View style={styles.athIntroComment}>
           <Text style={styles.athIntroCommentTitle}>
@@ -143,8 +139,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   athIntroVideo: {
-    width: '100%',
-    height: 200,
+    width: videoWidth,
+    height: videoWidth * 0.6,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
