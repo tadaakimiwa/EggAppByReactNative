@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   FlatList,
   Image,
+  RefreshControl,
 } from 'react-native';
 
 const dateString = (date) => {
@@ -13,8 +14,16 @@ const dateString = (date) => {
   return str.split('T')[0];
 };
 
-class AthListAirbnb extends React.Component {
-  renderAth({ item }) {
+export default function AthListAirbnb(props) {
+  const [refreshing, setRefreshing] = useState(false);
+  const fetchItems = useCallback(async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    props.getData();
+    setRefreshing(false);
+  }, [refreshing]);
+
+  const renderAth = ({ item }) => {
     const post = item;
     const postid = post.key;
     const uid = post.uploader;
@@ -22,7 +31,7 @@ class AthListAirbnb extends React.Component {
     return (
       <View style={styles.athListItem}>
         <TouchableHighlight
-          onPress={() => { this.props.navigation.navigate('PostDetail', { postid, uid }); }}
+          onPress={() => { props.navigation.navigate('PostDetail', { postid, uid }); }}
           underlayColor="transparent"
         >
           <View>
@@ -53,18 +62,17 @@ class AthListAirbnb extends React.Component {
       </View>
     );
   }
-
-  render() {
-    return (
-      <View style={styles.athList}>
-        <FlatList
-          data={this.props.athList}
-          renderItem={this.renderAth.bind(this)}
-          style={styles.athListFlat}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.athList}>
+      <FlatList
+        data={props.athList}
+        renderItem={renderAth}
+        style={styles.athListFlat}
+        refreshing={refreshing}
+        onRefresh={fetchItems}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -133,5 +141,3 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-
-export default AthListAirbnb;
