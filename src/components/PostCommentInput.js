@@ -30,8 +30,9 @@ export default function PostCommentInput(props) {
     const db = firebase.firestore();
     const newDate = firebase.firestore.Timestamp.now();
     const userRef = db.collection(`users/${user.uid}/User`).doc('info');
-    const commentRef = db.collection(`users/${uploader}/posts/${postid}/comments`).doc(`${user.uid}`);
-    const userCommentRef = db.collection(`users/${user.uid}/comments`).doc(`${postid}`);
+    const commentRef = db.collection(`users/${uploader}/posts/${postid}/comments`).doc();
+    const uuid = commentRef.id;
+    const userCommentRef = db.collection(`users/${user.uid}/reaction/${postid}/comments`).doc(`${uuid}`);
     const batch = db.batch();
     batch.set(commentRef, {
       commenter: user.uid,
@@ -42,6 +43,7 @@ export default function PostCommentInput(props) {
       uploader,
       username,
       profileImageURL: userProfileURL,
+      commentid: uuid,
     });
     batch.set(userCommentRef, {
       commenter: user.uid,
@@ -50,12 +52,14 @@ export default function PostCommentInput(props) {
       updatedOn: newDate,
       postid,
       uploader,
+      commentid: uuid,
     });
     batch.update(userRef, {
       commentsNum: firebase.firestore.FieldValue.increment(1),
     });
     batch.commit()
       .then(() => {
+        setComment('');
         setModalVisible(false);
       });
   };

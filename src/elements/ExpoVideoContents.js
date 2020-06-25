@@ -7,9 +7,8 @@ import {
 } from 'react-native';
 import { Video } from 'expo-av';
 
-export default function ExpoVideoContents(props) {
+export default function ExpoVideoContents({ navigation, uri, width }) {
   const [shouldPlay, setShouldPlay] = useState(true);
-  const { width } = props;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -19,19 +18,19 @@ export default function ExpoVideoContents(props) {
       return () => {
         unsubscribe();
       }
-    }, [props.navigation])
+    }, [navigation])
   );
 
   return (
     <View style={[styles.video, { width, height: width * 0.6, backgroundColor: 'black' }]}>
       <Video
-        source={props.uri ? { uri: props.uri } : null}
+        source={uri ? { uri } : null}
         shouldPlay={shouldPlay}
         useNativeControls
         rate={1.0}
         volume={1.0}
         isLooping
-        style={styles.videoContents}
+        style={[styles.videoContents, { width, height: width * 0.6 }]}
       />
     </View>
   );
@@ -49,7 +48,5 @@ const styles = StyleSheet.create({
   },
   videoContents: {
     zIndex: 100,
-    width,
-    height: width * 0.6,
   },
 });

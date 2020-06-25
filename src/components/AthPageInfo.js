@@ -32,6 +32,7 @@ export default function AthPageInfo(props) {
         <ExpoVideoContents
           uri={info.introVideoURL}
           width={videoWidth}
+          navigation={props.navigation}
         />
       </View>
     );
