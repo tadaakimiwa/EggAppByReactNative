@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import firebase from 'firebase';
+import LottieView from 'lottie-react-native';
 
 import AthListAirbnb from '../../components/AthListAirbnb';
 
 export default function AlpineScreen(props) {
   const [athList, setAthList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getData = () => {
     const user = firebase.auth().currentUser;
@@ -24,8 +26,21 @@ export default function AlpineScreen(props) {
   };
 
   useEffect(() => {
+    setLoading(true);
     getData();
+    setLoading(false);
   }, []);
+
+  let lottie;
+  if (loading) {
+    return (
+      <LottieView
+        source={require('../../../assets/lottie/sandWatch.json')}
+        autoPlay
+        loop
+      />
+    )
+  }
 
   return (
     <View style={styles.container}>

@@ -45,7 +45,8 @@
     "react-native-tab-view": "^2.14.0",
     "react-native-textinput-effects": "^0.6.1",
     "react-native-video": "^4.4.5",
-    "react-native-web": "~0.11.7"
+    "react-native-web": "~0.11.7",
+    "lottie-react-native": "~2.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
