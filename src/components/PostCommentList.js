@@ -72,6 +72,7 @@ export default function PostCommentList(props) {
             postid={post.postid}
             username={props.username}
             userProfileURL={props.userProfileURL}
+            athuid={post.athuid}
           />
         )}
       />

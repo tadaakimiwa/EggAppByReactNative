@@ -120,6 +120,10 @@ class UserPageScreen extends React.Component {
     this.props.navigation.navigate('AthPage');
   }
 
+  handlePressCommentList() {
+    this.props.navigation.navigate('UserCommentList');
+  }
+
   returnInfo(info) {
     this.setState({ info });
   }
@@ -159,6 +163,7 @@ class UserPageScreen extends React.Component {
           giftsNum={giftsNum}
           button={button}
           onPressFollowing={this.handlePressFollow.bind(this)}
+          onPressCommentList={this.handlePressCommentList.bind(this)}
         />
         <UserPageModal
           onPress={this.userEditOnPress.bind(this)}

@@ -45,6 +45,7 @@ import ShopScreen from './src/screens/drawers/ShopScreen';
 import UserEditScreen from './src/screens/UserEditScreen';
 import UserCreateScreen from './src/screens/UserCreateScreen';
 import UserItemScreen from './src/screens/drawers/UserItemScreen';
+import UserCommentListScreen from './src/screens/UserCommentListScreen';
 import PurchaseHistoryScreen from './src/screens/drawers/PurchaseHistoryScreen';
 
 import ENV from './env.json';
@@ -286,6 +287,10 @@ const UserPageScreenNavi = ({ navigation }) => {
         name="PostDetail"
         component={PostDetailScreen}
       />
+      <Stack.Screen
+        name="UserCommentList"
+        component={UserCommentListScreen}
+      />
       <Stack.Screen name="PostEdit" component={PostEditScreen} />
       <Stack.Screen name="FollowingList" component={FollowingListScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
@@ -396,6 +401,7 @@ export default function App() {
           name="Home"
           component={AthListNavi}
         />
+        <Drawer.Screen name="UserPageScreenNavi" component={UserPageScreenNavi} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

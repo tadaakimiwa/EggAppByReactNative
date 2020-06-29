@@ -32,7 +32,7 @@ export default function PostCommentInput(props) {
     const userRef = db.collection(`users/${user.uid}/User`).doc('info');
     const commentRef = db.collection(`users/${uploader}/posts/${postid}/comments`).doc();
     const uuid = commentRef.id;
-    const userCommentRef = db.collection(`users/${user.uid}/reaction/${postid}/comments`).doc(`${uuid}`);
+    const userCommentRef = db.collection(`users/${user.uid}/comments`).doc(`${uuid}`);
     const batch = db.batch();
     batch.set(commentRef, {
       commenter: user.uid,
@@ -47,6 +47,7 @@ export default function PostCommentInput(props) {
     });
     batch.set(userCommentRef, {
       commenter: user.uid,
+      commenterAthuid: props.athuid,
       commentContents: comment,
       createdOn: newDate,
       updatedOn: newDate,

@@ -44,6 +44,7 @@ function UserInfo(props) {
             <View style={styles.userInfoTabItem}>
               <NeumoCircleButton
                 text={String(props.commentsNum)}
+                onPress={props.onPressCommentList}
               />
             </View>
             <Text style={styles.userInfoTabTitle}>
