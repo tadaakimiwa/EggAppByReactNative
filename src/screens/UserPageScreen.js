@@ -113,7 +113,7 @@ class UserPageScreen extends React.Component {
   }
 
   handlePressFollow() {
-    this.props.navigation.navigate('FollowingList');
+    this.props.navigation.navigate('UserFollowingList');
   }
 
   handlePressAthlete() {
@@ -122,6 +122,10 @@ class UserPageScreen extends React.Component {
 
   handlePressCommentList() {
     this.props.navigation.navigate('UserCommentList');
+  }
+
+  handlePressPurchaseList() {
+    this.props.navigation.navigate('UserPurchaseList');
   }
 
   returnInfo(info) {
@@ -164,6 +168,7 @@ class UserPageScreen extends React.Component {
           button={button}
           onPressFollowing={this.handlePressFollow.bind(this)}
           onPressCommentList={this.handlePressCommentList.bind(this)}
+          onPressPurchaseList={this.handlePressPurchaseList.bind(this)}
         />
         <UserPageModal
           onPress={this.userEditOnPress.bind(this)}

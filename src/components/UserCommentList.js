@@ -70,13 +70,6 @@ export default function UserCommentList({ commentList, navigation }) {
         numColumns={1}
         horizontal={false}
         scrollEnabled
-        ListHeaderComponent={(
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>
-              Comment History
-            </Text>
-          </View>
-        )}
       />
     </View>
   );
@@ -97,7 +90,6 @@ const styles = StyleSheet.create({
   },
   commentList: {
     width: '100%',
-    paddingTop: 50,
   },
   commentListFlat: {
     width: '100%',
@@ -135,7 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   commentContents: {
-    
+
   },
   commentContentsTitle: {
     fontSize: 16,

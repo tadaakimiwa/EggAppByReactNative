@@ -56,6 +56,7 @@ function UserInfo(props) {
             <View style={styles.userInfoTabItem}>
               <NeumoCircleButton
                 text={String(props.giftsNum)}
+                onPress={props.onPressPurchaseList}
               />
             </View>
             <Text style={styles.userInfoTabTitle}>

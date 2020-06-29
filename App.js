@@ -46,6 +46,8 @@ import UserEditScreen from './src/screens/UserEditScreen';
 import UserCreateScreen from './src/screens/UserCreateScreen';
 import UserItemScreen from './src/screens/drawers/UserItemScreen';
 import UserCommentListScreen from './src/screens/UserCommentListScreen';
+import UserFollowingListScreen from './src/screens/UserFollowingListScreen';
+import UserPurchaseListScreen from './src/screens/UserPurchaseListScreen';
 import PurchaseHistoryScreen from './src/screens/drawers/PurchaseHistoryScreen';
 
 import ENV from './env.json';
@@ -290,6 +292,17 @@ const UserPageScreenNavi = ({ navigation }) => {
       <Stack.Screen
         name="UserCommentList"
         component={UserCommentListScreen}
+        title="Comment History"
+      />
+      <Stack.Screen
+        name="UserFollowingList"
+        component={UserFollowingListScreen}
+        title="Following"
+      />
+      <Stack.Screen
+        name="UserPurchaseList"
+        component={UserPurchaseListScreen}
+        title="Purchase History"
       />
       <Stack.Screen name="PostEdit" component={PostEditScreen} />
       <Stack.Screen name="FollowingList" component={FollowingListScreen} />

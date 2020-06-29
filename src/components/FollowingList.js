@@ -46,6 +46,12 @@ class FollowingList extends React.Component {
           style={styles.followListFlat}
           numColumns={1}
           horizontal={false}
+          ListHeaderComponent={(
+            this.props.header
+          )}
+          ListFooterComponent={(
+            this.props.footer
+          )}
         />
       </View>
     )

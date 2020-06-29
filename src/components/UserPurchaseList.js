@@ -17,11 +17,9 @@ const dateString = (date) => {
   return `${str.split('T')[0]} ${str.split('T')[1].substr(0, 8)}`;
 };
 
-export default function UserPurchaseList({ purchaseList, navigation }) {
-  const goBack = () => {
-    navigation.navigate('main');
-  };
-
+export default function UserPurchaseList({
+  purchaseList, navigation, header, footer,
+}) {
   const renderPurchase = ({ item }) => {
     console.log(item);
     return (
@@ -70,19 +68,10 @@ export default function UserPurchaseList({ purchaseList, navigation }) {
         horizontal={false}
         scrollEnabled
         ListHeaderComponent={(
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>
-              Purchase History
-            </Text>
-          </View>
+          header
         )}
         ListFooterComponent={(
-          <View style={styles.footer}>
-            <NeumoBuyButton
-              text="Go Back"
-              onBuyButtonPress={goBack}
-            />
-          </View>
+          footer
         )}
       />
     </View>
@@ -91,18 +80,8 @@ export default function UserPurchaseList({ purchaseList, navigation }) {
 
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 12,
-    paddingBottom: 32,
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '500',
-  },
   purchaseList: {
     width: '100%',
-    paddingTop: 50,
   },
   purchaseListFlat: {
     width: '100%',
@@ -152,19 +131,5 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
     fontSize: 16,
     color: 'blue',
-  },
-  footer: {
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  footerButton: {
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 8,
-  },
-  footerButtonTitle: {
-    fontSize: 12,
   },
 });

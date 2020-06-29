@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 
 import UserPurchaseList from '../../components/UserPurchaseList';
+import NeumoBuyButton from '../../elements/NeumoBuyButton';
 
 export default function PurchaseHistoryScreen({ navigation }) {
   const [purchaseList, setPurchaseList] = useState([]);
@@ -25,13 +26,40 @@ export default function PurchaseHistoryScreen({ navigation }) {
     subscribePurchases();
   }, []);
 
+  const goBack = () => {
+    navigation.navigate('main');
+  };
+
+  const footer = () => {
+    return (
+      <View style={styles.footer}>
+        <NeumoBuyButton
+          text="Go Back"
+          onBuyButtonPress={goBack}
+        />
+      </View>
+    );
+  };
+
+  const header = () => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>
+          Purchase History
+        </Text>
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <UserPurchaseList
         purchaseList={purchaseList}
         navigation={navigation}
+        header={header}
+        footer={footer}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -46,5 +74,30 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#fff',
+  },
+  header: {
+    paddingTop: 64,
+    paddingBottom: 32,
+    alignItems: 'center',
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '500',
+  },
+  footer: {
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  footerButton: {
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 8,
+  },
+  footerButtonTitle: {
+    fontSize: 12,
   },
 });

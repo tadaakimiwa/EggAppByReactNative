@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
+  Text,
   SafeAreaView,
   ScrollView,
 } from 'react-native';
@@ -9,35 +10,64 @@ import PropTypes from 'prop-types';
 import firebase from 'firebase';
 
 import FollowingList from '../../components/FollowingList';
+import NeumoBuyButton from '../../elements/NeumoBuyButton';
 
-class FollowingListScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      followList: [],
-    };
-  }
+export default function FollowingListScreen({ navigation }) {
+  const [followList, setFollowList] = useState([]);
 
-  componentDidMount() {
+
+  useEffect(() => {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
     const followListRef = db.collection(`users/${user.uid}/following`);
-    followListRef.onSnapshot((snapshot) => {
-      const followList = [];
-      snapshot.forEach((doc) => {
-        followList.push({ ...doc.data(), key: doc.id });
+    function subscribeFollow() {
+      followListRef.onSnapshot((snapshot) => {
+        const list = [];
+        snapshot.forEach((doc) => {
+          list.push({ ...doc.data(), key: doc.id });
+        });
+        setFollowList(list);
       });
-      this.setState({ followList });
-    });
-  }
+    }
+    subscribeFollow();
+  }, []);
 
-  render() {
+  const goBack = () => {
+    navigation.navigate('main');
+  };
+
+  const footer = () => {
     return (
-      <View style={styles.container}>
-        <FollowingList followList={this.state.followList} navigation={this.props.navigation} />
+      <View style={styles.footer}>
+        <NeumoBuyButton
+          text="Go Back"
+          onBuyButtonPress={goBack}
+        />
       </View>
     );
-  }
+  };
+
+  const header = () => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>
+          Following
+        </Text>
+      </View>
+    );
+  };
+
+
+  return (
+    <View style={styles.container}>
+      <FollowingList
+        followList={followList}
+        navigation={navigation}
+        header={header}
+        footer={footer}
+      />
+    </View>
+  );
 }
 
 FollowingListScreen.propTypes = {
@@ -50,8 +80,32 @@ FollowingListScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
   },
+  header: {
+    paddingTop: 64,
+    paddingBottom: 32,
+    alignItems: 'center',
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '500',
+  },
+  footer: {
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  footerButton: {
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 8,
+  },
+  footerButtonTitle: {
+    fontSize: 12,
+  },
 });
-
-export default FollowingListScreen;

@@ -46,6 +46,7 @@ class AthListInUser extends React.Component {
               giftsNum={this.props.giftsNum}
               onPressFollowing={this.props.onPressFollowing}
               onPressCommentList={this.props.onPressCommentList}
+              onPressPurchaseList={this.props.onPressPurchaseList}
             />
           )}
           ListHeaderComponentStyle={{
