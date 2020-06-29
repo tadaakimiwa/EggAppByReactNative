@@ -40,13 +40,23 @@ export default function PostDetailScreen(props) {
         icon={(
           <MaterialCommunityIcons
             name="menu"
-            size={15}
-            color="#fff"
+            size={24}
+            color="#000"
           />
         )}
         onPress={toggleModal}
+        buttonStyle={{
+          backgroundColor: '#fff',
+        }}
       />
     ),
+    title: 'EggApp',
+    headerTintColor: '#000',
+    headerTitleStyle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      alignSelf: 'center',
+    },
   });
 
   const [postVideoURL, setPostVideoURL] = useState('');

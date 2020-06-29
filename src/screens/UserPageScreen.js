@@ -94,7 +94,7 @@ class UserPageScreen extends React.Component {
           }}
         />
       ),
-      title: username,
+      title: 'My Page',
       headerTintColor: '#000',
       headerTitleStyle: {
         fontSize: 12,

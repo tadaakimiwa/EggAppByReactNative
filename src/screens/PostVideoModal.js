@@ -26,10 +26,10 @@ export default function PostVideoModal(props) {
       });
   };
 
-  console.log(props.post);
-
-  return (
-    <View style={styles.postModal}>
+  const user = firebase.auth().currentUser;
+  let modal;
+  if (post.uploader === user.uid) {
+    modal = (
       <Modal
         isVisible={props.isModalVisible}
         backdropColor="#000"
@@ -54,6 +54,37 @@ export default function PostVideoModal(props) {
           </TouchableHighlight>
         </View>
       </Modal>
+    );
+  } else {
+    modal = (
+      <Modal
+        isVisible={props.isModalVisible}
+        backdropColor="#000"
+        backdropOpacity={0.5}
+        style={{ margin: 0, justifyContent: 'center', alignItems: 'center' }}
+        onBackdropPress={props.onBackdropPress}
+      >
+        <View style={styles.postModalContent}>
+          <TouchableHighlight>
+            <View style={styles.postItemTop}>
+              <Text style={styles.postItemTitle}>report</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={styles.postItem}>
+              <Text style={styles.postItemTitle}>report</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </Modal>
+    );
+  }
+
+  console.log(props.post);
+
+  return (
+    <View style={styles.postModal}>
+      {modal}
     </View>
   );
 }
