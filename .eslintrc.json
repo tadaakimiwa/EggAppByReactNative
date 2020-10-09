@@ -1,12 +1,8 @@
 {
   "extends": "airbnb",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import",
-    "react-hooks"
-  ],
+  "plugins": ["react", "jsx-a11y", "import", "react-hooks"],
   "rules": {
+    "quotes": ["error", "double"],
     "react/prefer-stateless-function": 0,
     "react/jsx-filename-extension": 0,
     "no-use-before-define": 0,
@@ -17,6 +13,7 @@
         "ignoreClassFields": true
       }
     ],
+    "import/no-unresolved": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
   },

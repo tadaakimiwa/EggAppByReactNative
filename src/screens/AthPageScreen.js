@@ -1,34 +1,34 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableHighlight,
   Image,
-  SafeAreaView
-} from 'react-native';
-import { Button } from 'react-native-elements';
-import firebase from 'firebase';
-import PropTypes from 'prop-types';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+  SafeAreaView,
+} from "react-native";
+import { Button } from "react-native-elements";
+import firebase from "firebase";
+import PropTypes from "prop-types";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import AthIntroCommentList from '../components/AthIntroCommentList';
-import PostListInAthPage from '../components/PostListInAthPage';
-import AthPostList from '../components/AthPostList';
-import AthPageModal from '../components/AthPageModal';
+import AthIntroCommentList from "../components/AthIntroCommentList";
+import PostListInAthPage from "../components/PostListInAthPage";
+import AthPostList from "../components/AthPostList";
+import AthPageModal from "../components/AthPageModal";
 
 class AthPageScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: '',
-      introVideoURL: '',
-      firstname: '',
-      lastname: '',
-      age: '',
-      intro1: '',
-      intro2: '',
-      intro3: '',
+      url: "",
+      introVideoURL: "",
+      firstname: "",
+      lastname: "",
+      age: "",
+      intro1: "",
+      intro2: "",
+      intro3: "",
       postList: [],
       isModalVisible: false,
     };
@@ -44,7 +44,7 @@ class AthPageScreen extends React.Component {
     const { navigation } = this.props;
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
-    const docRef = db.collection(`users/${user.uid}/User`).doc('athlete');
+    const docRef = db.collection(`users/${user.uid}/User`).doc("athlete");
 
     docRef.onSnapshot((doc) => {
       if (doc.exists) {
@@ -67,7 +67,7 @@ class AthPageScreen extends React.Component {
           intro3,
         });
       } else {
-        console.log('No such document!', user.uid);
+        console.log("No such document!", user.uid);
       }
     });
 
@@ -78,42 +78,40 @@ class AthPageScreen extends React.Component {
       snapshot.forEach((doc) => {
         postList.push({ ...doc.data(), key: doc.id });
       });
-      this.setState({ postList })
+      this.setState({ postList });
     });
 
     const { athuid } = this.state;
     navigation.setOptions({
       headerRight: () => (
         <Button
-          icon={(
-            <MaterialCommunityIcons
-              name="menu"
-              size={24}
-              color="#000"
-            />
-          )}
+          icon={<MaterialCommunityIcons name="menu" size={24} color="#000" />}
           onPress={this.toggleModal.bind(this)}
           buttonStyle={{
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
           }}
         />
       ),
       title: athuid,
-      headerTintColor: '#000',
+      headerTintColor: "#000",
       headerTitleStyle: {
         fontSize: 12,
-        fontWeight: 'bold',
-        alignSelf: 'center',
+        fontWeight: "bold",
+        alignSelf: "center",
       },
     });
   }
 
   onBackdropPress() {
-    this.setState((prevState) => ({ isModalVisible: !prevState.isModalVisible }));
+    this.setState((prevState) => ({
+      isModalVisible: !prevState.isModalVisible,
+    }));
   }
 
   toggleModal() {
-    this.setState((prevState) => ({ isModalVisible: !prevState.isModalVisible }));
+    this.setState((prevState) => ({
+      isModalVisible: !prevState.isModalVisible,
+    }));
   }
 
   returnInfo(info) {
@@ -132,12 +130,22 @@ class AthPageScreen extends React.Component {
       intro2: this.state.intro2,
       intro3: this.state.intro3,
     };
-    this.props.navigation.navigate('AthEdit', { info, returnInfo: this.returnInfo.bind(this) });
+    this.props.navigation.navigate("AthEdit", {
+      info,
+      returnInfo: this.returnInfo.bind(this),
+    });
+  }
+
+  athIntroVideoOnPress() {
+    this.setState({ isModalVisible: false });
+    this.props.navigation.navigate("AthEditIntroVideo", {
+      url: this.state.introVideoURL,
+    });
   }
 
   athPostOnPress() {
     this.setState({ isModalVisible: false });
-    this.props.navigation.navigate('AthUploading');
+    this.props.navigation.navigate("AthUploading");
   }
 
   render() {
@@ -161,6 +169,7 @@ class AthPageScreen extends React.Component {
         <AthPageModal
           athEditOnPress={this.athEditOnPress.bind(this)}
           athPostOnPress={this.athPostOnPress.bind(this)}
+          athIntroVideoOnPress={this.athIntroVideoOnPress.bind(this)}
           onBackdropPress={this.onBackdropPress.bind(this)}
           isModalVisible={this.state.isModalVisible}
         />
@@ -178,9 +187,9 @@ AthPageScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    width: '100%',
-    alignItems: 'center',
-    backgroundColor: '#88a5b7',
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "#88a5b7",
   },
 });
 

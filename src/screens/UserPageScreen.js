@@ -1,27 +1,23 @@
-import React from 'react';
-import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import firebase from 'firebase';
-import { Button } from 'react-native-elements';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from "react";
+import { Text, StyleSheet, SafeAreaView } from "react-native";
+import PropTypes from "prop-types";
+import firebase from "firebase";
+import { Button } from "react-native-elements";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import UserPageHeaderText from '../elements/UserPageHeaderText';
-import GoAthletePageButton from '../components/GoAthletePageButton';
-import UserPageModal from '../components/UserPageModal';
-import AthListInUser from '../components/AthListInUser';
+import GoAthletePageButton from "@components/GoAthletePageButton";
+import UserPageModal from "@components/UserPageModal";
+import AthListInUser from "../components/AthListInUser";
+import Layout from "../components/Layout";
+import UserPageHeaderText from "../elements/UserPageHeaderText";
 
 class UserPageScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      profile: '',
-      url: '',
+      username: "",
+      profile: "",
+      url: "",
       isAthlete: false,
       athList: [],
       followingNum: 0,
@@ -42,7 +38,7 @@ class UserPageScreen extends React.Component {
 
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
-    const docRef = db.collection(`users/${user.uid}/User`).doc('info');
+    const docRef = db.collection(`users/${user.uid}/User`).doc("info");
 
     docRef.onSnapshot((doc) => {
       if (doc.exists) {
@@ -63,7 +59,7 @@ class UserPageScreen extends React.Component {
           giftsNum,
         });
       } else {
-        console.log('No such document!', user.uid);
+        console.log("No such document!", user.uid);
       }
     });
 
@@ -74,58 +70,56 @@ class UserPageScreen extends React.Component {
       snapshot.forEach((doc) => {
         athList.push({ ...doc.data(), key: doc.id });
       });
-      this.setState({ athList })
+      this.setState({ athList });
     });
 
     const { username } = this.state;
     navigation.setOptions({
       headerRight: () => (
         <Button
-          icon={(
-            <MaterialCommunityIcons
-              name="menu"
-              size={24}
-              color="#000"
-            />
-          )}
+          icon={<MaterialCommunityIcons name="menu" size={24} color="#000" />}
           onPress={this.toggleModal.bind(this)}
           buttonStyle={{
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
           }}
         />
       ),
-      title: 'My Page',
-      headerTintColor: '#000',
+      title: "My Page",
+      headerTintColor: "#000",
       headerTitleStyle: {
         fontSize: 12,
-        fontWeight: 'bold',
-        alignSelf: 'center',
+        fontWeight: "bold",
+        alignSelf: "center",
       },
     });
   }
 
   onBackdropPress() {
-    this.setState((prevState) => ({ isModalVisible: !prevState.isModalVisible }));
+    this.setState((prevState) => ({
+      isModalVisible: !prevState.isModalVisible,
+    }));
   }
 
   toggleModal() {
-    this.setState((prevState) => ({ isModalVisible: !prevState.isModalVisible }));
+    this.setState((prevState) => ({
+      isModalVisible: !prevState.isModalVisible,
+    }));
   }
 
   handlePressFollow() {
-    this.props.navigation.navigate('UserFollowingList');
+    this.props.navigation.navigate("UserFollowingList");
   }
 
   handlePressAthlete() {
-    this.props.navigation.navigate('AthPage');
+    this.props.navigation.navigate("AthPage");
   }
 
   handlePressCommentList() {
-    this.props.navigation.navigate('UserCommentList');
+    this.props.navigation.navigate("UserCommentList");
   }
 
   handlePressPurchaseList() {
-    this.props.navigation.navigate('UserPurchaseList');
+    this.props.navigation.navigate("UserPurchaseList");
   }
 
   returnInfo(info) {
@@ -139,7 +133,10 @@ class UserPageScreen extends React.Component {
       profile: this.state.profile,
       url: this.state.url,
     };
-    this.props.navigation.navigate('UserEdit', { info, returnInfo: this.returnInfo.bind(this) });
+    this.props.navigation.navigate("UserEdit", {
+      info,
+      returnInfo: this.returnInfo.bind(this),
+    });
   }
 
   render() {
@@ -154,7 +151,9 @@ class UserPageScreen extends React.Component {
     const { isAthlete } = this.state;
     let button;
     if (isAthlete) {
-      button = <GoAthletePageButton onPress={this.handlePressAthlete.bind(this)} />;
+      button = (
+        <GoAthletePageButton onPress={this.handlePressAthlete.bind(this)} />
+      );
     }
     return (
       <SafeAreaView style={styles.container}>
@@ -189,8 +188,8 @@ UserPageScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    width: '100%',
-    backgroundColor: '#f7f7f7',
+    width: "100%",
+    backgroundColor: "#f7f7f7",
   },
 });
 

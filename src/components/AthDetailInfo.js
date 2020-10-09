@@ -1,15 +1,19 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableHighlight,
-  Image
-} from 'react-native';
-import { Avatar } from 'react-native-elements';
-import firebase from 'firebase';
+  Image,
+  Dimensions,
+} from "react-native";
+import { Avatar } from "react-native-elements";
+import firebase from "firebase";
+import ExpoVideoContents from "../elements/ExpoVideoContents";
 
-const defaultSource = require('../../assets/placeHolderUser.png');
+const defaultSource = require("../../assets/placeHolderUser.png");
+
+const videoWidth = Dimensions.get("window").width - 48;
 
 function returnInfo(info) {
   this.setState({ info });
@@ -18,6 +22,24 @@ function returnInfo(info) {
 export default function AthDetailInfo(props) {
   const { info } = props;
   const { button } = props;
+  let video;
+  if (info.introVideoURL === undefined) {
+    video = (
+      <View style={styles.athIntroVideo}>
+        <Text style={styles.athIntroVideoTitle}>No Video Yet</Text>
+      </View>
+    );
+  } else {
+    video = (
+      <View style={styles.athIntroVideo}>
+        <ExpoVideoContents
+          uri={info.introVideoURL}
+          width={videoWidth}
+          navigation={props.navigation}
+        />
+      </View>
+    );
+  }
   console.log(info);
 
   return (
@@ -30,9 +52,7 @@ export default function AthDetailInfo(props) {
           />
         </View>
         <View style={styles.athInfoContent}>
-          <Text style={styles.athInfoContentTitle}>
-            {info.athuid}
-          </Text>
+          <Text style={styles.athInfoContentTitle}>{info.athuid}</Text>
         </View>
         <View style={styles.athAge}>
           <Text style={styles.athAgeTitle}>
@@ -49,19 +69,13 @@ export default function AthDetailInfo(props) {
       </View>
       <View style={styles.athIntroCommentList}>
         <View style={styles.athIntroComment}>
-          <Text style={styles.athIntroCommentTitle}>
-            {info.intro1}
-          </Text>
+          <Text style={styles.athIntroCommentTitle}>{info.intro1}</Text>
         </View>
         <View style={styles.athIntroComment}>
-          <Text style={styles.athIntroCommentTitle}>
-            {info.intro2}
-          </Text>
+          <Text style={styles.athIntroCommentTitle}>{info.intro2}</Text>
         </View>
         <View style={styles.athIntroComment}>
-          <Text style={styles.athIntroCommentTitle}>
-            {info.intro3}
-          </Text>
+          <Text style={styles.athIntroCommentTitle}>{info.intro3}</Text>
         </View>
       </View>
     </View>
@@ -73,8 +87,8 @@ const styles = StyleSheet.create({
     paddingTop: 24,
   },
   athInfo: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   athInfoContent: {
     marginTop: 32,
@@ -82,16 +96,16 @@ const styles = StyleSheet.create({
   },
   athInfoContentTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#fff',
+    fontWeight: "600",
+    color: "#fff",
   },
   athProfileImage: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 42,
     height: 84,
     width: 84,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   athProfileImageTitle: {
     height: 84,
@@ -103,15 +117,15 @@ const styles = StyleSheet.create({
   },
   athAgeTitle: {
     fontSize: 14,
-    color: '#fff',
+    color: "#fff",
   },
   athIntroVideo: {
-    width: '100%',
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: videoWidth,
+    height: videoWidth * 0.6,
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     marginTop: 12,
   },
   athIntroCommentList: {
@@ -120,10 +134,10 @@ const styles = StyleSheet.create({
   athIntroComment: {
     marginTop: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   athIntroCommentTitle: {
     fontSize: 14,
-    color: '#fff',
+    color: "#fff",
   },
 });

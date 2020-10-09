@@ -125,7 +125,7 @@ class UserCreateScreen extends React.Component {
                 >
                   <Image
                     style={styles.userImageTitle}
-                    source={{ uri: this.state.url }}
+                    source={this.state.url ? { uri: this.state.url } : null}
                   />
                 </View>
               </View>

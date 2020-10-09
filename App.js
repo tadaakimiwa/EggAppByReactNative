@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
+import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -14,45 +14,46 @@ import {
   DrawerContentComponentProps,
   DrawerContentOptions,
   DrawerNavigationProp,
-} from '@react-navigation/drawer';
-import firebase from 'firebase';
+} from "@react-navigation/drawer";
+import firebase from "firebase";
 
-import AthListScreen from './src/screens/AthListScreen';
-import AthPageScreen from './src/screens/AthPageScreen';
-import AthEditScreen from './src/screens/AthEditScreen';
-import AthDetailScreen from './src/screens/AthDetailScreen';
-import AthCreateScreen from './src/screens/drawers/AthCreateScreen';
-import AthUploadingScreen from './src/screens/AthUploadingScreen';
-import AthPostingScreen from './src/screens/AthPostingScreen';
-import PostDetailScreen from './src/screens/PostDetailScreen';
-import PostEditScreen from './src/screens/PostEditScreen';
-import PostVideoModal from './src/screens/PostVideoModal';
-import SearchScreen from './src/screens/SearchScreen';
-import SearchStack from './src/screens/SearchStack';
-import TrendListScreen from './src/screens/TrendListScreen';
-import FollowingAlertListScreen from './src/screens/FollowingAlertListScreen';
-import FollowingListScreen from './src/screens/drawers/FollowingListScreen';
-import UserPageScreen from './src/screens/UserPageScreen';
-import AlpineScreen from './src/screens/AthLists/AlpineScreen';
-import CrossCountryScreen from './src/screens/AthLists/CrossCountryScreen';
-import FreeStyleScreen from './src/screens/AthLists/FreeStyleScreen';
-import NordicCombinedScreen from './src/screens/AthLists/NordicCombinedScreen';
-import SkiJumpingScreen from './src/screens/AthLists/SkiJumpingScreen';
-import SnowBoardingScreen from './src/screens/AthLists/SnowBoardingScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import SignupScreen from './src/screens/SignupScreen';
-import ShopScreen from './src/screens/drawers/ShopScreen';
-import UserEditScreen from './src/screens/UserEditScreen';
-import UserCreateScreen from './src/screens/UserCreateScreen';
-import UserItemScreen from './src/screens/drawers/UserItemScreen';
-import UserCommentListScreen from './src/screens/UserCommentListScreen';
-import UserFollowingListScreen from './src/screens/UserFollowingListScreen';
-import UserPurchaseListScreen from './src/screens/UserPurchaseListScreen';
-import PurchaseHistoryScreen from './src/screens/drawers/PurchaseHistoryScreen';
+import AthEditIntroVideoScreen from "./src/screens/AthEditIntroVideoScreen";
+import AthListScreen from "./src/screens/AthListScreen";
+import AthPageScreen from "./src/screens/AthPageScreen";
+import AthEditScreen from "./src/screens/AthEditScreen";
+import AthDetailScreen from "./src/screens/AthDetailScreen";
+import AthCreateScreen from "./src/screens/drawers/AthCreateScreen";
+import AthUploadingScreen from "./src/screens/AthUploadingScreen";
+import AthPostingScreen from "./src/screens/AthPostingScreen";
+import PostDetailScreen from "./src/screens/PostDetailScreen";
+import PostEditScreen from "./src/screens/PostEditScreen";
+import PostVideoModal from "./src/screens/PostVideoModal";
+import SearchScreen from "./src/screens/SearchScreen";
+import SearchStack from "./src/screens/SearchStack";
+import TrendListScreen from "./src/screens/TrendListScreen";
+import FollowingAlertListScreen from "./src/screens/FollowingAlertListScreen";
+import FollowingListScreen from "./src/screens/drawers/FollowingListScreen";
+import UserPageScreen from "./src/screens/UserPageScreen";
+import AlpineScreen from "./src/screens/AthLists/AlpineScreen";
+import CrossCountryScreen from "./src/screens/AthLists/CrossCountryScreen";
+import FreeStyleScreen from "./src/screens/AthLists/FreeStyleScreen";
+import NordicCombinedScreen from "./src/screens/AthLists/NordicCombinedScreen";
+import SkiJumpingScreen from "./src/screens/AthLists/SkiJumpingScreen";
+import SnowBoardingScreen from "./src/screens/AthLists/SnowBoardingScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import SignupScreen from "./src/screens/SignupScreen";
+import ShopScreen from "./src/screens/drawers/ShopScreen";
+import UserEditScreen from "./src/screens/UserEditScreen";
+import UserCreateScreen from "./src/screens/UserCreateScreen";
+import UserItemScreen from "./src/screens/drawers/UserItemScreen";
+import UserCommentListScreen from "./src/screens/UserCommentListScreen";
+import UserFollowingListScreen from "./src/screens/UserFollowingListScreen";
+import UserPurchaseListScreen from "./src/screens/UserPurchaseListScreen";
+import PurchaseHistoryScreen from "./src/screens/drawers/PurchaseHistoryScreen";
 
-import ENV from './env.json';
+import ENV from "./env.json";
 
-require('firebase/firestore');
+require("firebase/firestore");
 
 const Stack = createStackNavigator();
 const MaterialTab = createMaterialBottomTabNavigator();
@@ -75,14 +76,14 @@ const MaterialTabNavi = () => {
   return (
     <MaterialTab.Navigator
       activeColor="#fff"
-      style={{ backgroundColor: 'tomato' }}
+      style={{ backgroundColor: "tomato" }}
     >
       <MaterialTab.Screen
         name="Home"
         component={AthListScreenNavi}
         options={{
-          tabBarColor: '#FF4500',
-          tabBarLabel: 'Athletes',
+          tabBarColor: "#FF4500",
+          tabBarLabel: "Athletes",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="run" color={color} size={26} />
           ),
@@ -92,8 +93,8 @@ const MaterialTabNavi = () => {
         name="Search"
         component={SearchScreenNavi}
         options={{
-          tabBarColor: '#FF8300',
-          tabBarLabel: 'Search',
+          tabBarColor: "#FF8300",
+          tabBarLabel: "Search",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="magnify" color={color} size={26} />
           ),
@@ -103,8 +104,8 @@ const MaterialTabNavi = () => {
         name="Alert"
         component={AlertScreenNavi}
         options={{
-          tabBarColor: '#DF362D',
-          tabBarLabel: 'Alert',
+          tabBarColor: "#DF362D",
+          tabBarLabel: "Alert",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="bell" color={color} size={26} />
           ),
@@ -114,8 +115,8 @@ const MaterialTabNavi = () => {
         name="UserPage"
         component={UserPageScreenNavi}
         options={{
-          tabBarColor: '#B7AC44',
-          tabBarLabel: 'My Page',
+          tabBarColor: "#B7AC44",
+          tabBarLabel: "My Page",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
@@ -132,26 +133,17 @@ const AthListNavi = () => {
         scrollEnabled: true,
       }}
     >
-      <MaterialTopTab.Screen
-        name="Alpine"
-        component={AlpineScreen}
-      />
+      <MaterialTopTab.Screen name="Alpine" component={AlpineScreen} />
       <MaterialTopTab.Screen
         name="CrossCountry"
         component={CrossCountryScreen}
       />
-      <MaterialTopTab.Screen
-        name="FreeStyle"
-        component={FreeStyleScreen}
-      />
+      <MaterialTopTab.Screen name="FreeStyle" component={FreeStyleScreen} />
       <MaterialTopTab.Screen
         name="NordicCombined"
         component={NordicCombinedScreen}
       />
-      <MaterialTopTab.Screen
-        name="SkiJumping"
-        component={SkiJumpingScreen}
-      />
+      <MaterialTopTab.Screen name="SkiJumping" component={SkiJumpingScreen} />
       <MaterialTopTab.Screen
         name="SnowBoarding"
         component={SnowBoardingScreen}
@@ -165,9 +157,9 @@ const AthListScreenNavi = ({ navigation }) => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         },
-        headerTintColor: '#000',
+        headerTintColor: "#000",
         headerBackTitle: null,
       }}
     >
@@ -177,15 +169,11 @@ const AthListScreenNavi = ({ navigation }) => {
         options={{
           headerLeft: () => (
             <Button
-              icon={(
-                <MaterialCommunityIcons
-                  name="menu"
-                  size={24}
-                  color="#000"
-                />
-              )}
+              icon={
+                <MaterialCommunityIcons name="menu" size={24} color="#000" />
+              }
               buttonStyle={{
-                backgroundColor: '#fff'
+                backgroundColor: "#fff",
               }}
               onPress={() => navigation.toggleDrawer()}
             />
@@ -209,9 +197,9 @@ const SearchScreenNavi = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         },
-        headerTintColor: '#000',
+        headerTintColor: "#000",
         headerBackTitle: null,
       }}
     >
@@ -220,10 +208,7 @@ const SearchScreenNavi = () => {
         component={SearchScreen}
         options={SearchScreen.navigationOptions}
       />
-      <Stack.Screen
-        name="SearchStack"
-        component={SearchStack}
-      />
+      <Stack.Screen name="SearchStack" component={SearchStack} />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
     </Stack.Navigator>
@@ -237,10 +222,7 @@ const AlertNavi = () => {
         name="FollowingAlert"
         component={FollowingAlertListScreen}
       />
-      <MaterialTopTab.Screen
-        name="Trends"
-        component={TrendListScreen}
-      />
+      <MaterialTopTab.Screen name="Trends" component={TrendListScreen} />
     </MaterialTopTab.Navigator>
   );
 };
@@ -250,9 +232,9 @@ const AlertScreenNavi = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         },
-        headerTintColor: '#000',
+        headerTintColor: "#000",
         headerBackTitle: null,
       }}
     >
@@ -268,9 +250,9 @@ const UserPageScreenNavi = ({ navigation }) => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         },
-        headerTintColor: '#000',
+        headerTintColor: "#000",
         headerBackTitle: null,
       }}
     >
@@ -286,9 +268,10 @@ const UserPageScreenNavi = ({ navigation }) => {
       <Stack.Screen name="AthUploading" component={AthUploadingScreen} />
       <Stack.Screen name="AthPosting" component={AthPostingScreen} />
       <Stack.Screen
-        name="PostDetail"
-        component={PostDetailScreen}
+        name="AthEditIntroVideo"
+        component={AthEditIntroVideoScreen}
       />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
       <Stack.Screen
         name="UserCommentList"
         component={UserCommentListScreen}
@@ -318,7 +301,7 @@ const MainNavi = () => {
         name="Login"
         component={LoginScreen}
         options={{
-          headerTitleAlign: 'left',
+          headerTitleAlign: "left",
           headerTitle: () => (
             <MaterialCommunityIcons
               name="egg-easter"
@@ -327,7 +310,7 @@ const MainNavi = () => {
             />
           ),
           headerStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
           },
         }}
       />
@@ -356,23 +339,23 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <DrawerItem
         label="For Athletes"
-        onPress={() => props.navigation.navigate('AthCreate')}
+        onPress={() => props.navigation.navigate("AthCreate")}
       />
       <DrawerItem
         label="Following"
-        onPress={() => props.navigation.navigate('FollowingList')}
+        onPress={() => props.navigation.navigate("FollowingList")}
       />
       <DrawerItem
         label="Shop"
-        onPress={() => props.navigation.navigate('Shop')}
+        onPress={() => props.navigation.navigate("Shop")}
       />
       <DrawerItem
         label="Items"
-        onPress={() => props.navigation.navigate('Items')}
+        onPress={() => props.navigation.navigate("Items")}
       />
       <DrawerItem
         label="Purchase History"
-        onPress={() => props.navigation.navigate('Purchase')}
+        onPress={() => props.navigation.navigate("Purchase")}
       />
     </DrawerContentScrollView>
   );
@@ -386,10 +369,7 @@ const DrawNavi = () => {
       <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
       <Drawer.Screen name="FollowingList" component={FollowingListScreen} />
       <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
-      <Drawer.Screen
-        name="Home"
-        component={AthListNavi}
-      />
+      <Drawer.Screen name="Home" component={AthListNavi} />
       <Drawer.Screen name="main" component={MainNavi} />
     </Drawer.Navigator>
   );
@@ -397,9 +377,7 @@ const DrawNavi = () => {
 
 export default function App() {
   return (
-    <NavigationContainer
-      style={styles.container}
-    >
+    <NavigationContainer style={styles.container}>
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
@@ -410,11 +388,11 @@ export default function App() {
         <Drawer.Screen name="Items" component={UserItemScreen} />
         <Drawer.Screen name="Purchase" component={PurchaseHistoryScreen} />
         <Drawer.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
+        <Drawer.Screen name="Home" component={AthListNavi} />
         <Drawer.Screen
-          name="Home"
-          component={AthListNavi}
+          name="UserPageScreenNavi"
+          component={UserPageScreenNavi}
         />
-        <Drawer.Screen name="UserPageScreenNavi" component={UserPageScreenNavi} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
@@ -423,10 +401,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFDF6',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#FFFDF6",
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 78,
   },
-
 });
