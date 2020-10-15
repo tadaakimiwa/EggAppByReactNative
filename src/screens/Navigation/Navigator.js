@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
-import { StyleSheet } from "react-native";
+import React, { useState, useContext } from "react";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+
+import { MaterialCommunityIcons } from "react-native-vector-icons";
+
 import { Button } from "react-native-elements";
-import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
@@ -15,72 +16,57 @@ import {
   DrawerContentOptions,
   DrawerNavigationProp,
 } from "@react-navigation/drawer";
-import firebase from "firebase";
 
-import Navigator from "@screens/Navigation/Navigator";
+import { StyleSheet } from "react-native";
+import { Icon } from "native-base";
 
-import { UserContextProvider, UserContext } from "./src/context/index";
+import { UserContext } from "@context/index";
 
-import AthEditIntroVideoScreen from "./src/screens/AthEditIntroVideoScreen";
-import AthListScreen from "./src/screens/AthListScreen";
-import AthPageScreen from "./src/screens/AthPageScreen";
-import AthEditScreen from "./src/screens/AthEditScreen";
-import AthDetailScreen from "./src/screens/AthDetailScreen";
-import AthCreateScreen from "./src/screens/drawers/AthCreateScreen";
-import AthUploadingScreen from "./src/screens/AthUploadingScreen";
-import AthPostingScreen from "./src/screens/AthPostingScreen";
-import PostDetailScreen from "./src/screens/PostDetailScreen";
-import PostEditScreen from "./src/screens/PostEditScreen";
-import PostVideoModal from "./src/screens/PostVideoModal";
-import SearchScreen from "./src/screens/SearchScreen";
-import SearchStack from "./src/screens/SearchStack";
-import TrendListScreen from "./src/screens/TrendListScreen";
-import FollowingAlertListScreen from "./src/screens/FollowingAlertListScreen";
-import FollowingListScreen from "./src/screens/drawers/FollowingListScreen";
-import UserPageScreen from "./src/screens/UserPageScreen";
-import AlpineScreen from "./src/screens/AthLists/AlpineScreen";
-import CrossCountryScreen from "./src/screens/AthLists/CrossCountryScreen";
-import FreeStyleScreen from "./src/screens/AthLists/FreeStyleScreen";
-import NordicCombinedScreen from "./src/screens/AthLists/NordicCombinedScreen";
-import SkiJumpingScreen from "./src/screens/AthLists/SkiJumpingScreen";
-import SnowBoardingScreen from "./src/screens/AthLists/SnowBoardingScreen";
-import LoginScreen from "./src/screens/LoginScreen";
-import SignupScreen from "./src/screens/SignupScreen";
-import ShopScreen from "./src/screens/drawers/ShopScreen";
-import UserEditScreen from "./src/screens/UserEditScreen";
-import UserCreateScreen from "./src/screens/UserCreateScreen";
-import UserItemScreen from "./src/screens/drawers/UserItemScreen";
-import UserCommentListScreen from "./src/screens/UserCommentListScreen";
-import UserFollowingListScreen from "./src/screens/UserFollowingListScreen";
-import UserPurchaseListScreen from "./src/screens/UserPurchaseListScreen";
-import PurchaseHistoryScreen from "./src/screens/drawers/PurchaseHistoryScreen";
-
-import ENV from "./env.json";
-
-require("firebase/firestore");
+import AthEditIntroVideoScreen from "@screens/AthEditIntroVideoScreen";
+import AthListScreen from "@screens/AthListScreen";
+import AthPageScreen from "@screens/AthPageScreen";
+import AthEditScreen from "@screens/AthEditScreen";
+import AthDetailScreen from "@screens/AthDetailScreen";
+import AthCreateScreen from "@screens/drawers/AthCreateScreen";
+import AthUploadingScreen from "@screens/AthUploadingScreen";
+import AthPostingScreen from "@screens/AthPostingScreen";
+import PostDetailScreen from "@screens/PostDetailScreen";
+import PostEditScreen from "@screens/PostEditScreen";
+import PostVideoModal from "@screens/PostVideoModal";
+import SearchScreen from "@screens/SearchScreen";
+import SearchStack from "@screens/SearchStack";
+import TrendListScreen from "@screens/TrendListScreen";
+import FollowingAlertListScreen from "@screens/FollowingAlertListScreen";
+import FollowingListScreen from "@screens/drawers/FollowingListScreen";
+import UserPageScreen from "@screens/UserPageScreen";
+import AlpineScreen from "@screens/AthLists/AlpineScreen";
+import CrossCountryScreen from "@screens/AthLists/CrossCountryScreen";
+import FreeStyleScreen from "@screens/AthLists/FreeStyleScreen";
+import NordicCombinedScreen from "@screens/AthLists/NordicCombinedScreen";
+import SkiJumpingScreen from "@screens/AthLists/SkiJumpingScreen";
+import SnowBoardingScreen from "@screens/AthLists/SnowBoardingScreen";
+import LoginScreen from "@screens/LoginScreen";
+import SignupScreen from "@screens/SignupScreen";
+import ShopScreen from "@screens/drawers/ShopScreen";
+import UserEditScreen from "@screens/UserEditScreen";
+import UserCreateScreen from "@screens/UserCreateScreen";
+import UserItemScreen from "@screens/drawers/UserItemScreen";
+import UserCommentListScreen from "@screens/UserCommentListScreen";
+import UserFollowingListScreen from "@screens/UserFollowingListScreen";
+import UserPurchaseListScreen from "@screens/UserPurchaseListScreen";
+import PurchaseHistoryScreen from "@screens/drawers/PurchaseHistoryScreen";
 
 const Stack = createStackNavigator();
 const MaterialTab = createMaterialBottomTabNavigator();
 const MaterialTopTab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const firebaseConfig = {
-  apiKey: ENV.FIREBASE_API_KEY,
-  authDomain: ENV.FIREBASE_AUTH_DOMAIN,
-  databaseURL: ENV.FIREBASE_DB_URL,
-  projectId: ENV.FIREBASE_PROJECT_ID,
-  storageBucket: ENV.FIREBASE_STORAGE,
-  messagingSenderId: ENV.FIREBASE_MEASUREMENT_ID,
-  appId: ENV.FIREBASE_APP_ID,
-  measurementId: ENV.FIREBASE_MEASUREMENT_ID,
-};
-firebase.initializeApp(firebaseConfig);
-
 const MaterialTabNavi = () => {
   return (
     <MaterialTab.Navigator
       activeColor="#fff"
       style={{ backgroundColor: "tomato" }}
+      initialRouteName="UserPage"
     >
       <MaterialTab.Screen
         name="Home"
@@ -266,6 +252,7 @@ const UserPageScreenNavi = ({ navigation }) => {
         optiona={UserPageScreen.navigationOptions}
       />
       <Stack.Screen name="UserEdit" component={UserEditScreen} />
+      <Stack.Screen name="UserCreate" component={UserCreateScreen} />
       <Stack.Screen name="AthPage" component={AthPageScreen} />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="AthEdit" component={AthEditScreen} />
@@ -301,7 +288,6 @@ const UserPageScreenNavi = ({ navigation }) => {
 const MainNavi = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="UserCreate" component={UserCreateScreen} />
       <Stack.Screen
         name="Home"
         component={MaterialTabNavi}
@@ -320,7 +306,7 @@ const MainNavi = () => {
   );
 };
 
-function CustomDrawerContent(props) {
+function CustomDrawerContent(props, logout) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItem
@@ -343,6 +329,7 @@ function CustomDrawerContent(props) {
         label="Purchase History"
         onPress={() => props.navigation.navigate("Purchase")}
       />
+      <DrawerItem label="Logout" onPress={() => logout()} />
     </DrawerContentScrollView>
   );
 }
@@ -362,9 +349,11 @@ const DrawNavi = () => {
 };
 
 const TestNavi = () => {
+  const { logout } = useContext(UserContext);
+
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => CustomDrawerContent(props, logout)}
     >
       <Drawer.Screen name="main" component={MainNavi} />
       <Drawer.Screen name="AthCreate" component={AthCreateScreen} />
@@ -405,13 +394,13 @@ const LoginStackNavi = () => {
   );
 };
 
-export default function App() {
+export default function Navigator() {
   const { currentUser } = useContext(UserContext);
-
+  // NavigationContainerの間に{currentUser ? <MainNavi /> : <LoginStackNavi />}
   return (
-    <UserContextProvider>
-      <Navigator />
-    </UserContextProvider>
+    <NavigationContainer style={styles.container}>
+      {currentUser ? <TestNavi /> : <LoginStackNavi />}
+    </NavigationContainer>
   );
 }
 

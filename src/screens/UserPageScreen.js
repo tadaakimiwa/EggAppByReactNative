@@ -59,7 +59,7 @@ class UserPageScreen extends React.Component {
           giftsNum,
         });
       } else {
-        console.log("No such document!", user.uid);
+        navigation.navigate("UserCreate");
       }
     });
 
