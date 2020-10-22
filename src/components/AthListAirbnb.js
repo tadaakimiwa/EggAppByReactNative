@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -7,11 +7,11 @@ import {
   FlatList,
   Image,
   RefreshControl,
-} from 'react-native';
+} from "react-native";
 
 const dateString = (date) => {
   const str = date.toDate().toISOString();
-  return str.split('T')[0];
+  return str.split("T")[0];
 };
 
 export default function AthListAirbnb(props) {
@@ -27,11 +27,13 @@ export default function AthListAirbnb(props) {
     const post = item;
     const postid = post.key;
     const uid = post.uploader;
-    console.log('Hey!', postid, uid);
+    console.log("Hey!", postid, uid);
     return (
       <View style={styles.athListItem}>
         <TouchableHighlight
-          onPress={() => { props.navigation.navigate('PostDetail', { postid, uid }); }}
+          onPress={() => {
+            props.navigation.navigate("PostDetail", { postid, uid });
+          }}
           underlayColor="transparent"
         >
           <View>
@@ -61,7 +63,7 @@ export default function AthListAirbnb(props) {
         </TouchableHighlight>
       </View>
     );
-  }
+  };
   return (
     <View style={styles.athList}>
       <FlatList
@@ -77,15 +79,16 @@ export default function AthListAirbnb(props) {
 
 const styles = StyleSheet.create({
   athList: {
-    width: '100%',
-    flexDirection: 'row',
-    shadowColor: '#a1a1a1',
+    width: "100%",
+    height: "100%",
+    flexDirection: "row",
+    shadowColor: "#a1a1a1",
     shadowOffset: { width: 1, height: 7 },
     shadowOpacity: 1,
     shadowRadius: 7,
   },
   athListFlat: {
-    width: '100%',
+    width: "100%",
   },
   athListItem: {
     marginTop: 12,
@@ -93,45 +96,44 @@ const styles = StyleSheet.create({
     width: 320,
     height: 280,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 20,
-    alignSelf: 'center',
-    overflow: 'hidden',
-    backgroundColor: '#fff',
+    alignSelf: "center",
+    overflow: "hidden",
+    backgroundColor: "#fff",
   },
   itemImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 180,
   },
   itemImageTitle: {
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
   },
   itemComment: {
     marginTop: 12,
     marginLeft: 12,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     paddingTop: 5,
-    alignItems: 'center',
+    alignItems: "center",
     width: 320,
     height: 100,
   },
   userNamePic: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 32,
     height: 64,
     width: 64,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   userNamePicTitle: {
     height: 64,
     width: 64,
   },
   itemCaption: {
-
     paddingLeft: 18,
   },
   itemCaptionTitle: {

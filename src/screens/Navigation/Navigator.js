@@ -37,6 +37,7 @@ import SearchScreen from "@screens/SearchScreen";
 import SearchStack from "@screens/SearchStack";
 import TrendListScreen from "@screens/TrendListScreen";
 import FollowingAlertListScreen from "@screens/FollowingAlertListScreen";
+import FollowingAthleteVideoScreen from "@screens/FollowingAthleteVideoScreen";
 import FollowingListScreen from "@screens/drawers/FollowingListScreen";
 import UserPageScreen from "@screens/UserPageScreen";
 import AlpineScreen from "@screens/AthLists/AlpineScreen";
@@ -78,7 +79,7 @@ const MaterialTabNavi = () => {
     >
       <MaterialTab.Screen
         name="Home"
-        component={AthListScreenNavi}
+        component={FollowingAthleteVideoScreenNavi}
         options={{
           tabBarColor: "#FF4500",
           tabBarLabel: "Athletes",
@@ -89,7 +90,7 @@ const MaterialTabNavi = () => {
       />
       <MaterialTab.Screen
         name="Search"
-        component={SearchScreenNavi}
+        component={AthListScreenNavi}
         options={{
           tabBarColor: "#FF8300",
           tabBarLabel: "Search",
@@ -121,6 +122,46 @@ const MaterialTabNavi = () => {
         }}
       />
     </MaterialTab.Navigator>
+  );
+};
+
+const FollowingAthleteVideoScreenNavi = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#fff",
+        },
+        headerTintColor: "#000",
+        headerBackTitle: null,
+      }}
+    >
+      <Stack.Screen
+        name="EggApp"
+        component={FollowingAthleteVideoScreen}
+        options={{
+          headerLeft: () => (
+            <Button
+              icon={
+                <MaterialCommunityIcons name="menu" size={24} color="#000" />
+              }
+              buttonStyle={{
+                backgroundColor: "#fff",
+              }}
+              onPress={() => navigation.toggleDrawer()}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetailScreen}
+        options={PostDetailScreen.navigationOptions}
+      />
+      <Stack.Screen name="PostEdit" component={PostEditScreen} />
+      <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
+    </Stack.Navigator>
   );
 };
 

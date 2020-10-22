@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import firebase from 'firebase';
-import LottieView from 'lottie-react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import firebase from "firebase";
+import LottieView from "lottie-react-native";
 
-import AthListAirbnb from '../../components/AthListAirbnb';
+import AthListAirbnb from "../../components/AthListAirbnb";
 
 export default function AlpineScreen(props) {
   const [athList, setAthList] = useState([]);
@@ -12,8 +12,8 @@ export default function AlpineScreen(props) {
   const getData = () => {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
-    db.collectionGroup('posts')
-      .where('category', '==', 'Alpine')
+    db.collectionGroup("posts")
+      .where("category", "==", "Alpine")
       .get()
       .then((querysnapshot) => {
         const list = [];
@@ -35,11 +35,11 @@ export default function AlpineScreen(props) {
   if (loading) {
     return (
       <LottieView
-        source={require('../../../assets/lottie/sandWatch.json')}
+        source={require("../../../assets/lottie/sandWatch.json")}
         autoPlay
         loop
       />
-    )
+    );
   }
 
   return (
@@ -56,8 +56,8 @@ export default function AlpineScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     paddingTop: 12,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: "#f7f7f7",
   },
 });

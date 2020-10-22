@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 class FollowingAlertList extends React.Component {
   render() {
     return (
       <View style={styles.followingList}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => {}}>
           <View style={styles.followingItem}>
             <View style={styles.followingItemIcon}>
               <Text style={styles.followingItemIconTitle}>I</Text>
@@ -14,12 +14,12 @@ class FollowingAlertList extends React.Component {
               <Text style={styles.followingItemBodyTitle}>
                 TestTestTestTestTestTestTestTestTest
               </Text>
-              <Text style={styles.followingItemDate}>2020/5/02</Text>
+              <Text style={styles.followingItemDate}>2020/10/22</Text>
             </View>
           </View>
         </TouchableHighlight>
 
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => {}}>
           <View style={styles.followingItem}>
             <View style={styles.followingItemIcon}>
               <Text style={styles.followingItemIconTitle}>I</Text>
@@ -28,12 +28,12 @@ class FollowingAlertList extends React.Component {
               <Text style={styles.followingItemBodyTitle}>
                 TestTestTestTestTestTestTestTestTest
               </Text>
-              <Text style={styles.followingItemDate}>2020/5/02</Text>
+              <Text style={styles.followingItemDate}>2020/10/22</Text>
             </View>
           </View>
         </TouchableHighlight>
 
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => {}}>
           <View style={styles.followingItem}>
             <View style={styles.followingItemIcon}>
               <Text style={styles.followingItemIconTitle}>I</Text>
@@ -42,11 +42,10 @@ class FollowingAlertList extends React.Component {
               <Text style={styles.followingItemBodyTitle}>
                 TestTestTestTestTestTestTestTestTest
               </Text>
-              <Text style={styles.followingItemDate}>2020/5/02</Text>
+              <Text style={styles.followingItemDate}>2020/10/22</Text>
             </View>
           </View>
         </TouchableHighlight>
-
       </View>
     );
   }
@@ -54,28 +53,28 @@ class FollowingAlertList extends React.Component {
 
 const styles = StyleSheet.create({
   followingList: {
-    width: '100%',
+    width: "100%",
   },
   followingItem: {
     height: 60,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   followingItemIcon: {
     height: 40,
     width: 40,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     margin: 10,
   },
   followingItemBody: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   followingItemBodyTitle: {
     fontSize: 14,

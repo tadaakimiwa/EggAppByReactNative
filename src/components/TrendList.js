@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 class TrendList extends React.Component {
   render() {
     return (
       <View style={styles.trendList}>
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => {}}>
           <View style={styles.trendItem}>
             <View style={styles.trendItemIcon}>
               <Text style={styles.trendItemIconTitle}>I</Text>
@@ -19,7 +19,7 @@ class TrendList extends React.Component {
           </View>
         </TouchableHighlight>
 
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => {}}>
           <View style={styles.trendItem}>
             <View style={styles.trendItemIcon}>
               <Text style={styles.trendItemIconTitle}>I</Text>
@@ -28,12 +28,12 @@ class TrendList extends React.Component {
               <Text style={styles.trendItemBodyTitle}>
                 TestTestTestTestTestTestTestTestTest
               </Text>
-              <Text style={styles.trendItemDate}>2020/5/02</Text>
+              <Text style={styles.trendItemDate}>2020/10/22</Text>
             </View>
           </View>
         </TouchableHighlight>
 
-        <TouchableHighlight onPress={() => { this.props.navigation.navigate('AthDetail'); }}>
+        <TouchableHighlight onPress={() => {}}>
           <View style={styles.trendItem}>
             <View style={styles.trendItemIcon}>
               <Text style={styles.trendItemIconTitle}>I</Text>
@@ -53,28 +53,28 @@ class TrendList extends React.Component {
 
 const styles = StyleSheet.create({
   trendList: {
-    width: '100%',
+    width: "100%",
   },
   trendItem: {
     height: 60,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   trendItemIcon: {
     height: 40,
     width: 40,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     margin: 10,
   },
   trendItemBody: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   trendItemBodyTitle: {
     fontSize: 14,

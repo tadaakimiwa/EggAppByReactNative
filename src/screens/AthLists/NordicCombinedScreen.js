@@ -1,23 +1,63 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import firebase from "firebase";
+import LottieView from "lottie-react-native";
 
-import SearchList from '../../components/SearchList';
+import AthListAirbnb from "../../components/AthListAirbnb";
 
-class NordicCombinedScreen extends React.Component {
-  render() {
+export default function NordicCombinedScreen(props) {
+  const [athList, setAthList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getData = () => {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    db.collectionGroup("posts")
+      .where("category", "==", "NordicCombined")
+      .get()
+      .then((querysnapshot) => {
+        const list = [];
+        querysnapshot.forEach((doc) => {
+          list.push({ ...doc.data(), key: doc.id });
+          console.log(list);
+        });
+        setAthList(list);
+      });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getData();
+    setLoading(false);
+  }, []);
+
+  let lottie;
+  if (loading) {
     return (
-      <View style={styles.container}>
-        <SearchList />
-      </View>
+      <LottieView
+        source={require("../../../assets/lottie/sandWatch.json")}
+        autoPlay
+        loop
+      />
     );
   }
+
+  return (
+    <View style={styles.container}>
+      <AthListAirbnb
+        athList={athList}
+        navigation={props.navigation}
+        getData={getData}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
+    paddingTop: 12,
+    backgroundColor: "#f7f7f7",
   },
 });
-
-export default NordicCombinedScreen;
