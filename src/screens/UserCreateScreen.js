@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -8,33 +8,33 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-} from 'react-native';
-import { Hoshi } from 'react-native-textinput-effects';
-import Constants from 'expo-constants';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import firebase from 'firebase';
+} from "react-native";
+import { Hoshi } from "react-native-textinput-effects";
+import Constants from "expo-constants";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import firebase from "firebase";
 
-import CircleButton from '../elements/CircleButton';
-import InputWithHoshi from '../elements/InputWithHoshi';
+import Layout from "@components/Layout";
+import CircleButton from "../elements/CircleButton";
+import InputWithHoshi from "../elements/InputWithHoshi";
 
 class UserCreateScreen extends React.Component {
-
-  state={
-    username: '',
-    createdOn: '',
-    profile: '',
-    url: '',
-    progress: '',
-  }
+  state = {
+    username: "",
+    createdOn: "",
+    profile: "",
+    url: "",
+    progress: "",
+  };
 
   ImageChoiceAndUpload = async () => {
     try {
       // まず、CAMERA_ROLLのパーミッション確認
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        if (status !== 'granted') {
-          alert('利用には許可が必要です。');
+        if (status !== "granted") {
+          alert("利用には許可が必要です。");
           return;
         }
       }
@@ -44,7 +44,7 @@ class UserCreateScreen extends React.Component {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 1
+        quality: 1,
       });
       if (!result.cancelled) {
         // 撮影された（ローカルの）写真を取得
@@ -57,131 +57,138 @@ class UserCreateScreen extends React.Component {
         const filename = `users/${user.uid}/info/profileImage`;
 
         // firebase storeのrefを取得
-        const storageRef = firebase.storage().ref().child(`images/, ${filename}`);
+        const storageRef = firebase
+          .storage()
+          .ref()
+          .child(`images/, ${filename}`);
 
         // upload
         // const putTask = await storageRef.put(localBlob);
         // 進捗を取得したいのでawaitは使わず
         const putTask = storageRef.put(localBlob);
-        putTask.on('state_changed', (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.setState({
-            progress: parseInt(progress) + "%",
-          });
-        }, (error) => {
-          console.log(error);
-          alert('Failed to upload...');
-        }, () => {
-          putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            console.log(downloadURL);
+        putTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             this.setState({
-              progress: '',
-              url: downloadURL,
+              progress: parseInt(progress) + "%",
             });
-          })
-        });
+          },
+          (error) => {
+            console.log(error);
+            alert("Failed to upload...");
+          },
+          () => {
+            putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              console.log(downloadURL);
+              this.setState({
+                progress: "",
+                url: downloadURL,
+              });
+            });
+          }
+        );
       }
     } catch (e) {
       console.log(e.message);
-      alert('Too much Size');
+      alert("Too much Size");
     }
-  }
-
+  };
 
   handlePress() {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
     const newDate = firebase.firestore.Timestamp.now();
-    db.collection(`users/${user.uid}/User`).doc('info').set({
-      uid: user.uid,
-      username: this.state.username,
-      profile: this.state.profile,
-      profileImageURL: this.state.url,
-      createdOn: newDate,
-      isAthlete: false,
-      followingNum: 0,
-      commentsNum: 0,
-      giftsNum: 0,
-    })
+    db.collection(`users/${user.uid}/User`)
+      .doc("info")
+      .set({
+        uid: user.uid,
+        username: this.state.username,
+        profile: this.state.profile,
+        profileImageURL: this.state.url,
+        createdOn: newDate,
+        isAthlete: false,
+        followingNum: 0,
+        commentsNum: 0,
+        giftsNum: 0,
+      })
       .then(() => {
-        this.props.navigation.navigate('Home');
+        this.props.navigation.navigate("Home");
       })
       .catch((error) => {
-        console.log('Failed!!', error);
+        console.log("Failed!!", error);
       });
   }
 
   render() {
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
-            <View style={styles.userEdit}>
-              <View style={styles.userEditImage}>
-                <View
-                  style={styles.userImage}
-                >
-                  <Image
-                    style={styles.userImageTitle}
-                    source={this.state.url ? { uri: this.state.url } : null}
-                  />
-                </View>
+      <Layout>
+        <View>
+          <View style={styles.userEdit}>
+            <View style={styles.userEditImage}>
+              <View style={styles.userImage}>
+                <Image
+                  style={styles.userImageTitle}
+                  source={this.state.url ? { uri: this.state.url } : null}
+                />
               </View>
-              <View style={styles.userIconChoose}>
-                <TouchableHighlight
-                  style={styles.userIconChooseButton}
-                  onPress={this.ImageChoiceAndUpload}
-                >
-                  <Text style={styles.userIconChooseTitle}>
-                    Choose your profile Icon
-                  </Text>
-                </TouchableHighlight>
-              </View>
-              <InputWithHoshi
-                label="Username"
-                value={this.state.username}
-                onChangeText={(text) => { this.setState({ username: text }); }}
-              />
-              <InputWithHoshi
-                label="Profile"
-                value={this.state.profile}
-                onChangeText={(text) => { this.setState({ profile: text }); }}
-              />
             </View>
-            <CircleButton name="check" onPress={this.handlePress.bind(this)}/>
+            <View style={styles.userIconChoose}>
+              <TouchableHighlight
+                style={styles.userIconChooseButton}
+                onPress={this.ImageChoiceAndUpload}
+              >
+                <Text style={styles.userIconChooseTitle}>
+                  Choose your profile Icon
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <InputWithHoshi
+              label="Username"
+              value={this.state.username}
+              onChangeText={(text) => {
+                this.setState({ username: text });
+              }}
+            />
+            <InputWithHoshi
+              label="Profile"
+              value={this.state.profile}
+              onChangeText={(text) => {
+                this.setState({ profile: text });
+              }}
+            />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          <CircleButton name="check" onPress={this.handlePress.bind(this)} />
+        </View>
+      </Layout>
     );
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
   },
   userEdit: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   userEditImage: {
     paddingTop: 48,
     paddingBottom: 24,
-    alignItems: 'center',
+    alignItems: "center",
   },
   userImage: {
     height: 120,
     width: 120,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   userImageTitle: {
     height: 120,
@@ -191,18 +198,17 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   userIconChoose: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 5,
   },
   userIconChooseButton: {
     borderWidth: 0.5,
-    borderColor: '#2DCCD3',
+    borderColor: "#2DCCD3",
     padding: 3,
   },
   userIconChooseTitle: {
-    color: '#2DCCD3',
+    color: "#2DCCD3",
   },
 });
-
 
 export default UserCreateScreen;

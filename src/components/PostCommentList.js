@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableHighlight,
-  FlatList
-} from 'react-native';
-import { Avatar } from 'react-native-elements';
+  FlatList,
+} from "react-native";
+import { Avatar } from "react-native-elements";
 
-import PostCommentInput from './PostCommentInput';
+import PostCommentInput from "./PostCommentInput";
 
 const dateString = (date) => {
   const str = date.toDate().toISOString();
-  return str.split('T')[0];
+  return str.split("T")[0];
 };
 
 export default function PostCommentList(props) {
@@ -28,15 +28,15 @@ export default function PostCommentList(props) {
             size={36}
             rounded
             title="U"
-            source={comment.profileImageURL ? { uri: comment.profileImageURL } : null}
+            source={
+              comment.profileImageURL ? { uri: comment.profileImageURL } : null
+            }
           />
         </View>
         <View style={styles.commentInfo}>
           <View style={styles.commentInfoUpper}>
             <View style={styles.commenter}>
-              <Text style={styles.commenterTitle}>
-                {comment.username}
-              </Text>
+              <Text style={styles.commenterTitle}>{comment.username}</Text>
             </View>
             <View style={styles.commentDate}>
               <Text style={styles.commentDateTitle}>
@@ -66,7 +66,8 @@ export default function PostCommentList(props) {
         style={styles.commentListFlat}
         numColumns={1}
         horizontal={false}
-        ListFooterComponent={(
+        nestedScrollEnabled
+        ListHeaderComponent={
           <PostCommentInput
             uploader={post.uploader}
             postid={post.postid}
@@ -74,7 +75,7 @@ export default function PostCommentList(props) {
             userProfileURL={props.userProfileURL}
             athuid={post.athuid}
           />
-        )}
+        }
       />
     </View>
   );
@@ -82,30 +83,30 @@ export default function PostCommentList(props) {
 
 const styles = StyleSheet.create({
   commentListItem: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     padding: 12,
   },
   commentInfo: {
     paddingLeft: 12,
   },
   commentInfoUpper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   commenterTitle: {
     fontSize: 14,
-    fontWeight: '300',
+    fontWeight: "300",
   },
   commentDate: {
     paddingLeft: 12,
   },
   commentDateTitle: {
     fontSize: 14,
-    fontWeight: '300',
+    fontWeight: "300",
   },
   commentContentsTitle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });

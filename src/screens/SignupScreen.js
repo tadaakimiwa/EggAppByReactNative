@@ -6,62 +6,53 @@ import {
   TouchableHighlight,
   Text,
 } from "react-native";
-import firebase from "firebase";
 
 import { UserContext } from "@context/index";
+import Layout from "@components/Layout";
 
-export default function SignupScreen(props) {
+export default function SignupScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const { signup } = useContext(UserContext);
 
-  const handleSubmit = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        this.props.navigation.navigate("UserCreate");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Signup</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={(text) => {
-          setEmail(text);
-        }}
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholder="Email Address"
-      />
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={(text) => {
-          setPassword(text);
-        }}
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholder="Password"
-        secureTextEntry
-      />
-      <TouchableHighlight
-        style={styles.button}
-        onPress={() => {
-          signup(email, password);
-        }}
-        underlayColor="#ccc"
-      >
-        <Text style={styles.buttonTitle}>Submit</Text>
-      </TouchableHighlight>
-    </View>
+    <Layout>
+      <View style={styles.container}>
+        <Text style={styles.title}>Signup</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Email Address"
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Password"
+          secureTextEntry
+        />
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => {
+            signup(email, password);
+          }}
+          underlayColor="#ccc"
+        >
+          <Text style={styles.buttonTitle}>Submit</Text>
+        </TouchableHighlight>
+      </View>
+    </Layout>
   );
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -6,12 +6,11 @@ import {
   TouchableHighlight,
   FlatList,
   Image,
-} from 'react-native';
+} from "react-native";
 
-import AthDetailInfo from './AthDetailInfo';
+import AthDetailInfo from "./AthDetailInfo";
 
 export default function AthPostList(props) {
-
   const renderPost = ({ item }) => {
     const post = item;
     const postid = post.key;
@@ -19,7 +18,9 @@ export default function AthPostList(props) {
     return (
       <View style={styles.athPostListItem}>
         <TouchableHighlight
-          onPress={() => { props.navigation.navigate('PostDetail', { postid, uid }); }}
+          onPress={() => {
+            props.navigation.navigate("PostDetail", { postid, uid });
+          }}
         >
           <Image
             style={styles.postImageTitle}
@@ -28,7 +29,7 @@ export default function AthPostList(props) {
         </TouchableHighlight>
       </View>
     );
-  }
+  };
 
   return (
     <View style={styles.postList}>
@@ -38,12 +39,9 @@ export default function AthPostList(props) {
         style={styles.postListFlat}
         numColumns={2}
         horizontal={false}
-        ListHeaderComponent={(
-          <AthDetailInfo
-            info={props.info}
-            button={props.button}
-          />
-        )}
+        ListHeaderComponent={
+          <AthDetailInfo info={props.info} button={props.button} />
+        }
       />
     </View>
   );
@@ -52,20 +50,24 @@ export default function AthPostList(props) {
 const styles = StyleSheet.create({
   postList: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     paddingLeft: 24,
     paddingRight: 24,
-    alignItems: 'center',
+    alignItems: "center",
+  },
+  postListFlat: {
+    width: "100%",
+    height: "100%",
   },
   athPostListItem: {
-    width: '50%',
+    width: "50%",
     height: 150,
     borderWidth: 1,
-    borderColor: '#ddd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    borderColor: "#ddd",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   postImageTitle: {
     width: 180,

@@ -5,6 +5,7 @@ import { Hoshi } from "react-native-textinput-effects";
 
 import { UserContext } from "@context/index";
 
+import Layout from "@components/Layout";
 import NeumophismButton from "../components/NeumophismButton";
 import NeumoCircleButton from "../elements/NeumoCircleButton";
 
@@ -15,54 +16,59 @@ export default function LoginScreen(props) {
   const { login } = useContext(UserContext);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <Hoshi
-        style={styles.input}
-        label="Email"
-        value={email}
-        onChangeText={(text) => {
-          setEmail(text);
-        }}
-        borderColor="#265366"
-        borderHeight={4}
-        inputPadding={12}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      <Hoshi
-        style={styles.input}
-        label="Password"
-        value={password}
-        onChangeText={(text) => {
-          setPassword(text);
-        }}
-        borderColor="#000"
-        borderHeight={4}
-        inputPadding={12}
-        autoCapitalize="none"
-        autoCorrect={false}
-        secureTextEntry
-      />
-      <TouchableHighlight
-        style={styles.button}
-        onPress={() => {
-          login(email, password);
-        }}
-        underlayColor="#ccc"
-      >
-        <Text style={styles.buttonTitle}>Log in</Text>
-      </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.signup}
-        onPress={() => {
-          props.navigation.navigate("Signup");
-        }}
-      >
-        <Text style={styles.signupTitle}>Create a new Account for EggApp</Text>
-      </TouchableHighlight>
-      <NeumoCircleButton />
-    </View>
+    <Layout>
+      <View style={styles.container}>
+        <Text style={styles.title}>Login</Text>
+        <Hoshi
+          style={styles.input}
+          label="Email"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+          borderColor="#265366"
+          borderHeight={4}
+          inputPadding={12}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+        />
+        <Hoshi
+          style={styles.input}
+          label="Password"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+          borderColor="#000"
+          borderHeight={4}
+          inputPadding={12}
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry
+          keyboardType="default"
+        />
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => {
+            login(email, password);
+          }}
+          underlayColor="#ccc"
+        >
+          <Text style={styles.buttonTitle}>Log in</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.signup}
+          onPress={() => {
+            props.navigation.navigate("Signup");
+          }}
+        >
+          <Text style={styles.signupTitle}>
+            Create a new Account for EggApp
+          </Text>
+        </TouchableHighlight>
+      </View>
+    </Layout>
   );
 }
 

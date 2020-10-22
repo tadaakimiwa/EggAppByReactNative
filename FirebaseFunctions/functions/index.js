@@ -1,4 +1,3 @@
-
 const functions = require("firebase-functions");
 
 const admin = require("firebase-admin");
@@ -16,27 +15,26 @@ const tokyoRegion = "asia-northeast1";
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 exports.deletePost = functions
-    .region(tokyoRegion)
-    .firestore.document('users/{uid}/posts/{postid}')
-    .onDelete(async (snap, context) => {
-      const { uid } = context.params;
-      const { postid } = context.params;
-      const filePath = `videos/users/${uid}/posts/${postid}`
-      const thumbnailPath = `images/users/${uid}/posts/${postid}/thumbnail`
-      const bucket = firebase.storage().bucket();
-      await bucket.file(thumbnailPath).delete();
-      console.log('Thumbnail deleted from Storage at', thumbnailPath);
-      await bucket.file(filePath).delete();
-      console.log('Thumbnail deleted from Storage at', filePath);
-    });
+  .region(tokyoRegion)
+  .firestore.document("users/{uid}/posts/{postid}")
+  .onDelete(async (change, context) => {
+    const { uid } = context.params;
+    const { postid } = context.params;
+    const filePath = `videos/users/${uid}/posts/${postid}`;
+    const thumbnailPath = `images/users/${uid}/posts/${postid}/thumbnail`;
+    const bucket = firebase.storage().bucket();
+    await bucket.file(thumbnailPath).delete();
+    console.log("Thumbnail deleted from Storage at", thumbnailPath);
+    await bucket.file(filePath).delete();
+    console.log("Thumbnail deleted from Storage at", filePath);
+  });
 
-
-exports.onUserCreate = functions
-    .region(tokyoRegion)
-    .firestore.document('users/{uid}/User/info')
-    .onCreate((snap, context) => {
-      const data = snap.data();
-      data.objectID = context.params.uid;
-      const index = client.initIndex(ALGOLIA_INDEX_NAME);
-      return index.saveObject(data);
-})
+// exports.onUserCreate = functions
+//     .region(tokyoRegion)
+//     .firestore.document('users/{uid}/User/info')
+//     .onCreate((snap, context) => {
+//       const data = snap.data();
+//       data.objectID = context.params.uid;
+//       const index = client.initIndex(ALGOLIA_INDEX_NAME);
+//       return index.saveObject(data);
+// })

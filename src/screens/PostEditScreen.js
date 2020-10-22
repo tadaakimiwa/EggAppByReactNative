@@ -16,7 +16,11 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 
+import Layout from "@components/Layout";
+
 import CircleButton from "../elements/CircleButton";
+import ProgressBar from "../elements/ProgressBar";
+import NeumoNextButton from "../elements/NeumoNextButton";
 
 export default function PostEditScreen(props) {
   const [contentsCaption, setCaption] = useState("");
@@ -31,10 +35,13 @@ export default function PostEditScreen(props) {
     setCaption(info.contentsCaption);
     setInfo(info.contentsInfo);
     setThumbnailURL(info.thumbnailURL);
+    if (thumbnailURL !== undefined) {
+      setProgress(1);
+    }
     console.log(info);
   }, []);
 
-  const VideoChoiceAndUpload = async () => {
+  const ThumbnailChoiceAndUpload = async () => {
     try {
       // まず、CAMERA_ROLLのパーミッション確認
       if (Constants.platform.ios) {
@@ -97,6 +104,23 @@ export default function PostEditScreen(props) {
     }
   };
 
+  let thumbnail;
+  if (progress === 1) {
+    thumbnail = (
+      <View style={styles.thumbnail}>
+        <Image
+          source={{ uri: thumbnailURL }}
+          style={{ height: 144, width: 240 }}
+        />
+      </View>
+    );
+  }
+
+  let handleEditButton;
+  if (progress === 1) {
+    handleEditButton = <NeumoNextButton text={"Edit"} onPress={handleEdit} />;
+  }
+
   const handleEdit = () => {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
@@ -116,52 +140,80 @@ export default function PostEditScreen(props) {
         console.log("Failed!!", error);
       });
   };
+
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.inner}>
-          <View style={styles.undefined}>
-            <Text>Thumbnail ?</Text>
-            <Text style={{ alignSelf: "center" }}>{progress}</Text>
-          </View>
-          <View style={styles.contentsInfo}>
-            <TextInput
-              style={styles.contentsCaption}
-              value={contentsCaption}
-              onChangeText={(text) => {
-                setCaption(text);
-              }}
-              placeholder="Write caption of your contents"
-              placeholderTextColor="#bbb"
-              multiline
-            />
-          </View>
-          <View style={styles.contentsInfo}>
-            <TextInput
-              style={styles.contentsInfoTitle}
-              value={contentsInfo}
-              onChangeText={(text) => {
-                setInfo(text);
-              }}
-              placeholder="Write description of your contents"
-              placeholderTextColor="#bbb"
-              multiline
-            />
-          </View>
-          <View style={styles.postButtons}>
-            <TouchableHighlight
-              style={styles.button}
-              onPress={VideoChoiceAndUpload}
-            >
-              <Text style={styles.buttonTitle}>Choose a Thumbnail</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.button} onPress={handleEdit}>
-              <Text style={styles.buttonTitle}>Post</Text>
-            </TouchableHighlight>
-          </View>
+    <Layout>
+      <View style={styles.inner}>
+        <View style={styles.thumbnailTab}>
+          <Text
+            style={{
+              paddingTop: 12,
+              fontSize: 18,
+              fontWeight: "500",
+              alignSelf: "center",
+            }}
+          >
+            Thumbnail
+          </Text>
+          {thumbnail}
+          <ProgressBar progress={progress} style={{ alignSelf: "center" }} />
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        <View style={styles.contentsInfo}>
+          <Text
+            style={{
+              paddingTop: 12,
+              paddingBottom: 12,
+              fontSize: 18,
+              fontWeight: "500",
+              alignSelf: "center",
+            }}
+          >
+            Caption
+          </Text>
+          <TextInput
+            style={styles.contentsCaption}
+            value={contentsCaption}
+            onChangeText={(text) => {
+              setCaption(text);
+            }}
+            placeholder="Write caption of your contents"
+            placeholderTextColor="#bbb"
+            multiline
+          />
+        </View>
+        <View style={styles.contentsInfo}>
+          <Text
+            style={{
+              paddingTop: 12,
+              paddingBottom: 12,
+              fontSize: 18,
+              fontWeight: "500",
+              alignSelf: "center",
+            }}
+          >
+            Info
+          </Text>
+          <TextInput
+            style={styles.contentsInfoTitle}
+            value={contentsInfo}
+            onChangeText={(text) => {
+              setInfo(text);
+            }}
+            placeholder="Write description of your contents"
+            placeholderTextColor="#bbb"
+            multiline
+          />
+        </View>
+        <View style={styles.postButtons}>
+          <NeumoNextButton
+            text={"Choose a Thumbnail"}
+            onPress={ThumbnailChoiceAndUpload}
+          />
+
+          {handleEditButton}
+        </View>
+      </View>
+    </Layout>
   );
 }
 
@@ -170,14 +222,14 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#fff",
   },
-  undefined: {
-    height: "30%",
+  inner: {
     alignItems: "center",
     justifyContent: "center",
   },
+  ThumbnailTab: { alignItems: "center", justifyContent: "center" },
+  thumbnail: { paddingTop: 12, paddingBottom: 12, alignItems: "center" },
   postButtons: {
     alignItems: "center",
-    height: "70%",
   },
   button: {
     backgroundColor: "#265366",
@@ -199,7 +251,6 @@ const styles = StyleSheet.create({
   },
   contentsInfo: {
     alignItems: "center",
-    paddingBottom: 10,
   },
   contentsCaption: {
     backgroundColor: "#eee",

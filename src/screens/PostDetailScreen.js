@@ -7,18 +7,22 @@ import {
   TouchableHighlight,
   YellowBox,
   Dimensions,
+  ScrollView,
+  SafeAreaView,
+  FlatList,
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Avatar } from "react-native-elements";
 import Modal from "react-native-modal";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import PropTypes from "prop-types";
 
 import firebase from "firebase";
 
+import Layout from "@components/Layout";
+import PostCommentInput from "@components/PostCommentInput";
 import VideoContents from "../elements/VideoContents";
 import ExpoVideoContents from "../elements/ExpoVideoContents";
 import PostVideoModal from "./PostVideoModal";
-import PostCommentList from "../components/PostCommentList";
 import PostDetailItemList from "../components/PostDetailItemList";
 
 YellowBox.ignoreWarnings([
@@ -169,60 +173,133 @@ export default function PostDetailScreen(props) {
     postid: post.postid,
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.video}>
-        <ExpoVideoContents uri={post.postVideoURL} width={videoWidth} />
-      </View>
-      <PostDetailItemList
-        itemList={itemList}
-        navigation={props.navigation}
-        uploader={post.uploader}
-        postid={post.postid}
-        athuid={post.athuid}
-      />
-      <View style={styles.videoInfo}>
-        <View style={styles.videoBar}>
-          <View style={styles.videoCaption}>
-            <Text style={styles.videoCaptionTitle}>{post.contentsCaption}</Text>
+  const MainPart = () => {
+    return (
+      <View>
+        <View style={styles.video}>
+          <ExpoVideoContents uri={post.postVideoURL} width={videoWidth} />
+        </View>
+        <PostDetailItemList
+          itemList={itemList}
+          navigation={props.navigation}
+          uploader={post.uploader}
+          postid={post.postid}
+          athuid={post.athuid}
+        />
+        <View style={styles.videoInfo}>
+          <View style={styles.videoBar}>
+            <View style={styles.videoCaption}>
+              <Text
+                style={styles.videoCaptionTitle}
+                numberOfLines={1}
+                ellipsizeMode={"tail"}
+              >
+                {post.contentsCaption}
+              </Text>
+            </View>
+            <View style={styles.videoDate}>
+              <Text style={styles.videoDateTitle}>{post.updatedOn}</Text>
+            </View>
           </View>
-          <View style={styles.videoDate}>
-            <Text style={styles.videoDateTitle}>{post.updatedOn}</Text>
+          <TouchableHighlight
+            onPress={() => {
+              props.navigation.navigate("AthDetail", { uid: post.uid });
+            }}
+          >
+            <View style={styles.videoUserBar}>
+              <View style={styles.videoUploader}>
+                <Image
+                  style={styles.videoUploaderImage}
+                  source={
+                    post.profileImageURL ? { uri: post.profileImageURL } : null
+                  }
+                />
+              </View>
+              <View style={styles.videoUploaderName}>
+                <Text style={styles.videoUploaderNameTitle}>{post.athuid}</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+          <PostCommentInput
+            uploader={post.uploader}
+            postid={post.postid}
+            username={username}
+            userProfileURL={userProfileURL}
+            athuid={post.athuid}
+          />
+        </View>
+        <PostVideoModal
+          post={post}
+          navigation={props.navigation}
+          onPress={videoModalOnPress}
+          isModalVisible={isModalVisible}
+          onBackdropPress={onBackdropPress}
+        />
+      </View>
+    );
+  };
+
+  const PostCommentList = () => {
+    const renderComment = ({ item }) => {
+      const comment = item;
+      const commentid = comment.key;
+      const uid = comment.commenter;
+      console.log(item);
+      return (
+        <View style={styles.commentListItem}>
+          <View style={styles.userPic}>
+            <Avatar
+              size={36}
+              rounded
+              title="U"
+              source={
+                comment.profileImageURL
+                  ? { uri: comment.profileImageURL }
+                  : null
+              }
+            />
+          </View>
+          <View style={styles.commentInfo}>
+            <View style={styles.commentInfoUpper}>
+              <View style={styles.commenter}>
+                <Text style={styles.commenterTitle}>{comment.username}</Text>
+              </View>
+              <View style={styles.commentDate}>
+                <Text style={styles.commentDateTitle}>
+                  {dateString(comment.updatedOn)}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.commentInfoLower}>
+              <View style={styles.commentContents}>
+                <Text style={styles.commentContentsTitle}>
+                  {comment.commentContents}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
-        <TouchableHighlight
-          onPress={() => {
-            props.navigation.navigate("AthDetail", { uid: post.uid });
-          }}
-        >
-          <View style={styles.videoUserBar}>
-            <View style={styles.videoUploader}>
-              <Image
-                style={styles.videoUploaderImage}
-                source={
-                  post.profileImageURL ? { uri: post.profileImageURL } : null
-                }
-              />
-            </View>
-            <View style={styles.videoUploaderName}>
-              <Text style={styles.videoUploaderNameTitle}>{post.athuid}</Text>
-            </View>
-          </View>
-        </TouchableHighlight>
+      );
+    };
+
+    return (
+      <View style={styles.PostCommentList}>
+        <FlatList
+          data={commentList}
+          renderItem={renderComment}
+          style={styles.commentListFlat}
+          numColumns={1}
+          horizontal={false}
+          nestedScrollEnabled
+          ListHeaderComponent={<MainPart />}
+        />
       </View>
-      <PostCommentList
-        post={post}
-        commentList={commentList}
-        username={username}
-        userProfileURL={userProfileURL}
-      />
-      <PostVideoModal
-        post={post}
-        navigation={props.navigation}
-        onPress={videoModalOnPress}
-        isModalVisible={isModalVisible}
-        onBackdropPress={onBackdropPress}
-      />
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <PostCommentList />
     </View>
   );
 }
@@ -283,6 +360,37 @@ const styles = StyleSheet.create({
   },
   videoUploaderNameTitle: {
     fontSize: 24,
+    fontWeight: "500",
+  },
+  commentListFlat: {
+    width: "100%",
+    height: "100%",
+  },
+  commentListItem: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: 12,
+  },
+  commentInfo: {
+    paddingLeft: 12,
+  },
+  commentInfoUpper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  commenterTitle: {
+    fontSize: 14,
+    fontWeight: "300",
+  },
+  commentDate: {
+    paddingLeft: 12,
+  },
+  commentDateTitle: {
+    fontSize: 14,
+    fontWeight: "300",
+  },
+  commentContentsTitle: {
+    fontSize: 16,
     fontWeight: "500",
   },
 });

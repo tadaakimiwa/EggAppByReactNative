@@ -62,6 +62,14 @@ const MaterialTopTab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const MaterialTabNavi = () => {
+  const { AthleteContext } = useContext(UserContext);
+  let initialRouteName;
+  if (AthleteContext === true) {
+    initialRouteName = AthletePageNavi;
+  } else {
+    initialRouteName = UserPageScreenNavi;
+  }
+
   return (
     <MaterialTab.Navigator
       activeColor="#fff"
@@ -103,7 +111,7 @@ const MaterialTabNavi = () => {
       />
       <MaterialTab.Screen
         name="UserPage"
-        component={UserPageScreenNavi}
+        component={initialRouteName}
         options={{
           tabBarColor: "#B7AC44",
           tabBarLabel: "My Page",
@@ -249,11 +257,62 @@ const UserPageScreenNavi = ({ navigation }) => {
       <Stack.Screen
         name="UserPage"
         component={UserPageScreen}
-        optiona={UserPageScreen.navigationOptions}
+        option={UserPageScreen.navigationOptions}
       />
       <Stack.Screen name="UserEdit" component={UserEditScreen} />
       <Stack.Screen name="UserCreate" component={UserCreateScreen} />
       <Stack.Screen name="AthPage" component={AthPageScreen} />
+      <Stack.Screen name="AthDetail" component={AthDetailScreen} />
+      <Stack.Screen name="AthEdit" component={AthEditScreen} />
+      <Stack.Screen name="AthUploading" component={AthUploadingScreen} />
+      <Stack.Screen name="AthPosting" component={AthPostingScreen} />
+      <Stack.Screen
+        name="AthEditIntroVideo"
+        component={AthEditIntroVideoScreen}
+      />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen
+        name="UserCommentList"
+        component={UserCommentListScreen}
+        title="Comment History"
+      />
+      <Stack.Screen
+        name="UserFollowingList"
+        component={UserFollowingListScreen}
+        title="Following"
+      />
+      <Stack.Screen
+        name="UserPurchaseList"
+        component={UserPurchaseListScreen}
+        title="Purchase History"
+      />
+      <Stack.Screen name="PostEdit" component={PostEditScreen} />
+      <Stack.Screen name="FollowingList" component={FollowingListScreen} />
+      <Stack.Screen name="MaterialTabNavi" component={MaterialTabNavi} />
+    </Stack.Navigator>
+  );
+};
+
+const AthletePageNavi = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#fff",
+        },
+        headerTintColor: "#000",
+        headerBackTitle: null,
+        initialRouteName: "AthPage",
+      }}
+    >
+      <Stack.Screen name="AthPage" component={AthPageScreen} />
+      <Stack.Screen
+        name="UserPage"
+        component={UserPageScreen}
+        option={UserPageScreen.navigationOptions}
+      />
+      <Stack.Screen name="UserEdit" component={UserEditScreen} />
+      <Stack.Screen name="UserCreate" component={UserCreateScreen} />
       <Stack.Screen name="AthDetail" component={AthDetailScreen} />
       <Stack.Screen name="AthEdit" component={AthEditScreen} />
       <Stack.Screen name="AthUploading" component={AthUploadingScreen} />

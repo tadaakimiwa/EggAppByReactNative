@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Text, StyleSheet, SafeAreaView } from "react-native";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import { Button } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+import { UserContext } from "@context/index";
 
 import GoAthletePageButton from "@components/GoAthletePageButton";
 import UserPageModal from "@components/UserPageModal";
@@ -11,74 +13,73 @@ import AthListInUser from "../components/AthListInUser";
 import Layout from "../components/Layout";
 import UserPageHeaderText from "../elements/UserPageHeaderText";
 
-class UserPageScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      profile: "",
-      url: "",
-      isAthlete: false,
-      athList: [],
-      followingNum: 0,
-      commentsNum: 0,
-      giftsNum: 0,
-      isModalVisible: false,
-    };
-  }
+export default function UserPageScreen(props) {
+  const [username, setUsername] = useState("");
+  const [profile, setProfile] = useState("");
+  const [url, setUrl] = useState("");
+  const [isAthlete, setIsAthlete] = useState(false);
+  const [athList, setAthList] = useState([]);
+  const [followingNum, setFollowingNum] = useState(0);
+  const [commentsNum, setCommentsNum] = useState(0);
+  const [giftsNum, setGiftsNum] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false);
 
-  componentDidMount() {
+  const user = firebase.auth().currentUser;
+  const db = firebase.firestore();
+  const docRef = db.collection(`users/${user.uid}/User`).doc("info");
+
+  const athListRef = db.collection(`users/${user.uid}/following`);
+  const { navigation } = props;
+  const { checkAthlete } = useContext(UserContext);
+  const { AthleteContext } = useContext(UserContext);
+
+  const subscribeUserInfo = async () => {
+    await docRef.onSnapshot((doc) => {
+      if (doc.exists) {
+        console.log("isAthlete", doc.data().isAthlete);
+        setUsername(doc.data().username);
+        setProfile(doc.data().profile);
+        setUrl(doc.data().profileImageURL);
+        setIsAthlete(doc.data().isAthlete);
+        setFollowingNum(doc.data().followingNum);
+        setCommentsNum(doc.data().commentsNum);
+        setGiftsNum(doc.data().giftsNum);
+        checkAthlete(isAthlete);
+        console.log("AthleteContext", AthleteContext);
+      } else {
+        navigation.navigate("UserCreate");
+      }
+    });
+  };
+
+  const subscribeAthList = async () => {
+    await athListRef.onSnapshot((snapshot) => {
+      const list = [];
+      snapshot.forEach((doc) => {
+        list.push({ ...doc.data(), key: doc.id });
+      });
+      setAthList(list);
+      console.log("list-----", list);
+    });
+  };
+
+  useEffect(() => {
     /* firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const userId = user.uid;
         console.log(userId);
       }
     }); */
-    const { navigation } = this.props;
 
-    const user = firebase.auth().currentUser;
-    const db = firebase.firestore();
-    const docRef = db.collection(`users/${user.uid}/User`).doc("info");
+    subscribeUserInfo();
 
-    docRef.onSnapshot((doc) => {
-      if (doc.exists) {
-        const { username } = doc.data();
-        const { profile } = doc.data();
-        const url = doc.data().profileImageURL;
-        const { isAthlete } = doc.data();
-        const { followingNum } = doc.data();
-        const { commentsNum } = doc.data();
-        const { giftsNum } = doc.data();
-        this.setState({
-          username,
-          profile,
-          url,
-          isAthlete,
-          followingNum,
-          commentsNum,
-          giftsNum,
-        });
-      } else {
-        navigation.navigate("UserCreate");
-      }
-    });
+    subscribeAthList();
 
-    const athListRef = db.collection(`users/${user.uid}/following`);
-
-    athListRef.onSnapshot((snapshot) => {
-      const athList = [];
-      snapshot.forEach((doc) => {
-        athList.push({ ...doc.data(), key: doc.id });
-      });
-      this.setState({ athList });
-    });
-
-    const { username } = this.state;
     navigation.setOptions({
       headerRight: () => (
         <Button
           icon={<MaterialCommunityIcons name="menu" size={24} color="#000" />}
-          onPress={this.toggleModal.bind(this)}
+          onPress={toggleModal}
           buttonStyle={{
             backgroundColor: "#fff",
           }}
@@ -92,91 +93,75 @@ class UserPageScreen extends React.Component {
         alignSelf: "center",
       },
     });
-  }
+  }, []);
 
-  onBackdropPress() {
-    this.setState((prevState) => ({
-      isModalVisible: !prevState.isModalVisible,
-    }));
-  }
+  const onBackdropPress = () => {
+    setModalVisible(!isModalVisible);
+  };
 
-  toggleModal() {
-    this.setState((prevState) => ({
-      isModalVisible: !prevState.isModalVisible,
-    }));
-  }
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
-  handlePressFollow() {
-    this.props.navigation.navigate("UserFollowingList");
-  }
+  const handlePressFollow = () => {
+    navigation.navigate("UserFollowingList");
+  };
 
-  handlePressAthlete() {
-    this.props.navigation.navigate("AthPage");
-  }
+  const handlePressAthlete = () => {
+    navigation.navigate("AthPage");
+  };
 
-  handlePressCommentList() {
-    this.props.navigation.navigate("UserCommentList");
-  }
+  const handlePressCommentList = () => {
+    navigation.navigate("UserCommentList");
+  };
 
-  handlePressPurchaseList() {
-    this.props.navigation.navigate("UserPurchaseList");
-  }
+  const handlePressPurchaseList = () => {
+    navigation.navigate("UserPurchaseList");
+  };
 
-  returnInfo(info) {
-    this.setState({ info });
-  }
-
-  userEditOnPress() {
-    this.setState({ isModalVisible: false });
+  const userEditOnPress = () => {
+    setModalVisible(!isModalVisible);
     const info = {
-      username: this.state.username,
-      profile: this.state.profile,
-      url: this.state.url,
+      username,
+      profile,
+      url,
     };
-    this.props.navigation.navigate("UserEdit", {
+    navigation.navigate("UserEdit", {
       info,
-      returnInfo: this.returnInfo.bind(this),
     });
-  }
+  };
 
-  render() {
-    const info = {
-      username: this.state.username,
-      profile: this.state.profile,
-      url: this.state.url,
-    };
-    const { followingNum } = this.state;
-    const { commentsNum } = this.state;
-    const { giftsNum } = this.state;
-    const { isAthlete } = this.state;
-    let button;
-    if (isAthlete) {
-      button = (
-        <GoAthletePageButton onPress={this.handlePressAthlete.bind(this)} />
-      );
-    }
-    return (
-      <SafeAreaView style={styles.container}>
-        <AthListInUser
-          athList={this.state.athList}
-          navigation={this.props.navigation}
-          info={info}
-          followingNum={followingNum}
-          commentsNum={commentsNum}
-          giftsNum={giftsNum}
-          button={button}
-          onPressFollowing={this.handlePressFollow.bind(this)}
-          onPressCommentList={this.handlePressCommentList.bind(this)}
-          onPressPurchaseList={this.handlePressPurchaseList.bind(this)}
-        />
-        <UserPageModal
-          onPress={this.userEditOnPress.bind(this)}
-          onBackdropPress={this.onBackdropPress.bind(this)}
-          isModalVisible={this.state.isModalVisible}
-        />
-      </SafeAreaView>
-    );
+  const info = {
+    username,
+    profile,
+    url,
+  };
+  let button;
+  if (isAthlete) {
+    button = <GoAthletePageButton onPress={handlePressAthlete} />;
   }
+  return (
+    <SafeAreaView style={styles.container}>
+      <AthListInUser
+        athList={athList}
+        navigation={navigation}
+        info={info}
+        followingNum={followingNum}
+        commentsNum={commentsNum}
+        giftsNum={giftsNum}
+        button={button}
+        onPressFollowing={handlePressFollow}
+        onPressCommentList={handlePressCommentList}
+        onPressPurchaseList={handlePressPurchaseList}
+        style={{ height: "100%" }}
+      />
+      <UserPageModal
+        onPress={userEditOnPress}
+        onBackdropPress={onBackdropPress}
+        isModalVisible={isModalVisible}
+      />
+    </SafeAreaView>
+  );
 }
 
 UserPageScreen.propTypes = {
@@ -189,8 +174,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     width: "100%",
+    height: "100%",
     backgroundColor: "#f7f7f7",
   },
 });
-
-export default UserPageScreen;

@@ -33,6 +33,16 @@ export default function AthPageModal(props) {
               </View>
             </TouchableHighlight>
           </View>
+          <View style={styles.athModalContent}>
+            <TouchableHighlight
+              onPress={props.goUserPage}
+              underlayColor="transparent"
+            >
+              <View style={styles.modalItem}>
+                <Text style={styles.modalItemTitle}>Go to User Page</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
           <View style={styles.athModalContent_last}>
             <TouchableHighlight
               onPress={props.athPostOnPress}
@@ -56,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    height: 300,
+    height: 400,
     width: 320,
     backgroundColor: "#fff",
     alignItems: "center",

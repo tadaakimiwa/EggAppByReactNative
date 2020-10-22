@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,18 +6,18 @@ import {
   TouchableHighlight,
   TextInput,
   Button,
-} from 'react-native';
-import Modal from 'react-native-modal';
-import { Avatar } from 'react-native-elements';
-import firebase from 'firebase';
+} from "react-native";
+import Modal from "react-native-modal";
+import { Avatar } from "react-native-elements";
+import firebase from "firebase";
 
 export default function PostCommentInput(props) {
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const { username } = props;
   const { userProfileURL } = props;
   const { uploader } = props;
   const { postid } = props;
-  console.log('uploader:', uploader, 'postid:', postid);
+  console.log("uploader:", uploader, "postid:", postid);
 
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -29,10 +29,14 @@ export default function PostCommentInput(props) {
     const user = await firebase.auth().currentUser;
     const db = firebase.firestore();
     const newDate = firebase.firestore.Timestamp.now();
-    const userRef = db.collection(`users/${user.uid}/User`).doc('info');
-    const commentRef = db.collection(`users/${uploader}/posts/${postid}/comments`).doc();
+    const userRef = db.collection(`users/${user.uid}/User`).doc("info");
+    const commentRef = db
+      .collection(`users/${uploader}/posts/${postid}/comments`)
+      .doc();
     const uuid = commentRef.id;
-    const userCommentRef = db.collection(`users/${user.uid}/comments`).doc(`${uuid}`);
+    const userCommentRef = db
+      .collection(`users/${user.uid}/comments`)
+      .doc(`${uuid}`);
     const batch = db.batch();
     batch.set(commentRef, {
       commenter: user.uid,
@@ -58,11 +62,10 @@ export default function PostCommentInput(props) {
     batch.update(userRef, {
       commentsNum: firebase.firestore.FieldValue.increment(1),
     });
-    batch.commit()
-      .then(() => {
-        setComment('');
-        setModalVisible(false);
-      });
+    batch.commit().then(() => {
+      setComment("");
+      setModalVisible(false);
+    });
   };
 
   return (
@@ -90,7 +93,9 @@ export default function PostCommentInput(props) {
               style={styles.input}
               placeholder="Comment..."
               value={comment}
-              onChangeText={(text) => { setComment(text); }}
+              onChangeText={(text) => {
+                setComment(text);
+              }}
               multiline
             />
             <View style={styles.submitButton}>
@@ -98,9 +103,7 @@ export default function PostCommentInput(props) {
                 onPress={handleComment}
                 underlayColor="transparent"
               >
-                <Text style={styles.submitButtonTitle}>
-                  Post
-                </Text>
+                <Text style={styles.submitButtonTitle}>Post</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -112,32 +115,33 @@ export default function PostCommentInput(props) {
 
 const styles = StyleSheet.create({
   commnetInput: {
-    width: '100%',
+    width: "100%",
     flex: 1,
   },
   commentModal: {
     margin: 0,
+    justifyContent: "flex-end",
   },
   onKeyboard: {
     height: 100,
-    width: '100%',
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
     paddingTop: 12,
     paddingLeft: 24,
     paddingRight: 24,
     paddingBottom: 12,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   inBorder: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    borderColor: '#ddd',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    borderColor: "#ddd",
     borderWidth: 1,
     borderRadius: 32,
     marginTop: 4,
     marginLeft: 12,
-    width: '80%',
+    width: "80%",
   },
   input: {
     paddingTop: 12,
@@ -145,15 +149,15 @@ const styles = StyleSheet.create({
     paddingRight: 18,
     paddingBottom: 12,
     fontSize: 16,
-    width: '80%',
+    width: "80%",
   },
   submitButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 12,
     padding: 10,
   },
   submitButtonTitle: {
     fontSize: 18,
-    color: 'blue',
+    color: "blue",
   },
 });

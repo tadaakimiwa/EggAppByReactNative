@@ -8,12 +8,15 @@ const defaultContext = {
   getUserInfo: () => {},
   logout: () => {},
   signup: (email, password) => {},
+  AthleteContext: false,
+  checkAthlete: (isAthlete) => {},
 };
 
 const UserContext = createContext(defaultContext);
 
 const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [AthleteContext, setAthleteContext] = useState(false);
 
   const login = (email, password) => {
     // Use Eamil and Passowrd for login API
@@ -37,11 +40,17 @@ const UserContextProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // const unsubscribe = () => {
+    //  firebase.firestore().collection().onSnapshot(()=> {
+    //
+    //   })
+    // }
     firebase
       .auth()
       .signOut()
       .then(() => {
         // Sign-out successful.
+        // unsubscribe();
         setCurrentUser(undefined);
       })
       .catch((error) => {
@@ -66,6 +75,10 @@ const UserContextProvider = ({ children }) => {
     getUserInfo();
   }, []);
 
+  const checkAthlete = (isAthlete) => {
+    setAthleteContext(isAthlete);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -74,6 +87,8 @@ const UserContextProvider = ({ children }) => {
         getUserInfo,
         logout,
         signup,
+        AthleteContext,
+        checkAthlete,
       }}
     >
       {children}

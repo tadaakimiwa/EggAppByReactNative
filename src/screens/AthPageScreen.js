@@ -118,8 +118,8 @@ class AthPageScreen extends React.Component {
     this.setState({ info });
   }
 
-  athEditOnPress() {
-    this.setState({ isModalVisible: false });
+  async athEditOnPress() {
+    await this.setState({ isModalVisible: false });
     const info = {
       url: this.state.url,
       introVideoURL: this.state.introVideoURL,
@@ -136,16 +136,21 @@ class AthPageScreen extends React.Component {
     });
   }
 
-  athIntroVideoOnPress() {
-    this.setState({ isModalVisible: false });
+  async athIntroVideoOnPress() {
+    await this.setState({ isModalVisible: false });
     this.props.navigation.navigate("AthEditIntroVideo", {
       url: this.state.introVideoURL,
     });
   }
 
-  athPostOnPress() {
-    this.setState({ isModalVisible: false });
+  async athPostOnPress() {
+    await this.setState({ isModalVisible: false });
     this.props.navigation.navigate("AthUploading");
+  }
+
+  async goUserPage() {
+    await this.setState({ isModalVisible: false });
+    this.props.navigation.navigate("UserPage");
   }
 
   render() {
@@ -170,6 +175,7 @@ class AthPageScreen extends React.Component {
           athEditOnPress={this.athEditOnPress.bind(this)}
           athPostOnPress={this.athPostOnPress.bind(this)}
           athIntroVideoOnPress={this.athIntroVideoOnPress.bind(this)}
+          goUserPage={this.goUserPage.bind(this)}
           onBackdropPress={this.onBackdropPress.bind(this)}
           isModalVisible={this.state.isModalVisible}
         />
